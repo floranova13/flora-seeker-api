@@ -3,6 +3,12 @@ this.window.onload = () => {
   Array.from(this.document.getElementsByClassName('request-entry')).forEach(button => {
     button.addEventListener('click', () => setRequestInfo(button.value))
   })
+
+  if (this.document.getElementById('species-bar')) {
+    Array.from(this.document.getElementsByClassName('species-button')).forEach(button => {
+      button.addEventListener('click', () => setCollectionRequestButtons(button.value))
+    })
+  }
 }
 
 const setRequestInfo = val => {
@@ -45,7 +51,7 @@ const documentation = {
         method: 'POST',
         route: '/seekers',
         headers: 'Content-Type: application/json',
-        body: '{ “id”: “0”, “name”: “Lillium”, “age”: “19”, “gender”: “Other”, “section”: “Seeker Ardent”, lodestar: “true” }',
+        body: '{ “id”: “0”, “name”: “Lillium”, “age”: “19”, “gender”: “Other”, “section”: “Seeker Ardent”, "lodestar": “true” }',
         description: 'Creates a new seeker from the data provided in the body.'
       },
       {
@@ -238,6 +244,13 @@ const documentation = {
     [
       {
         method: 'GET',
+        route: '/map',
+        headers: '',
+        body: '',
+        description: '[]'
+      },
+      {
+        method: 'GET',
         route: '/map/locations',
         headers: '',
         body: '',
@@ -250,6 +263,15 @@ const documentation = {
         body: '',
         description: 'Returns the location associated with the string name provided in the route.'
       }
+      /*
+      {
+        method: 'POST',
+        route: '/map/locations/{name}',
+        headers: '',
+        body: '',
+        description: 'Returns the location associated with the string name provided in the route.'
+      }
+      */
     ],
   corruption:
     [
@@ -275,4 +297,26 @@ const documentation = {
         description: ''
       },
     ]
+}
+
+const setCollectionRequestButtons = val => {
+  Array.from(this.document.getElementsByClassName('request-entry')).forEach((button, i) => {
+    button.value = `collection ${speciesIndex[val] + i}`
+    button.addEventListener('click', () => setRequestInfo(button.value))
+  })
+  const spans = Array.from(this.document.getElementsByClassName('partial-route'))
+
+  spans[0].innerHTML = `/collection/${val}`
+  spans[1].innerHTML = `/collection/${val}/{name}`
+  spans[2].innerHTML = `/collection/${val}`
+  spans[3].innerHTML = `/collection/${val}/{name}`
+}
+
+const speciesIndex = {
+  falshrooms: 1,
+  flesherfungi: 5,
+  flourishflora: 9,
+  maremolds: 13,
+  trees: 17,
+  waveskellen: 21
 }
