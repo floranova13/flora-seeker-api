@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js"></script>
+    <title>Seeker Database</title>
+  </head>
+
+  <body>
+
+    <div id="nav-bar">
+      <div class="nav-item">
+        <a class="nav-label" href="index.html">Root</a>
+      </div>
+      <div class="nav-item inactive">
+        <a class="nav-label" href="seekers.html">Seekers</a>
+      </div>
+      <div class="nav-item">
+        <a class="nav-label" href="collection.html">Collection</a>
+      </div>
+      <div class="nav-item">
+        <a class="nav-label" href="map.html">Map</a>
+      </div>
+      <div class="nav-item">
+        <a class="nav-label" href="guidelines.html">Guidelines</a>
+      </div>
+    </div>
+
+    <div class="request-descriptions">
+
+      <div class="request-nav">
+        <button class="request-entry" type="button" value="seekers 0">
+          <span class="get">GET</span> |
+          <span class="partial-route">/seekers</span>
+        </button>
+        <button class="request-entry" type="button" value="seekers 1">
+          <span class="get">GET</span> |
+          <span class="partial-route">/seekers/{id}</span>
+        </button>
+        <button class="request-entry" type="button" value="seekers 2">
+          <span class="get">POST</span> |
+          <span class="partial-route">/seekers</span>
+        </button>
+        <button class="request-entry" type="button" value="seekers 3">
+          <span class="get">DELETE</span> |
+          <span class="partial-route">/seekers/{id}</span>
+        </button>
+      </div>
+
+      <div class="request-info">
+        <h1 class="label">Method</h1>
+        <h1 id="method"></h1>
+        <h1 class="label">Route</h1>
+        <h1 id="route"></h1>
+        <h1 class="label">Headers</h1>
+        <h1 id="headers"></h1>
+        <h1 class="label">Body</h1>
+        <h1 id="body"></h1>
+        <h1 class="label">Description</h1>
+        <h1 id="description"></h1>
+      </div>
+
+    </div>
+
+  </body>
+
+</html>

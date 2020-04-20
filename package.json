@@ -1,0 +1,28 @@
+{
+  "name": "flora-seeker-api",
+  "version": "1.0.0",
+  "description": "An API to manage the Seeker Division's database while they operate out of the wilderness settlement Seras.",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "dev": "./node_modules/.bin/nodemon index.js",
+    "eslint": "./node_modules/.bin/eslint --format codeframe .",
+    "lint": "npm run puglint && npm run eslint",
+    "lint:fix": "./node_modules/.bin/eslint --fix --format codeframe .",
+    "puglint": "./node_modules/.bin/pug-lint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stackeducation/flora-seeker-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pug": "^2.0.4"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "nodemon": "^2.0.2",
+    "pug-lint": "^2.6.0"
+  }
+}
