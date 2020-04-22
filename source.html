@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Welcome to the Stack Education Zoo</title>
+    <link rel="favicon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <script src="./javascript/main.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="header">
+        <!-- <div class="logo"><a href="/"><img src="/images/logo.png" height="128" width="318"></a></div> -->
+        <div class="menubar">
+          <div class="menuitems">
+            <div class="menuitem"><a href="/">home</a></div>
+            <!-- <div class="menuitem"><a href="/login">login</a></div> -->
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="content">
+          <div class="title">Seras Seekers</div>
+          <div class="doc-panels">
+            <div class="sidebar">
+              <div class="endpoint selected" id="get-animals-end-point"><a
+                  onclick="activateEndpoint(&quot;get-animals&quot;)"><span class="get">GET</span> /animals</a></div>
+              <div class="endpoint" id="get-animals-id-end-point"><a
+                  onclick="activateEndpoint(&quot;get-animals-id&quot;)"><span class="get">GET</span> /animals/{id}</a>
+              </div>
+              <div class="endpoint" id="post-animals-end-point"><a
+                  onclick="activateEndpoint(&quot;post-animals&quot;)"><span class="post">POST</span> /animals</a></div>
+              <div class="endpoint" id="delete-animals-end-point"><a
+                  onclick="activateEndpoint(&quot;delete-animals&quot;)"><span class="delete">DELETE</span>
+                  /animals/{id}</a></div>
+              <div class="endpoint newroute" id="get-keepers-end-point"><a
+                  onclick="activateEndpoint(&quot;get-keepers&quot;)"><span class="get">GET</span> /zookeepers</a></div>
+              <div class="endpoint" id="get-keepers-id-end-point"><a
+                  onclick="activateEndpoint(&quot;get-keepers-id&quot;)"><span class="get"> GET</span>
+                  /zookeepers/{id}</a></div>
+              <div class="endpoint" id="post-keepers-end-point"><a
+                  onclick="activateEndpoint(&quot;post-keepers&quot;)"><span class="post">POST</span> /zookeepers</a>
+              </div>
+              <div class="endpoint" id="delete-keepers-end-point"><a
+                  onclick="activateEndpoint(&quot;delete-keepers&quot;)"><span class="delete">DELETE</span>
+                  /zookeepers/{id}</a></div>
+            </div>
+            <div class="doc" id="get-animals-doc">
+              <div class="section">
+                <div class="label">Method</div>
+                <div class="value get">get</div>
+              </div>
+              <div class="section">
+                <div class="label">Route</div>
+                <div class="value">https://zoo.johncarmichael.me/api/animals</div>
+              </div>
+              <div class="section">
+                <div class="label">Headers</div>
+                <div class="value">
+                  <div class="header-name">Authorization</div>
+                  <div class="header-value">Bearer YOUR_API_KEY_HERE</div>
+                </div>
+              </div>
+              <div class="section">
+                <div class="label">Description</div>
+                <div class="value">Returns a list of all the animals in the zoo.</div>
+              </div>
+            </div>
+            <div class="doc hidden" id="get-animals-id-doc">
+              <div class="section">
+                <div class="label">Method</div>
+                <div class="value get">get</div>
+              </div>
+              <div class="section">
+                <div class="label">Route</div>
+                <div class="value">https://zoo.johncarmichael.me/api/animals/{id}</div>
+              </div>
+              <div class="section">
+                <div class="label">Headers</div>
+                <div class="value">
+                  <div class="header-name">Authorization</div>
+                  <div class="header-value">Bearer YOUR_API_KEY_HERE</div>
+                </div>
+              </div>
+              <div class="section">
+                <div class="label">Description</div>
+                <div class="value">Returns the animal associated with the numeric ID provided in the route.</div>
+              </div>
+            </div>
+            <div class="doc hidden" id="post-animals-doc">
+              <div class="section">
+                <div class="label">Method</div>
+                <div class="value post">post</div>
+              </div>
+              <div class="section">
+                <div class="label">Route</div>
+                <div class="value">https://zoo.johncarmichael.me/api/animals</div>
+              </div>
+              <div class="section">
+                <div class="label">Headers</div>
+                <div class="value">
+                  <div class="header-name">Content-Type</div>
+                  <div class="header-value">application/json</div>
+                </div>
+                <div class="value">
+                  <div class="header-name">Authorization</div>
+                  <div class="header-value">Bearer YOUR_API_KEY_HERE</div>
+                </div>
+              </div>
+              <div class="section">
+                <div class="label">Body</div>
+                <div class="value request-body">{ "name": "Leo", "species": "Lion" }</div>
+              </div>
+              <div class="section">
+                <div class="label">Description</div>
+                <div class="value">Creates a new animal from the data provided in the body.</div>
+              </div>
+            </div>
+            <div class="doc hidden" id="delete-animals-doc">
+              <div class="section">
+                <div class="label">Method</div>
+                <div class="value delete">delete</div>
+              </div>
+              <div class="section">
+                <div class="label">Route</div>
+                <div class="value">https://zoo.johncarmichael.me/api/animals/{id}</div>
+              </div>
+              <div class="section">
+                <div class="label">Headers</div>
+                <div class="value">
+                  <div class="header-name">Authorization</div>
+                  <div class="header-value">Bearer YOUR_API_KEY_HERE</div>
+                </div>
+              </div>
+              <div class="section">
+                <div class="label">Description</div>
+                <div class="value">Deletes the the animal associated with the numeric ID provided in the route unless it
+                  is one of the protected animals.</div>
+              </div>
+            </div>
+            <div class="doc hidden" id="get-keepers-doc">
+              <div class="section">
+                <div class="label">Method</div>
+                <div class="value get">get</div>
+              </div>
+              <div class="section">
+                <div class="label">Route</div>
+                <div class="value">https://zoo.johncarmichael.me/api/zookeepers</div>
+              </div>
+              <div class="section">
+                <div class="label">Headers</div>
+                <div class="value">
+                  <div class="header-name">Authorization</div>
+                  <div class="header-value">Bearer YOUR_API_KEY_HERE</div>
+                </div>
+              </div>
+              <div class="section">
+                <div class="label">Description</div>
+                <div class="value">Returns a list of all the zoo keepers working at the zoo.</div>
+              </div>
+            </div>
+            <div class="doc hidden" id="get-keepers-id-doc">
+              <div class="section">
+                <div class="label">Method</div>
+                <div class="value get">get</div>
+              </div>
+              <div class="section">
+                <div class="label">Route</div>
+                <div class="value">https://zoo.johncarmichael.me/api/zookeepers/{id}</div>
+              </div>
+              <div class="section">
+                <div class="label">Headers</div>
+                <div class="value">
+                  <div class="header-name">Authorization</div>
+                  <div class="header-value">Bearer YOUR_API_KEY_HERE</div>
+                </div>
+              </div>
+              <div class="section">
+                <div class="label">Description</div>
+                <div class="value">Returns the zoo keeper associated with the numeric ID provided in the route.</div>
+              </div>
+            </div>
+            <div class="doc hidden" id="post-keepers-doc">
+              <div class="section">
+                <div class="label">Method</div>
+                <div class="value post">post</div>
+              </div>
+              <div class="section">
+                <div class="label">Route</div>
+                <div class="value">https://zoo.johncarmichael.me/api/zookeepers</div>
+              </div>
+              <div class="section">
+                <div class="label">Headers</div>
+                <div class="value">
+                  <div class="header-name">Content-Type</div>
+                  <div class="header-value">application/json</div>
+                </div>
+                <div class="value">
+                  <div class="header-name">Authorization</div>
+                  <div class="header-value">Bearer YOUR_API_KEY_HERE</div>
+                </div>
+              </div>
+              <div class="section">
+                <div class="label">Body</div>
+                <div class="value request-body">{ "name": "Dave Yourgrau", "title": "Captain, Lazy River Boat" }</div>
+              </div>
+              <div class="section">
+                <div class="label">Description</div>
+                <div class="value">Creates a new zoo keeper from the data provided in the body.</div>
+              </div>
+            </div>
+            <div class="doc hidden" id="delete-keepers-doc">
+              <div class="section">
+                <div class="label">Method</div>
+                <div class="value delete">delete</div>
+              </div>
+              <div class="section">
+                <div class="label">Route</div>
+                <div class="value">https://zoo.johncarmichael.me/api/zookeepers/{id}</div>
+              </div>
+              <div class="section">
+                <div class="label">Headers</div>
+                <div class="value">
+                  <div class="header-name">Authorization</div>
+                  <div class="header-value">Bearer YOUR_API_KEY_HERE</div>
+                </div>
+              </div>
+              <div class="section">
+                <div class="label">Description</div>
+                <div class="value">Deletes the the zoo keeper associated with the numeric ID provided in the route
+                  unless it is one of the protected zoo keepers.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+      </div>
+    </div>
+  </body>
+
+</html>
