@@ -139,18 +139,6 @@ a:visited {
   font-size: 14px
 }
 
-.get {
-
-}
-
-.post {
-
-}
-
-.delete {
-
-}
-
 .request-info {
   display: inline-flex;
   flex-wrap: wrap;

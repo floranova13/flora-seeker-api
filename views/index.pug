@@ -7,8 +7,14 @@ html
     include partials/title.pug
     div#nav-bar
       for item in ["Root", "Seekers", "Collection", "Map"]
-        div(class="nav-item" data-value=item.toLowerCase())= item
+        div(class="nav-item" data-value=`${pathDir} ${item.toLowerCase()}${item === "Collection" ? "/falshrooms" : ""}`)= item
     h1(class="title")= (entityName[0].toUpperCase() + entityName.slice(1))
+
+    if(family)
+      div#family-bar
+        for item in ["Falshrooms", "Flesherfungi", "Flourishflora", "Maremolds", "Trees", "Waveskellen"]
+          div(class="family-item" data-value=`${pathDir} ${item.toLowerCase()}`)= item
+
     p Explain the basics of the documentation in lore format.
 
     #request-descriptions
@@ -16,26 +22,25 @@ html
         #requests-labels
           #method-label Method
           #route-label Route
-        for request, i in entity
-          div(class="request-entry" data-value=`${entityName} ${i}`)
+        for request, i in family ? family : entity
+          div(class="request-entry" data-value=`${pathDir} ${entityName}${(family ? " " + familyName : "")} ${i}`)
             .method= request.method
             .partial-route= request.route
       #info
         table(id="info-table")
           tr
             td.label Method:
-            td= req.method
+            td= (family ? family[num].method : entity[num].method)
           tr
             td.label Route:
-            td= req.route
-          if(req.headers)
+            td= (family ? family[num].route : entity[num].route)
+          if((family && family[num].headers) || (!family && entity[num].headers))
             tr
               td.label Headers:
-              td= req.method
-          if(req.body)
+              td= (family ? family[num].headers : entity[num].headers)
+          if((family && family[num].body) || (!family && entity[num].body))
             tr
               td.label Body:
-              td= req.body
+              td= entity[num].body
           tr: th(class="label" id="description" colspan=2) Description:
-          tr: td(colspan=2)= req.description
-          //for info in documentation.index[0].entries
+          tr: td(colspan=2)= (family ? family[num].description : entity[num].description)

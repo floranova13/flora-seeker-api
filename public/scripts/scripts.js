@@ -3,10 +3,19 @@ this.window.onload = () => {
     div.addEventListener('click', () => changeRoute(div.getAttribute('data-value').split(' ')))
   })
   Array.from(this.document.getElementsByClassName('nav-item')).forEach(div => {
-    div.addEventListener('click', () => changeEntity(div.getAttribute('data-value')))
+    div.addEventListener('click', () => changeEntity(div.getAttribute('data-value').split(' ')))
+  })
+  Array.from(this.document.getElementsByClassName('family-item')).forEach(div => {
+    div.addEventListener('click', () => changeFamily(div.getAttribute('data-value').split(' ')))
   })
 }
 
-const changeRoute = val => this.window.location.replace(`http://localhost:16361/documentation/${val[0]}/${val[1]}`)
+const changeRoute = val => {
+  this.window.location.replace(val.length > 3
+    ? `${val[0]}collection/${val[2]}/${val[3]}`
+    : `${val[0]}${val[1]}/${val[2]}`)
+}
 
-const changeEntity = val => this.window.location.replace(`http://localhost:16361/documentation/${val}/0`)
+const changeEntity = val => this.window.location.replace(`${val[0]}${val[1]}/0`)
+
+const changeFamily = val => this.window.location.replace(`${val[0]}collection/${val[1]}/0`)

@@ -4,7 +4,7 @@
   "description": "An API to manage the Seeker Division's database while they operate out of the wilderness settlement Seras.",
   "main": ".eslintrc.js",
   "scripts": {
-    "dev": "./node_modules/.bin/nodemon index.js",
+    "dev": "./node_modules/.bin/nodemon --delay 2.5 index.js",
     "eslint": "./node_modules/.bin/eslint --format codeframe .",
     "lint": "npm run puglint && npm run eslint",
     "lint:fix": "./node_modules/.bin/eslint --fix --format codeframe .",

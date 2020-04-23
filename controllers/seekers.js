@@ -1,4 +1,4 @@
-// const seekerData = require('../seekerData')
+const seekerData = require('../seekerData')
 
 // getSeekers()
 

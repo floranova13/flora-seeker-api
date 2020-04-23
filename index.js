@@ -10,35 +10,79 @@ app.use(express.static('public'))
 
 app.set('view engine', 'pug')
 
+/*
 app.get('/', (request, response) => {
-  const entity = documentation.index
-  const req = documentation.index[0]
+  response.redirect('/documentation/root/0')
+})
+*/
 
-  response.render('index', { entity, req })
+app.get('/documentation/collection/:family/:num?', (request, response) => {
+  const pathDir = '/documentation/'
+  let redirectReq = false
+
+  // console.log(pathDir)
+  const entityName = 'collection'
+  const entity = documentation.collection
+  let familyName = request.params.family
+  let family = entity[familyName]
+  let num = parseInt(request.params.num)
+
+  if (!family) {
+    familyName = 'falshrooms'
+    family = entity.falshrooms
+    redirectReq = true
+  }
+
+  const reqItem = family[num]
+
+  if (!reqItem) {
+    redirectReq = true
+    num = 0
+  }
+
+  // if (redirectReq) console.log(`Redirected once: ${familyName} ${num}`)
+  if (redirectReq) return response.redirect(`${pathDir}${familyName}/${num}`)
+
+  response.render('index', {
+    pathDir, entityName, entity, familyName, family, num
+  })
 })
 
-app.get('/documentation/:entity/:i', (request, response) => {
-  const pathDir = path.dirname.toString() + '/'
+app.get('/documentation/:entity/:num', (request, response) => {
+  const pathDir = '/documentation/'
+  let redirectReq = false
 
-  console.log(pathDir)
+  console.log('Path: ' + pathDir)
   let entityName = request.params.entity
   let entity = documentation[entityName]
 
+  console.log(`Entity: ${entity}`)
+  let num = parseInt(request.params.num)
+
+  console.log(`Num: ${num}`)
+
   if (!entity) {
+    redirectReq = true
     entityName = 'root'
     entity = documentation.root
   }
 
-  const req = entity[parseInt(request.params.i)] ? entity[parseInt(request.params.i)] : entity[0]
+  const reqItem = entity[num]
 
-  // change for collections
-  // change to correct route if that's what is to be shown anyway
+  if (!reqItem) {
+    redirectReq = true
+    num = 0
+  }
 
-  response.render('index', { entityName, entity, req })
+  // ADD CUSTOM 404s FOR EACH FAILURE
+  if (redirectReq) console.log(`Redirected once: ${entityName} ${num}`)
+  if (redirectReq) return response.redirect(`${pathDir}${entityName}/${num}`)
+
+  response.render('index', { pathDir, entityName, entity, num })
 })
 
 app.get('*', (request, response) => {
-  return response.status('404').send('404, Page not found.')
+  return response.status('404').send('404, Page not found.') // MAKE A CUSTOM 404
 })
 
 app.listen(16361, () => {
