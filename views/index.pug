@@ -7,13 +7,15 @@ html
     include partials/title.pug
     div#nav-bar
       for item in ["Root", "Seekers", "Collection", "Map"]
-        div(class="nav-item" data-value=`${pathDir} ${item.toLowerCase()}${item === "Collection" ? "/falshrooms" : ""}`)= item
-    h1(class="title")= (entityName[0].toUpperCase() + entityName.slice(1))
+        div(class="nav-item" data-inactive=item.toLowerCase() === section ? "true" : ""
+          data-value=`${pathDir} ${item.toLowerCase()}${item === "Collection" ? "/falshrooms" : ""}`)= item
 
-    if(family)
+    h1(class="title")= (section[0].toUpperCase() + section.slice(1))
+
+    if(familyVal)
       div#family-bar
         for item in ["Falshrooms", "Flesherfungi", "Flourishflora", "Maremolds", "Trees", "Waveskellen"]
-          div(class="family-item" data-value=`${pathDir} ${item.toLowerCase()}`)= item
+          div(class="family-item" data-inactive=item.toLowerCase() === family ? "true" : "" data-value=`${pathDir} ${item.toLowerCase()}`)= item
 
     p Explain the basics of the documentation in lore format.
 
@@ -22,25 +24,26 @@ html
         #requests-labels
           #method-label Method
           #route-label Route
-        for request, i in family ? family : entity
-          div(class="request-entry" data-value=`${pathDir} ${entityName}${(family ? " " + familyName : "")} ${i}`)
+        for request, i in familyVal ? familyVal : sectionVal
+          div(class="request-entry" data-inactive=(i === num ? "true" : "")
+            data-value=`${pathDir} ${section}${(family ? " " + family : "")} ${i}`)
             .method= request.method
             .partial-route= request.route
       #info
         table(id="info-table")
           tr
             td.label Method:
-            td= (family ? family[num].method : entity[num].method)
+            td= (familyVal ? familyVal[num].method : sectionVal[num].method)
           tr
             td.label Route:
-            td= (family ? family[num].route : entity[num].route)
-          if((family && family[num].headers) || (!family && entity[num].headers))
+            td= (familyVal ? familyVal[num].route : sectionVal[num].route)
+          if((familyVal && familyVal[num].headers) || (!familyVal && sectionVal[num].headers))
             tr
               td.label Headers:
-              td= (family ? family[num].headers : entity[num].headers)
-          if((family && family[num].body) || (!family && entity[num].body))
+              td= (familyVal ? familyVal[num].headers : sectionVal[num].headers)
+          if((familyVal && familyVal[num].body) || (!familyVal && sectionVal[num].body))
             tr
               td.label Body:
-              td= entity[num].body
-          tr: th(class="label" id="description" colspan=2) Description:
-          tr: td(colspan=2)= (family ? family[num].description : entity[num].description)
+              td= (familyVal ? familyVal[num].body : sectionVal[num].body)
+          tr: td(class="label" id="description" colspan=2) Description:
+          tr: td(colspan=2)= (family ? familyVal[num].description : sectionVal[num].description)
