@@ -1,49 +1,24 @@
 html
-  head
-    title Flora Seeker API Documentation
-    link(rel="stylesheet" href="/css/styles.css")
-    script(src="/scripts/scripts.js")
+  include partials/head.pug
   body
-    include partials/title.pug
-    div#nav-bar
+    h1(id="main-title") Flora Seeker API
+
+    div(id="nav-bar")
       for item in ["Root", "Seekers", "Collection", "Map"]
-        div(class="nav-item" data-inactive=item.toLowerCase() === section ? "true" : ""
+        div(class="nav-item"
+          data-inactive=item.toLowerCase() === section ? "true" : ""
           data-value=`${pathDir} ${item.toLowerCase()}${item === "Collection" ? "/falshrooms" : ""}`)= item
 
-    h1(class="title")= (section[0].toUpperCase() + section.slice(1))
+    h1(id="section-title" data-section=section)
 
     if(familyVal)
-      div#family-bar
+      div(id="family-bar")
         for item in ["Falshrooms", "Flesherfungi", "Flourishflora", "Maremolds", "Trees", "Waveskellen"]
-          div(class="family-item" data-inactive=item.toLowerCase() === family ? "true" : "" data-value=`${pathDir} ${item.toLowerCase()}`)= item
+          div(class="family-item"
+          data-inactive=item.toLowerCase() === family ? "true" : "" data-value=`${pathDir} ${item.toLowerCase()}`)= item
 
-    p Explain the basics of the documentation in lore format.
+    h1(id="section-description" data-section=section)
 
-    #request-descriptions
-      #requests
-        #requests-labels
-          #method-label Method
-          #route-label Route
-        for request, i in familyVal ? familyVal : sectionVal
-          div(class="request-entry" data-inactive=(i === num ? "true" : "")
-            data-value=`${pathDir} ${section}${(family ? " " + family : "")} ${i}`)
-            .method= request.method
-            .partial-route= request.route
-      #info
-        table(id="info-table")
-          tr
-            td.label Method:
-            td= (familyVal ? familyVal[num].method : sectionVal[num].method)
-          tr
-            td.label Route:
-            td= (familyVal ? familyVal[num].route : sectionVal[num].route)
-          if((familyVal && familyVal[num].headers) || (!familyVal && sectionVal[num].headers))
-            tr
-              td.label Headers:
-              td= (familyVal ? familyVal[num].headers : sectionVal[num].headers)
-          if((familyVal && familyVal[num].body) || (!familyVal && sectionVal[num].body))
-            tr
-              td.label Body:
-              td= (familyVal ? familyVal[num].body : sectionVal[num].body)
-          tr: td(class="label" id="description" colspan=2) Description:
-          tr: td(colspan=2)= (family ? familyVal[num].description : sectionVal[num].description)
+    div(id="request-descriptions")
+      include partials/requests.pug
+      include partials/info.pug
