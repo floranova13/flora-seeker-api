@@ -1,7 +1,11 @@
 html
   include partials/head.pug
   body
-    h1(id="main-title") Flora Seeker API
+
+    div(id="title-flex")
+      img(id="division-symbol-left" src="/public/img/divisionSymbol.png", alt="pink blossoms")
+      h1(id="main-title") Flora Seeker API
+      img(id="division-symbol-right" src="/public/img/divisionSymbol.png", alt="pink blossoms")
 
     div(id="nav-bar")
       for item in ["Root", "Seekers", "Collection", "Map"]
@@ -9,7 +13,7 @@ html
           data-inactive=item.toLowerCase() === section ? "true" : ""
           data-value=`${pathDir} ${item.toLowerCase()}${item === "Collection" ? "/falshrooms" : ""}`)= item
 
-    h1(id="section-title" data-section=section)
+    include partials/section.pug
 
     if(familyVal)
       div(id="family-bar")
@@ -17,7 +21,8 @@ html
           div(class="family-item"
           data-inactive=item.toLowerCase() === family ? "true" : "" data-value=`${pathDir} ${item.toLowerCase()}`)= item
 
-    h1(id="section-description" data-section=section)
+    div(id="description-container")
+      h3(id="section-description")= description
 
     div(id="request-descriptions")
       include partials/requests.pug

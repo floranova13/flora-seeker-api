@@ -1,9 +1,7 @@
 this.window.onload = () => {
   const title = this.document.getElementById('section-title')
-  const description = this.document.getElementById('section-description')
 
   title.innerHTML = (title.getAttribute('data-section')[0].toUpperCase() + title.getAttribute('data-section').slice(1))
-  description.innerHTML = sectionDescription[description.getAttribute('data-section')]
 
   addClickEvents('request-entry', showRequestInfo, true)
   addClickEvents('nav-item', changeSection, false)
@@ -46,11 +44,4 @@ const changeFamily = val => this.window.location.replace(`${val[0]}collection/${
 const manageActiveStatus = (el, inactive, classStr) => {
   if (inactive) el.classList.add(classStr)
   else el.classList.remove(classStr)
-}
-
-const sectionDescription = {
-  root: '',
-  seekers: '',
-  collection: '',
-  map: ''
 }
