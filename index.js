@@ -11,6 +11,8 @@ app.set('view engine', 'pug')
 
 app.get('/documentation/:section/:family?', setLocals, checkRoute, getDocView)
 
+app.get(/\/(documentation)?/, (req, res) => { res.redirect('/documentation/root') })
+
 app.all('*', (req, res) => { res.sendStatus('404') })
 
 app.listen(16361, () => {
