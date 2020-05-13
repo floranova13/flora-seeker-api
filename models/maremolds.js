@@ -1,10 +1,12 @@
-const maremolds = (connection, Sequelize) => {
+const maremolds = (connection, Sequelize, Samples) => {
   return connection.define('maremolds', {
     id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-    name: { type: Sequelize.STRING },
-    description: { type: Sequelize.STRING },
-    rarity: { type: Sequelize.ENUM('common', 'uncommon', 'rare', 'legendary', 'unique') },
+    sampleId: { type: Sequelize.INTEGER, references: { model: Samples, key: 'id' } },
     mutationRate: { type: Sequelize.INTEGER }
+  }, {
+    defaultScope: {
+      attributes: { exclude: ['deletedAt'] }
+    }
   }, { paranoid: true })
 }
 

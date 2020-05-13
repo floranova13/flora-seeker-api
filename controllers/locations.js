@@ -2,10 +2,7 @@ const models = require('../models')
 
 const getAllLocations = async (req, res) => {
   try {
-    let locations = await models.Location.findAll({
-      attributes: ['name', 'description', 'slug'],
-      include: ['locations']
-    })
+    let locations = await models.Location.scope('minimal').findAll()
 
     return res.send(locations)
   } catch (error) {
@@ -18,7 +15,8 @@ const getLocationBySlug = async (req, res) => {
     const { slug } = req.params
     const location = await models.Location.findOne({
       where: { slug },
-      attributes: ['name', 'description', 'slug']
+      attributes: ['name', 'description', 'slug'],
+      include: [{ model: models.Territory, as: 'territories', attributes: ['name'] }]
     })
 
     return location
@@ -45,4 +43,24 @@ const saveNewLocation = async (req, res) => {
   }
 }
 
-module.exports = { getAllLocations, getLocationBySlug, saveNewLocation }
+const patchLocation = async (req, res) => {
+  try {
+    const { slug } = req.params // ADD MIDDLEWARE TO CHECK THIS
+    const { threat } = req.body // FILTER INPUT
+
+    const location = await models.Location.findOne({
+      where: { slug },
+      attributes: ['name', 'description', 'slug'],
+      include: [{ model: models.Territory, as: 'territories', attributes: ['name'] }]
+    })
+
+    location.threat = threat
+    location.save()
+
+    return res.send(location)
+  } catch (error) {
+    return res.status(500).send('Unable to patch location, please try again')
+  }
+}
+
+module.exports = { getAllLocations, getLocationBySlug, saveNewLocation, patchLocation }

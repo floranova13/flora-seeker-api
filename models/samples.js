@@ -1,9 +1,9 @@
-const goals = (connection, Sequelize) => {
-  return connection.define('goals', {
+const samples = (connection, Sequelize) => {
+  return connection.define('samples', {
     id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
     name: { type: Sequelize.STRING },
     description: { type: Sequelize.STRING },
-    code: { type: Sequelize.STRING }
+    rarity: { type: Sequelize.ENUM('common', 'uncommon', 'rare', 'legendary', 'unique') },
   }, {
     defaultScope: {
       attributes: { exclude: ['deletedAt'] }
@@ -11,4 +11,4 @@ const goals = (connection, Sequelize) => {
   }, { paranoid: true })
 }
 
-module.exports = goals
+module.exports = samples

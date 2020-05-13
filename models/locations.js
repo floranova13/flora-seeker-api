@@ -4,7 +4,12 @@ const locations = (connection, Sequelize) => {
     name: { type: Sequelize.STRING },
     description: { type: Sequelize.STRING },
     slug: { type: Sequelize.STRING }
+  }, {
+    defaultScope: {
+      attributes: { exclude: ['deletedAt'] }
+    }
   }, { paranoid: true })
 }
 
 module.exports = locations
+

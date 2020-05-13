@@ -1,8 +1,13 @@
-const territories = (connection, Sequelize) => {
+const territories = (connection, Sequelize, Locations) => {
   return connection.define('territories', {
     id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
     name: { type: Sequelize.STRING },
-    locationId: { type: Sequelize.INTEGER }
+    slug: { type: Sequelize.STRING },
+    locationId: { type: Sequelize.INTEGER, references: { model: Locations, key: 'id' } }
+  }, {
+    defaultScope: {
+      attributes: ['name']
+    }
   }, { paranoid: true })
 }
 

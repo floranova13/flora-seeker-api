@@ -354,31 +354,31 @@ const documentation = {
       },
       {
         method: 'GET',
-        route: '/map/locations/{name}',
+        route: '/map/locations/{slug}',
         headers: '',
         body: '',
-        description: 'Returns the location associated with the name provided in the route.'
+        description: 'Returns the location associated with the slug provided in the route.'
       },
       {
         method: 'POST',
-        route: '/map/locations/{name}',
+        route: '/map/locations/{slug}',
         headers: 'Content-Type: text/plain',
         body: '"val"',
-        description: 'Adds a territory provided in the body to the location referenced by location named in the route unless it already exists.'
+        description: 'Adds a territory provided in the body to the location referenced by slug in the route unless it already exists.'
       },
       {
         method: 'PATCH',
-        route: '/map/locations/{name}/{threat}',
+        route: '/map/locations/{slug}',
         headers: 'Content-Type: text/plain',
         body: '"val"',
-        description: 'Alters the threat property of the requested location referenced in the route. This must be done periodically according to the master schedule. It is for the safety of all seekers that the threat property reflect accurate field analysis.'
+        description: 'Alters the threat property of the requested location referenced by slug in the route. This must be done periodically according to the master schedule. It is for the safety of all seekers that the threat property reflect accurate field analysis.'
       },
       {
         method: 'DELETE',
-        route: '/map/locations/{name}/{territory}',
+        route: '/map/locations/{slug}/{territorySlug}',
         headers: '',
         body: '',
-        description: 'Deletes the territory associated with the location name and territory name provided in the route. Please follow procedure and use restraint when altering a location\'s territory data.'
+        description: 'Deletes the territory associated with the location slug and territory name provided in the route. Please follow procedure and use restraint when altering a location\'s territory data.'
       }
     ],
   corruption:

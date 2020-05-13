@@ -1,10 +1,12 @@
-const waveskellen = (connection, Sequelize) => {
+const waveskellen = (connection, Sequelize, Samples) => {
   return connection.define('waveskellen', {
     id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-    name: { type: Sequelize.STRING },
-    description: { type: Sequelize.STRING },
-    rarity: { type: Sequelize.ENUM('common', 'uncommon', 'rare', 'legendary', 'unique') },
+    sampleId: { type: Sequelize.INTEGER, references: { model: Samples, key: 'id' } },
     cascades: { type: Sequelize.ENUM('clarion', 'umbra', 'nihil', 'anomalous') }
+  }, {
+    defaultScope: {
+      attributes: { exclude: ['deletedAt'] }
+    }
   }, { paranoid: true })
 }
 

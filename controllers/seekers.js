@@ -1,8 +1,8 @@
-const models = require('../models')
+const models = require('../../models')
 
 const getAllSeekers = async (req, res) => {
   try {
-    let seekers = await models.Seeker.findAll({ attributes: ['id', 'name', 'age', 'gender', 'title', 'lodestar'] })
+    const seekers = await models.Seeker.findAll({ attributes: ['id', 'name', 'age', 'gender', 'title', 'lodestar'] })
 
     return res.send(seekers)
   } catch (error) {

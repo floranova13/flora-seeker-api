@@ -1,7 +1,7 @@
-const falshrooms = (connection, Sequelize, Samples) => {
-  return connection.define('falshrooms', {
+const collection = (connection, Sequelize) => {
+  return connection.define('collection', {
     id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-    sampleId: { type: Sequelize.INTEGER, references: { model: Samples, key: 'id' } },
+    name: { type: Sequelize.STRING, allowNull: false },
     viraburstAbsorption: { type: Sequelize.INTEGER }
   }, {
     defaultScope: {
@@ -10,4 +10,4 @@ const falshrooms = (connection, Sequelize, Samples) => {
   }, { paranoid: true })
 }
 
-module.exports = falshrooms
+module.exports = collection

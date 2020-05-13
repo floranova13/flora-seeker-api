@@ -1,10 +1,12 @@
-const flesherfungi = (connection, Sequelize) => {
+const flesherfungi = (connection, Sequelize, Samples) => {
   return connection.define('flesherfungi', {
     id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-    name: { type: Sequelize.STRING },
-    description: { type: Sequelize.STRING },
-    rarity: { type: Sequelize.ENUM('Common', 'Uncommon', 'Rare', 'Legendary', 'Unique') },
+    sampleId: { type: Sequelize.INTEGER, references: { model: Samples, key: 'id' } },
     threat: { type: Sequelize.INTEGER }
+  }, {
+    defaultScope: {
+      attributes: { exclude: ['deletedAt'] }
+    }
   }, { paranoid: true })
 }
 
