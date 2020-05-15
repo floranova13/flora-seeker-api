@@ -3,7 +3,7 @@ const { getAllLocations } = require('../../controllers/map/locations')
 
 const checkLocationsRoute = (req, res, next) => {
   try {
-    if (req.params.slug) return getAllLocations(req, res)
+    if (!req.params.slug) return getAllLocations(req, res)
     next()
   } catch (error) {
     return res.status(500).send('Unable to retrieve param, please try again')

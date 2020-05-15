@@ -2,18 +2,24 @@ const express = require('express')
 const Path = require('path')
 const { setLocals, checkRoute } = require('./middlewares/documentation')
 const {
-  checkGoalExists, checkGoalsRoute, checkRequiredGoalFields, checkGoalCodeUnique, parseGoalCode
+  checkGoalsRoute, checkGoalExists, checkRequiredGoalFields, checkGoalCodeUnique, parseGoalCode
 } = require('./middlewares/general/goals')
+const {
+  checkSeekersRoute, checkSeekerExists, checkRequiredSeekerFields
+} = require('./middlewares/seekers')
 const { checkLocationsRoute, checkLocationExists, parseNewLocationThreat } = require('./middlewares/map/locations')
 const { setTerritoryValues, checkTerritoryUnique, checkTerritoryExists } = require('./middlewares/map/territories')
 const { getAllGuidelines } = require('./controllers/general/guidelines')
 const {
   getGoalByCode, saveNewGoal, replaceGoal, patchGoalCode, deleteGoal
 } = require('./controllers/general/goals')
-const { getDocView } = require('./controllers/documentation')
 const {
-  getLocationBySlug, saveTerritoryToLocationBySlug, patchLocationThreat, deleteTerritoryByLocationSlug
+  getSeekerByIdWithTitles, saveNewSeeker, assignSeekerTitle, deleteSeekerTitle, deleteSeeker
+} = require('./controllers/seekers')
+const {
+  getLocationBySlug, saveNewTerritoryToLocationBySlug, patchLocationThreat, deleteTerritoryByLocationSlug
 } = require('./controllers/map/locations')
+const { getDocView } = require('./controllers/documentation')
 
 const app = express()
 // const router = express.Router()
@@ -30,7 +36,7 @@ app.get('/general') // GO SOMEWHERE!
 
 app.get('/general/guidelines', getAllGuidelines)
 
-app.get('/general/goals/:code?', parseGoalCode, checkGoalExists, checkGoalsRoute, getGoalByCode)
+app.get('/general/goals/:code?', checkGoalsRoute, parseGoalCode, checkGoalExists, getGoalByCode)
 
 app.post('/general/goals', checkRequiredGoalFields, checkGoalCodeUnique, saveNewGoal)
 
@@ -48,9 +54,9 @@ app.patch('/general')
 
 app.delete('/general')
 
-app.get('/seekers/*',)
+app.get('/seekers/:id?', checkSeekersRoute, checkSeekerExists, getSeekerByIdWithTitles)
 
-app.post('/seekers',)
+app.post('/seekers', checkRequiredSeekerFields, saveNewSeeker)
 
 app.patch('/seekers',)
 
@@ -64,10 +70,10 @@ app.patch('/collection')
 
 app.delete('/collection')
 
-app.get('/map/locations/:slug?', checkLocationExists, checkLocationsRoute, getLocationBySlug)
+app.get('/map/locations/:slug?', checkLocationsRoute, checkLocationExists, getLocationBySlug)
 
 app.post('/map/location/:slug',
-  checkLocationExists, setTerritoryValues, checkTerritoryUnique, saveTerritoryToLocationBySlug)
+  checkLocationExists, setTerritoryValues, checkTerritoryUnique, saveNewTerritoryToLocationBySlug)
 
 app.patch('/map/locations/:slug', checkLocationExists, parseNewLocationThreat, patchLocationThreat)
 

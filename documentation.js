@@ -84,24 +84,38 @@ const documentation = {
       },
       {
         method: 'GET',
-        route: '/seekers/title/{title}',
+        route: '/seekers/title/{titleId}',
         headers: '',
         body: '',
-        description: 'Returns a list of all seekers with the title provided in the route.'
+        description: 'Returns a list of all seekers with the  numeric title id provided in the route.'
       },
       {
         method: 'POST',
         route: '/seekers',
         headers: 'Content-Type: application/json',
-        body: '{ “name”: “Lillium”, “age”: “19”, “gender”: “other”, “title”: “Seeker Ardent”, "lodestar": “true” }',
-        description: 'Creates a new seeker from the data provided in the body.'
+        body: '{ “name”: “Lillium”, “age”: “19”, “gender”: “other”, "lodestar": “true” }',
+        description: 'Creates a new seeker from the data provided in the body. Lodestar is optional.'
+      },
+      {
+        method: 'POST',
+        route: '/seekers/{id}',
+        headers: 'Content-Type: text/plain',
+        body: 'Explorer',
+        description: 'Assigns a new title to the seeker references by id in the route with the data provided in the body.'
       },
       {
         method: 'PATCH',
         route: '/seekers/{id}/{property}',
         headers: 'Content-Type: text/plain',
         body: '"val"',
-        description: 'Alters the requested property of the seeker with the provided numeric id in the route unless it is a "lodestar" seeker. The only properties that can be altered are: "name", "age", "gender", and "title".'
+        description: 'Alters the requested property of the seeker with the provided numeric id in the route unless it is a "lodestar" seeker. The only properties that can be altered are: "name", "age", and "gender".'
+      },
+      {
+        method: 'DELETE',
+        route: '/seekers/{id}/{titleId}',
+        headers: '',
+        body: '',
+        description: 'Deletes the seeker title associated with the seeker by the numeric seeker id and title id provided in the route, .'
       },
       {
         method: 'DELETE',

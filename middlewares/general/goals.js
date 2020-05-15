@@ -1,5 +1,14 @@
 const models = require('../../models')
-const { getGoalByCode } = require('../../controllers/general/goals')
+const { getAllGoals } = require('../../controllers/general/goals')
+
+const checkGoalsRoute = (req, res, next) => {
+  try {
+    if (!req.params.code) return getAllGoals(req, res)
+    next()
+  } catch (error) {
+    return res.status(500).send('Unable to retrieve param, please try again')
+  }
+}
 
 const checkGoalExists = async (req, res, next) => {
   try {
@@ -12,15 +21,6 @@ const checkGoalExists = async (req, res, next) => {
     next()
   } catch (error) {
     return res.status(500).send('Unable to retrieve location by slug, please try again')
-  }
-}
-
-const checkGoalsRoute = (req, res, next) => {
-  try {
-    if (req.params.code) return getGoalByCode(req, res)
-    next()
-  } catch (error) {
-    return res.status(500).send('Unable to retrieve param, please try again')
   }
 }
 
@@ -63,5 +63,5 @@ const parseGoalCode = (req, res, next) => {
 }
 
 module.exports = {
-  checkGoalExists, checkGoalsRoute, checkRequiredGoalFields, checkGoalCodeUnique, parseGoalCode
+  checkGoalsRoute, checkGoalExists, checkRequiredGoalFields, checkGoalCodeUnique, parseGoalCode
 }

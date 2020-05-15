@@ -21,7 +21,7 @@ const getLocationBySlug = async (req, res) => {
   }
 }
 
-const saveTerritoryToLocationBySlug = async (req, res) => {
+const saveNewTerritoryToLocationBySlug = async (req, res) => {
   try {
     const { name, slug, locationId } = req.locals
 
@@ -67,5 +67,9 @@ const deleteTerritoryByLocationSlug = async (req, res) => {
 }
 
 module.exports = {
-  getAllLocations, getLocationBySlug, saveTerritoryToLocationBySlug, patchLocationThreat, deleteTerritoryByLocationSlug
+  getAllLocations,
+  getLocationBySlug,
+  saveNewTerritoryToLocationBySlug,
+  patchLocationThreat,
+  deleteTerritoryByLocationSlug
 }

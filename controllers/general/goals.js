@@ -61,8 +61,8 @@ const replaceGoal = async (req, res) => {
 
 const patchGoalCode = async (req, res) => {
   try {
-    const existingCode = req.body.code.toUpperCase()
-    const newCode = req.params.code.toUpperCase() // THIS IS NOT AN OBJECT
+    const existingCode = req.params.code.toUpperCase()
+    const newCode = req.body.code.toUpperCase() // MAKE SURE TO SANITIZE THIS
 
     const goal = await models.Goals.findOne({ where: { existingCode } })
 
