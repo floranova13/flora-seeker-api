@@ -2,18 +2,18 @@
 const chai = require('chai')
 const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
-const models = require('../../../models')
+const models = require('../../models')
 const {
   after, afterEach, before, beforeEach, describe, it
 } = require('mocha')
-// const { x } = require('../mocks/map/locations')
-// const { x } = require('../../../controllers/map/locations')
+// const { x } = require('../mocks/general/goals')
+// const { x } = require('../../../controllers/general/goals')
 
 chai.use(sinonChai)
 
 const { expect } = chai
 
-describe('Controllers - Locations', () => {
+describe('Controllers - Goals', () => {
   let response
   let sandbox
   let stubbedCreate
@@ -27,9 +27,9 @@ describe('Controllers - Locations', () => {
   before(() => {
     sandbox = sinon.createSandbox()
 
-    stubbedFindAll = sandbox.stub(models.Locations, 'findAll')
-    stubbedFindOne = sandbox.stub(models.Locations, 'findOne')
-    stubbedCreate = sandbox.stub(models.Locations, 'create')
+    stubbedFindAll = sandbox.stub(models.Goals, 'findAll')
+    stubbedFindOne = sandbox.stub(models.Goals, 'findOne')
+    stubbedCreate = sandbox.stub(models.Goals, 'create')
 
     stubbedSend = sandbox.stub()
     stubbedSendStatus = sandbox.stub()
@@ -56,20 +56,20 @@ describe('Controllers - Locations', () => {
   })
 
 
-  describe('getAllLocations', () => {
-    it('retrieves a list of locations from the database and calls response.send() with the list', async () => {
-      stubbedFindAll.returns(locationsList)
+  describe('getAllVillains', () => {
+    it('retrieves a list of goals from the database and calls response.send() with the list', async () => {
+      stubbedFindAll.returns(guidelinesList)
 
-      await getAllLocations({}, response)
+      await getAllGuidelines({}, response)
 
       expect(stubbedFindAll).to.have.callCount(1)
-      expect(stubbedSend).to.have.been.calledWith(locationsList)
+      expect(stubbedSend).to.have.been.calledWith(guidelinesList)
     })
 
-    it('returns a 500 status when an error occurs retrieving the locations', async () => {
+    it('returns a 500 status when an error occurs retrieving the villains', async () => {
       stubbedFindAll.throws('ERROR!')
 
-      await getAllLocations({}, response)
+      await getAllGuidelines({}, response)
 
       expect(stubbedFindAll).to.have.callCount(1)
       expect(stubbedStatus).to.have.been.calledWith(500)

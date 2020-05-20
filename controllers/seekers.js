@@ -58,16 +58,14 @@ const assignSeekerTitle = async (req, res) => {
 
 const patchSeeker = async (req, res) => {
   try {
-    const { id, property } = req.params
-    const val = req.body
+    const { id, property } = req.locals
+    const { val } = req.locals
 
-    const seeker = await models.Seekers.findOne({ where: { id } })
-
-    const success = await goal.upsert({ code: newCode })
+    const success = await models.Seekers.upsert({ id, [property]: val })
 
     return success
-      ? res.send(goal)
-      : res.status(404).send(`no goal with the code of '${existingCode}' found`)
+      ? res.sendStatus(204)
+      : res.status(404).send(`no seeker with the code of '${val}' found`)
   } catch (error) {
     return res.status(500).send('Unable to patch goal code, please try again')
   }
@@ -82,7 +80,7 @@ const deleteSeekerTitle = async (req, res) => {
 
     await seekerTitle.destroy()
 
-    return res.statusSend(204)
+    return res.sendStatus(204)
   } catch (error) {
     return res.status(500).send('Unable to delete seeker title, please try again')
   }
@@ -96,7 +94,7 @@ const deleteSeeker = async (req, res) => {
 
     await seeker.destroy()
 
-    return res.statusSend(204)
+    return res.sendStatus(204)
   } catch (error) {
     return res.status(500).send('Unable to delete seeker, please try again')
   }
@@ -104,5 +102,11 @@ const deleteSeeker = async (req, res) => {
 
 
 module.exports = {
-  getAllSeekersWithTitles, getSeekerByIdWithTitles, saveNewSeeker, assignSeekerTitle, deleteSeekerTitle, deleteSeeker
+  getAllSeekersWithTitles,
+  getSeekerByIdWithTitles,
+  saveNewSeeker,
+  assignSeekerTitle,
+  patchSeeker,
+  deleteSeekerTitle,
+  deleteSeeker
 }

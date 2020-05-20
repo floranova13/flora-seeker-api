@@ -7,6 +7,9 @@ const {
 const {
   checkSeekersRoute, checkSeekerExists, checkRequiredSeekerFields
 } = require('./middlewares/seekers')
+const {
+  checkSampleRoute, checkNotUnique
+} = require('./middlewares/samples')
 const { checkLocationsRoute, checkLocationExists, parseNewLocationThreat } = require('./middlewares/map/locations')
 const { setTerritoryValues, checkTerritoryUnique, checkTerritoryExists } = require('./middlewares/map/territories')
 const { getAllGuidelines } = require('./controllers/general/guidelines')
@@ -38,7 +41,7 @@ app.get('/general/guidelines', getAllGuidelines)
 
 app.get('/general/goals/:code?', checkGoalsRoute, parseGoalCode, checkGoalExists, getGoalByCode)
 
-app.post('/general/goals', checkRequiredGoalFields, checkGoalCodeUnique, saveNewGoal)
+app.post('/general/goals', express.json(), checkRequiredGoalFields, checkGoalCodeUnique, saveNewGoal)
 
 app.put('/general/goals/:code', parseGoalCode, checkGoalExists, replaceGoal)
 
@@ -46,7 +49,7 @@ app.patch('/general/goals/:code', parseGoalCode, checkGoalExists, patchGoalCode)
 
 app.delete('/general/goals/:code', parseGoalCode, checkGoalExists, deleteGoal)
 
-app.post('/general')
+app.post('/general', express.json())
 
 app.put('/general')
 
@@ -56,15 +59,15 @@ app.delete('/general')
 
 app.get('/seekers/:id?', checkSeekersRoute, checkSeekerExists, getSeekerByIdWithTitles)
 
-app.post('/seekers', checkRequiredSeekerFields, saveNewSeeker)
+app.post('/seekers', express.json(), checkRequiredSeekerFields, saveNewSeeker)
 
 app.patch('/seekers',)
 
 app.delete('/seekers',)
 
-app.get('/collection/*')
+app.get('/collection/:family/:slug?', checkSampleRoute) // , getAllSamples)
 
-app.post('/collection')
+app.post('/collection', express.json())
 
 app.patch('/collection')
 
@@ -73,7 +76,7 @@ app.delete('/collection')
 app.get('/map/locations/:slug?', checkLocationsRoute, checkLocationExists, getLocationBySlug)
 
 app.post('/map/location/:slug',
-  checkLocationExists, setTerritoryValues, checkTerritoryUnique, saveNewTerritoryToLocationBySlug)
+  express.json(), checkLocationExists, setTerritoryValues, checkTerritoryUnique, saveNewTerritoryToLocationBySlug)
 
 app.patch('/map/locations/:slug', checkLocationExists, parseNewLocationThreat, patchLocationThreat)
 

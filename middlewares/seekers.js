@@ -1,5 +1,6 @@
 const models = require('../models')
 const { getAllSeekersWithTitles } = require('../controllers/seekers')
+// const
 
 const checkSeekersRoute = (req, res, next) => {
   try {
@@ -49,6 +50,42 @@ const checkRequiredSeekerFields = (req, res, next) => {
   }
 }
 
+/*
+const isValidInput = async (property, val) {
+  try {
+    const property = req.params.property.toLowerCase()
+
+    if (!['name', 'age', 'gender'].includes(req.params.property)) {
+      return res.status(404).send(`No seeker with the id of '${id}' found`)
+    }
+
+    if()
+
+    req.params.property = property
+
+    next()
+  } catch (error) {
+    return res.status(500).send('Unable to check validity of seeker data, please try again')
+  }
+}
+*/
+
+const parsePatchInput = async (req, res, next) => { // NOT DONE!
+  try {
+    const property = req.params.property.toLowerCase()
+
+    if (!['name', 'age', 'gender'].includes(property)) {
+      return res.status(404).send(`No seeker property of '${property}' found`)
+    }
+
+    req.params.property = property
+
+    next()
+  } catch (error) {
+    return res.status(500).send('Unable to retrieve seeker by id, please try again')
+  }
+}
+
 module.exports = {
-  checkSeekersRoute, checkSeekerExists, checkRequiredSeekerFields
+  checkSeekersRoute, checkSeekerExists, checkRequiredSeekerFields, parsePatchInput
 }

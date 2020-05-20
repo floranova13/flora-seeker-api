@@ -4,6 +4,7 @@ const samples = (connection, Sequelize) => {
     name: { type: Sequelize.STRING },
     description: { type: Sequelize.STRING },
     rarity: { type: Sequelize.ENUM('common', 'uncommon', 'rare', 'legendary', 'unique') },
+    slug: { type: Sequelize.STRING }
   }, {
     defaultScope: {
       attributes: { exclude: ['deletedAt'] }

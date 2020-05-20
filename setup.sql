@@ -6,20 +6,20 @@ GRANT ALL ON flora_seeker.* TO 'flora'@'localhost';
 
 USE flora_seeker;
 
-CREATE TABLE guidelines (
+CREATE TABLE goals (
   id INT auto_increment,
-  description VARCHAR(255),
+  name VARCHAR(255),
+  description TEXT,
+  code Char(4),
   createdAt DATETIME DEFAULT NOW(),
   updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
   deletedAt DATETIME
   PRIMARY KEY(id)
 );
 
-CREATE TABLE goals (
+CREATE TABLE guidelines (
   id INT auto_increment,
-  name VARCHAR(255),
-  description TEXT,
-  code Char(4),
+  description VARCHAR(255),
   createdAt DATETIME DEFAULT NOW(),
   updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
   deletedAt DATETIME

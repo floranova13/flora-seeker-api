@@ -1,4 +1,4 @@
-const models = require('../../models')
+const models = require('../models')
 
 const getAllGoals = async (req, res) => {
   try {
@@ -66,10 +66,10 @@ const patchGoalCode = async (req, res) => {
 
     const goal = await models.Goals.findOne({ where: { existingCode } })
 
-    const success = await goal.upsert({ code: newCode })
+    const success = await goal.upsert({ id: goal.id, code: newCode })
 
     return success
-      ? res.send(goal)
+      ? res.sendStatus(204)
       : res.status(404).send(`no goal with the code of '${existingCode}' found`)
   } catch (error) {
     return res.status(500).send('Unable to patch goal code, please try again')
@@ -80,11 +80,9 @@ const deleteGoal = async (req, res) => {
   try {
     const code = req.params.code.toUpperCase()
 
-    const goal = await models.Goals.findOne({ where: { code } })
+    await models.Goals.destroy({ where: { code } })
 
-    await goal.destroy()
-
-    return res.statusSend(204)
+    return res.sendStatus(204)
   } catch (error) {
     return res.status(500).send('Unable to delete goal, please try again')
   }

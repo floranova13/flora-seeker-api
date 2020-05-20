@@ -1,5 +1,7 @@
 const Sequelize = require('sequelize')
+const allConfigs = require('../config/sequelize')
 const goalsModel = require('./goals')
+const guidelinesModel = require('./goals')
 const seekersModel = require('./seekers')
 const titlesModel = require('./titles')
 const seekersTitlesModel = require('./seekersTitles')
@@ -13,11 +15,15 @@ const waveskellenModel = require('./waveskellen')
 const locationsModel = require('./locations')
 const territoriesModel = require('./territories')
 
-const connection = new Sequelize('flora_seeker', 'flora', 'flourish', {
-  host: 'localhost', dialect: 'mysql'
+const environment = process.env.NODE_ENV || 'development'
+const config = allConfigs[environment]
+
+const connection = new Sequelize(config.database, config.username, config.password, {
+  host: config.host, dialect: config.dialect,
 })
 
 const Goals = goalsModel(connection, Sequelize)
+const Guidelines = guidelinesModel(connection, Sequelize)
 const Seekers = seekersModel(connection, Sequelize)
 const Titles = titlesModel(connection, Sequelize)
 const SeekersTitles = seekersTitlesModel(connection, Sequelize, Seekers, Titles)
@@ -51,6 +57,7 @@ Territories.belongsTo(Locations)
 
 module.exports = {
   Goals,
+  Guidelines,
   Seekers,
   Titles,
   SeekersTitles,
@@ -62,5 +69,7 @@ module.exports = {
   Trees,
   Waveskellen,
   Locations,
-  Territories
+  Territories,
+  Op: Sequelize.Op,
+  families: ['falshrooms', 'flesherfungi', 'flourishflora', 'maremolds', 'trees', 'waveskellen']
 }

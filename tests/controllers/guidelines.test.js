@@ -2,7 +2,7 @@
 const chai = require('chai')
 const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
-const models = require('../../../models')
+const models = require('../../models')
 const {
   after, afterEach, before, beforeEach, describe, it
 } = require('mocha')

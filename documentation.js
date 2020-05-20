@@ -146,7 +146,7 @@ const documentation = {
           method: 'POST',
           route: '/collection/falshrooms',
           headers: 'Content-Type: application/json',
-          body: '{ “name”: “Ilunite Glowcap”, “description”: “A small grey fungus that absorbs what little light it can from its surroundings. It generates its own illumination, like many organisms in the Ilunite Forest\'s unique ecosystem. It does this to broadcast it\'s location to wilderness creatures that will feed on the mushroom cap, releasing contained spores.”, “rarity”: “legendary”, viraburstAbsorption: “72”, "slug": "ilunite-glowcap" }',
+          body: '{ “name”: “Ilunite Glowcap”, “description”: “A small grey fungus that absorbs what little light it can from its surroundings. It generates its own illumination, like many organisms in the Ilunite Forest\'s unique ecosystem. It does this to broadcast it\'s location to wilderness creatures that will feed on the mushroom cap, releasing contained spores.”, “rarity”: “legendary”, viraburstAbsorption: “72” }',
           description: 'Creates a new falshroom from the data provided in the body.'
         },
         {
@@ -154,7 +154,7 @@ const documentation = {
           route: '/collection/falshrooms/{slug}/{property}',
           headers: 'Content-Type: text/plain',
           body: '"val"',
-          description: 'Alters the requested property of the falshroom with the slug provided in the route unless it has a listed rarity of "unique".'
+          description: 'Alters the requested property of the falshroom with the slug provided in the route unless it has a listed rarity of "unique". Name and slug cannot be altered.'
         },
         {
           method: 'DELETE',
@@ -183,7 +183,7 @@ const documentation = {
           method: 'POST',
           route: '/collection/flesherfungi',
           headers: 'Content-Type: application/json',
-          body: '{ “name”: “Acumben\'s Curse”, "description": “Lures victims in with a sweet scent, immobilizing them with a powerful adhesive coating the area where it grows. Prey who have fallen for its snare don\'t even know they\'ve they\'re in danger, distracted by the fruit grown from the corpses of the last victims. The fungus invades the new host through that fruit, weakening them and slowing feeding on them from within until they finally expire and the cycle repeats.”, “rarity”: “legendary”, threat: “12”, "slug": "acumben-curse" }',
+          body: '{ “name”: “Acumben\'s Curse”, "description": “Lures victims in with a sweet scent, immobilizing them with a powerful adhesive coating the area where it grows. Prey who have fallen for its snare don\'t even know they\'ve they\'re in danger, distracted by the fruit grown from the corpses of the last victims. The fungus invades the new host through that fruit, weakening them and slowing feeding on them from within until they finally expire and the cycle repeats.”, “rarity”: “legendary”, threat: “12” }',
           description: 'Creates a new flesherfungus from the data provided in the body.'
         },
         {
@@ -191,7 +191,7 @@ const documentation = {
           route: '/collection/flesherfungi/{slug}/{property}',
           headers: 'Content-Type: text/plain',
           body: '"val"',
-          description: 'Alters the requested property of the flesherfungus with the slug provided in the route unless it has a listed rarity of "unique".'
+          description: 'Alters the requested property of the flesherfungus with the slug provided in the route unless it has a listed rarity of "unique". Name and slug cannot be altered.'
         },
         {
           method: 'DELETE',
@@ -220,7 +220,7 @@ const documentation = {
           method: 'POST',
           route: '/collection/flourishflora',
           headers: 'Content-Type: application/json',
-          body: '{ “name”: “Feverfane”, “description”: “A mildly toxic plant to those that attempt to consume it, but otherwise harmless. The Feverfane flower will arrange its pink petals in one of three configurations. The thriving configuration is often one of two, whichever is more distinguishable from the flowering plants sharing a habitat.”, “rarity”: “common”, producerCoefficient: “1”, "slug": "feverfane" }',
+          body: '{ “name”: “Feverfane”, “description”: “A mildly toxic plant to those that attempt to consume it, but otherwise harmless. The Feverfane flower will arrange its pink petals in one of three configurations. The thriving configuration is often one of two, whichever is more distinguishable from the flowering plants sharing a habitat.”, “rarity”: “common”, producerCoefficient: “1” }',
           description: 'Creates a new flourishflora from the data provided in the body.'
         },
         {
@@ -228,7 +228,7 @@ const documentation = {
           route: '/collection/flourishflora/{slug}/{property}',
           headers: 'Content-Type: text/plain',
           body: '"val"',
-          description: 'Alters the requested property of the flourishflora with the slug provided in the route unless it has a listed rarity of "unique".'
+          description: 'Alters the requested property of the flourishflora with the slug provided in the route unless it has a listed rarity of "unique". Name and slug cannot be altered.'
         },
         {
           method: 'DELETE',
@@ -257,7 +257,7 @@ const documentation = {
           method: 'POST',
           route: '/collection/maremolds',
           headers: 'Content-Type: application/json',
-          body: '{ “name”: “Moreph”, “description”: “Set apart from its genetic relatives by a high rate of mutation, Moreph is more of an overwhelming nuisance than it is a catastrophe in and of itself. However, experts in the field have voiced concerns that this may not always be the case. Left alone, it may be the Moreph that contributes to this century\'s colonization disaster.”, “rarity”: “uncommon”, mutationRate: “330”, "slug": "moreph" }',
+          body: '{ “name”: “Moreph”, “description”: “Set apart from its genetic relatives by a high rate of mutation, Moreph is more of an overwhelming nuisance than it is a catastrophe in and of itself. However, experts in the field have voiced concerns that this may not always be the case. Left alone, it may be the Moreph that contributes to this century\'s colonization disaster.”, “rarity”: “uncommon”, mutationRate: “330” }',
           description: 'Creates a new maremold from the data provided in the body.'
         },
         {
@@ -265,7 +265,7 @@ const documentation = {
           route: '/collection/maremolds/{slug}/{property}',
           headers: 'Content-Type: text/plain',
           body: '"val"',
-          description: 'Alters the requested property of the maremold with the slug provided in the route unless it has a listed rarity of "unique".'
+          description: 'Alters the requested property of the maremold with the slug provided in the route unless it has a listed rarity of "unique". Name and slug cannot be altered.'
         },
         {
           method: 'DELETE',
@@ -294,7 +294,7 @@ const documentation = {
           method: 'POST',
           route: '/collection/trees',
           headers: 'Content-Type: application/json',
-          body: '{ “name”: “Vitanark Rush”, “description”: “Towering trees with thick trunks encased in reddish bark. The oldest discovered trees are members of the Vitanark genus.”, “rarity”: “rare”, height: “126.5”, "slug": "vitanark-rushe" }',
+          body: '{ “name”: “Vitanark Rush”, “description”: “Towering trees with thick trunks encased in reddish bark. The oldest discovered trees are members of the Vitanark genus.”, “rarity”: “rare”, height: “126.5” }',
           description: 'Creates a new tree from the data provided in the body.'
         },
         {
@@ -302,7 +302,7 @@ const documentation = {
           route: '/collection/trees/{slug}/{property}',
           headers: 'Content-Type: text/plain',
           body: '"val"',
-          description: 'Alters the requested property of the tree with the slug provided in the route unless it has a listed rarity of "unique".'
+          description: 'Alters the requested property of the tree with the slug provided in the route unless it has a listed rarity of "unique". Name and slug cannot be altered.'
         },
         {
           method: 'DELETE',
@@ -331,7 +331,7 @@ const documentation = {
           method: 'POST',
           route: '/collection/waveskellen',
           headers: 'Content-Type: application/json',
-          body: '{ “name”: “Gharescole”, “description”: “Travellers who\'ve had the opportunity (or misfortune) to encounter the ocean in the last colonization wave tell tales thick webs green covering large swaths of the ocean surface. These aquatic plants only grow in saltwater environments. They aren\'t poisonous or dangerous themselves, but they conceal organisms and environmental hazards that are.”, “rarity”: “common”, "cascade": "clarion", "slug": "gharescole" }',
+          body: '{ “name”: “Gharescole”, “description”: “Travellers who\'ve had the opportunity (or misfortune) to encounter the ocean in the last colonization wave tell tales thick webs green covering large swaths of the ocean surface. These aquatic plants only grow in saltwater environments. They aren\'t poisonous or dangerous themselves, but they conceal organisms and environmental hazards that are.”, “rarity”: “common”, "cascade": "clarion" }',
           description: 'Creates a new waveskell from the data provided in the body.'
         },
         {
@@ -339,7 +339,7 @@ const documentation = {
           route: '/collection/waveskellen/{slug}/{property}',
           headers: 'Content-Type: text/plain',
           body: '"val"',
-          description: 'Alters the requested property of the waveskell with the slug provided in the route unless it has a listed rarity of "unique".'
+          description: 'Alters the requested property of the waveskell with the slug provided in the route unless it has a listed rarity of "unique". Name and slug cannot be altered.'
         },
         {
           method: 'DELETE',

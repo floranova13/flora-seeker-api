@@ -1,5 +1,5 @@
-const models = require('../../models')
-const { getAllGoals } = require('../../controllers/general/goals')
+const models = require('../models')
+const { getAllGoals } = require('../controllers/goals')
 
 const checkGoalsRoute = (req, res, next) => {
   try {

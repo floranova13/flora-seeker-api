@@ -4,7 +4,7 @@ const titles = (connection, Sequelize) => {
     name: { type: Sequelize.STRING, allowNull: false }
   }, {
     defaultScope: {
-      attributes: ['name']
+      attributes: ['id', 'name']
     }
   }, { paranoid: true })
 }

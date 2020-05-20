@@ -5,7 +5,8 @@
   "main": ".eslintrc.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha tests/**/*.test.js",
-    "dev": "./node_modules/.bin/nodemon --delay 2.5 index.js",
+    "dev": "./node_modules/.bin/env-cmd ./node_modules/.bin/nodemon --delay 5 index.js",
+    "dev:migrate": "./node_modules/.bin/env-cmd ./node_modules/.bin/sequelize db:migrate --env development --config ./config/sequelize.js",
     "eslint": "./node_modules/.bin/eslint --format codeframe .",
     "lint": "npm run puglint && npm run eslint",
     "lint:fix": "./node_modules/.bin/eslint --fix --format codeframe .",
@@ -21,10 +22,12 @@
     "express": "^4.17.1",
     "mysql2": "^2.1.0",
     "pug": "^2.0.4",
-    "sequelize": "^5.21.7"
+    "sequelize": "^5.21.7",
+    "sequelize-cli": "^5.5.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "env-cmd": "^10.1.0",
     "eslint": "^6.8.0",
     "mocha": "^7.1.2",
     "nodemon": "^2.0.3",

@@ -1,5 +1,5 @@
-const models = require('../../models')
-const { getAllLocations } = require('../../controllers/map/locations')
+const models = require('../models')
+const { getAllLocations } = require('../controllers/map/locations')
 
 const checkLocationsRoute = (req, res, next) => {
   try {
