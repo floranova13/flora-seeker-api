@@ -33,14 +33,19 @@ const checkSampleRoute = (req, res, next) => {
   }
 }
 
-const checkNotUnique = async (req, res, next) => {
+const checkSampleStatus = async (req, res, next) => {
   try {
-    const { slug } = req.params
+    const { family, slug } = req.params
     const { familyModel } = req.locals
 
-    const family = await familyModel.findOne({ where: { slug } })
-    const sample = await models.Samples.findOne({ where: { id: family.sampleId } })
+    const sample = await models.Samples.findOne({ where: { slug } })
+    const familyInstance = await familyModel.findOne({
+      where: { sampleId: (sample ? sample.id : -1) }
+    })
 
+    if (!sample || !familyInstance) {
+      return res.status(400).send(`The ${family} collection does not have a sample with a slug of ${slug}`)
+    }
     if (sample.rarity == 'unique') return res.status(400).send('Cannot patch or delete a "unique" sample')
 
     next()
@@ -82,7 +87,7 @@ const validateSaveInput = async (req, res, next) => {
 
     if (sample) return res.status(400).send(`Name "${name}" already exists`)
 
-    req.body.slug = makeSlug(name)
+    req.body.slug = makeSlug(name.split(' '))
 
     next()
   } catch (error) {
@@ -123,4 +128,4 @@ const validatePatchInput = async (req, res, next) => {
   }
 }
 
-module.exports = { checkSampleRoute, checkNotUnique, validateSaveInput, validatePatchInput }
+module.exports = { checkSampleRoute, checkSampleStatus, validateSaveInput, validatePatchInput }

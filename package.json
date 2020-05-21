@@ -26,6 +26,7 @@
     "sequelize-cli": "^5.5.1"
   },
   "devDependencies": {
+    "acorn": "^7.2.0",
     "chai": "^4.2.0",
     "env-cmd": "^10.1.0",
     "eslint": "^6.8.0",

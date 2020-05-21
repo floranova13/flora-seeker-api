@@ -1,27 +1,28 @@
 const express = require('express')
 const Path = require('path')
 const { setLocals, checkRoute } = require('./middlewares/documentation')
+const { checkRequiredGoalFields, checkGoalCodeUnique, parseGoalCode } = require('./middlewares/goals')
+const { checkRequiredSeekerFields, parseSeekerPatchInput } = require('./middlewares/seekers')
+// ADD TITLES??????
+const { checkSampleRoute, checkSampleStatus, validateSaveInput, validatePatchInput } = require('./middlewares/samples')
+const { parseNewLocationThreat } = require('./middlewares/locations')
+const { setTerritoryValues, checkTerritoryUnique } = require('./middlewares/territories')
+const { getAllGuidelines } = require('./controllers/guidelines')
 const {
-  checkGoalsRoute, checkGoalExists, checkRequiredGoalFields, checkGoalCodeUnique, parseGoalCode
-} = require('./middlewares/general/goals')
+  getAllGoals, getGoalByCode, saveNewGoal, replaceGoal, patchGoalCode, deleteGoal
+} = require('./controllers/goals')
 const {
-  checkSeekersRoute, checkSeekerExists, checkRequiredSeekerFields
-} = require('./middlewares/seekers')
-const {
-  checkSampleRoute, checkNotUnique
-} = require('./middlewares/samples')
-const { checkLocationsRoute, checkLocationExists, parseNewLocationThreat } = require('./middlewares/map/locations')
-const { setTerritoryValues, checkTerritoryUnique, checkTerritoryExists } = require('./middlewares/map/territories')
-const { getAllGuidelines } = require('./controllers/general/guidelines')
-const {
-  getGoalByCode, saveNewGoal, replaceGoal, patchGoalCode, deleteGoal
-} = require('./controllers/general/goals')
-const {
-  getSeekerByIdWithTitles, saveNewSeeker, assignSeekerTitle, deleteSeekerTitle, deleteSeeker
+  getAllSeekersWithTitles, getSeekersByTitleId, getSeekerByIdWithTitles,
+  saveNewSeeker, assignSeekerTitle, patchSeeker, deleteSeeker, deleteSeekerTitle
 } = require('./controllers/seekers')
+// ADD TITLES??????
 const {
-  getLocationBySlug, saveNewTerritoryToLocationBySlug, patchLocationThreat, deleteTerritoryByLocationSlug
-} = require('./controllers/map/locations')
+  getAllSamples, getSampleBySlug, saveNewSample, patchSample, deleteSample
+} = require('./controllers/samples')
+const {
+  getAllLocations, getLocationBySlug, saveNewTerritoryToLocation,
+  patchLocationThreat, deleteTerritory
+} = require('./controllers/locations')
 const { getDocView } = require('./controllers/documentation')
 
 const app = express()
@@ -35,58 +36,63 @@ app.get('/documentation/:section/:family?', setLocals, checkRoute, getDocView)
 
 // '/' route needs to go to a main page
 
-app.get('/general') // GO SOMEWHERE!
+app.get('/general') // GO SOMEWHERE! ???
 
-app.get('/general/guidelines', getAllGuidelines)
+app.get('/general/goals', getAllGoals) // Checked
 
-app.get('/general/goals/:code?', checkGoalsRoute, parseGoalCode, checkGoalExists, getGoalByCode)
+app.get('/general/goals/:code', getGoalByCode) // Checked
 
-app.post('/general/goals', express.json(), checkRequiredGoalFields, checkGoalCodeUnique, saveNewGoal)
+app.post('/general/goals', express.json(), checkRequiredGoalFields, checkGoalCodeUnique, saveNewGoal) // Checked
 
-app.put('/general/goals/:code', parseGoalCode, checkGoalExists, replaceGoal)
+app.put('/general/goals/:code', parseGoalCode, checkGoalCodeUnique, replaceGoal) // Checked
 
-app.patch('/general/goals/:code', parseGoalCode, checkGoalExists, patchGoalCode)
+app.patch('/general/goals/:code', parseGoalCode, checkGoalCodeUnique, patchGoalCode) // Checked
 
-app.delete('/general/goals/:code', parseGoalCode, checkGoalExists, deleteGoal)
+app.delete('/general/goals/:code', deleteGoal) // Checked
 
-app.post('/general', express.json())
+app.get('/general/guidelines', getAllGuidelines) // Checked
 
-app.put('/general')
+app.get('/seekers', getAllSeekersWithTitles) // Checked
 
-app.patch('/general')
+app.get('/seekers/title/:id', getSeekersByTitleId)
 
-app.delete('/general')
+app.get('/seekers/:id', getSeekerByIdWithTitles) // Checked
 
-app.get('/seekers/:id?', checkSeekersRoute, checkSeekerExists, getSeekerByIdWithTitles)
+app.post('/seekers', express.json(), checkRequiredSeekerFields, saveNewSeeker) // Checked
 
-app.post('/seekers', express.json(), checkRequiredSeekerFields, saveNewSeeker)
+app.post('/seekers/:id', assignSeekerTitle) // Checked
 
-app.patch('/seekers',)
+app.patch('/seekers', parseSeekerPatchInput, patchSeeker)
 
-app.delete('/seekers',)
+app.delete('/seekers', deleteSeeker) // Checked
 
-app.get('/collection/:family/:slug?', checkSampleRoute) // , getAllSamples)
+app.delete('/seekers/:id', deleteSeekerTitle) // Checked
 
-app.post('/collection', express.json())
+app.get('/collection', checkSampleRoute, getAllSamples) // Checked
 
-app.patch('/collection')
+app.get('/collection/:family/:slug?', checkSampleRoute, getSampleBySlug) // Checked
 
-app.delete('/collection')
+app.post('/collection', express.json(), validateSaveInput, saveNewSample) // !!!!!!!!!!!!!!!!!!!!!!
 
-app.get('/map/locations/:slug?', checkLocationsRoute, checkLocationExists, getLocationBySlug)
+app.patch('/collection', checkSampleStatus, validatePatchInput, patchSample) // Checked
+
+app.delete('/collection', checkSampleStatus, deleteSample) // Checked
+
+app.get('/map/locations', getAllLocations) // Checked
+
+app.get('/map/locations/:slug', getLocationBySlug) // Checked
 
 app.post('/map/location/:slug',
-  express.json(), checkLocationExists, setTerritoryValues, checkTerritoryUnique, saveNewTerritoryToLocationBySlug)
+  express.json(), setTerritoryValues, checkTerritoryUnique, saveNewTerritoryToLocation) // Checked
 
-app.patch('/map/locations/:slug', checkLocationExists, parseNewLocationThreat, patchLocationThreat)
+app.patch('/map/locations/:slug', parseNewLocationThreat, patchLocationThreat) // Checked
 
-app.delete('/map/locations/:slug/:territorySlug',
-  checkLocationExists, checkTerritoryExists, deleteTerritoryByLocationSlug)
+app.delete('/map/locations/:slug/:territorySlug', deleteTerritory) // Checked
 
 app.get(/\/(documentation)?/, (req, res) => { res.redirect('/documentation/root') })
 
 app.all('*', (req, res) => { res.sendStatus('404') })
 
 app.listen(16361, () => {
-  console.log('Listening on port 16361...')
+  console.log('Listening on port 16361...') // eslint-disable-line no-console
 })

@@ -2,7 +2,14 @@ const models = require('../models')
 
 const getAllSamples = async (req, res) => {
   try {
-    const samples = await models.Samples.findAll()
+    const falshrooms = await models.Falshrooms.findAll()
+    const flesherfungi = await models.Falshrooms.findAll()
+    const flourishflora = await models.Falshrooms.findAll()
+    const maremolds = await models.Falshrooms.findAll()
+    const trees = await models.Falshrooms.findAll()
+    const waveskellen = await models.Falshrooms.findAll()
+
+    const samples = [...falshrooms, ...flesherfungi, ...flourishflora, ...maremolds, ...trees, ...waveskellen]
 
     return res.send(samples)
   } catch (error) {
@@ -10,7 +17,7 @@ const getAllSamples = async (req, res) => {
   }
 }
 
-const getAllFamilySamples = async (req, res) => {
+const getAllSamplesByFamily = async (req, res) => {
   try {
     const { familyModel } = req.locals
 
@@ -37,7 +44,7 @@ const getSampleBySlug = async (req, res) => {
   }
 }
 
-// different of each IMPLEMENT!!!!!
+// different of each IMPLEMENT!!!!! vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 const saveNewSample = async (req, res) => {
   try {
     const {
@@ -53,7 +60,7 @@ const saveNewSample = async (req, res) => {
     return res.status(500).send('Unable to save sample, please try again')
   }
 }
-//
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 const patchSample = async (req, res) => {
   try {
@@ -66,7 +73,7 @@ const patchSample = async (req, res) => {
       await sample.update({ [property]: val })
     }
     else {
-      await familyModel.update({ [property]: val }, { where: { id: sample.id } })
+      await familyModel.update({ [property]: val }, { where: { sampleId: sample.id } })
     }
 
     return res.sendStatus(204)
@@ -81,8 +88,9 @@ const deleteSample = async (req, res) => {
     const { slug } = req.params
 
     const sample = await models.Samples({ where: { slug } })
+    const familyInstance = await familyModel.findOne({ where: { sampleId: sample.id } })
 
-    await familyModel.destroy({ where: { sampleId: sample.id } })
+    await familyInstance.destroy()
     await sample.destroy()
 
     return res.sendStatus(204)
@@ -92,5 +100,5 @@ const deleteSample = async (req, res) => {
 }
 
 module.exports = {
-  getAllSamples, getAllFamilySamples, getSampleBySlug, saveNewSample, patchSample, deleteSample
+  getAllSamples, getAllSamplesByFamily, getSampleBySlug, saveNewSample, patchSample, deleteSample
 }

@@ -1,48 +1,21 @@
-const models = require('../models')
-const { getAllSeekersWithTitles } = require('../controllers/seekers')
-// const
-
-const checkSeekersRoute = (req, res, next) => {
-  try {
-    if (!req.params.id) return getAllSeekersWithTitles(req, res)
-    next()
-  } catch (error) {
-    return res.status(500).send('Unable to retrieve param, please try again')
-  }
-}
-
-const checkSeekerExists = async (req, res, next) => {
-  try {
-    const { id } = req.params
-
-    const seeker = await models.Seekers.findOne({ where: { id } })
-
-    if (!seeker) return res.status(404).send(`No seeker with the id of '${id}' found`)
-
-    next()
-  } catch (error) {
-    return res.status(500).send('Unable to retrieve seeker by id, please try again')
-  }
-}
+const { sanitize } = require('./helpers')
 
 const checkRequiredSeekerFields = (req, res, next) => {
   try {
     const { name, age, gender, lodestar } = req.body
 
     if (!name || !age || !gender) {
-      return res.status(400).send('The following fields are required: "name", "age", "gender"')
+      return res.status(400).send('The following fields are required: "name", "age", and "gender"')
     }
 
-    if (!parseInt(age)) res.status(400).send('Seeker age must be a number')
+    if (!parseInt(age)) return res.status(400).send('Seeker age must be an integer')
 
     if (!['female', 'male', 'other'].includes(gender)) {
       return res.status(400).send('Allowed seeker genders are: "female", "male", and "other"')
     }
 
-    req.locals.name = name
-    req.locals.age = parseInt(age)
-    req.locals.gender = gender
-    req.locals.lodestar = lodestar === 'true' ? 1 : 0
+    req.body.age = parseInt(age)
+    req.body.lodestar = lodestar === 'true' ? 1 : 0
 
     next()
   } catch (error) {
@@ -50,42 +23,29 @@ const checkRequiredSeekerFields = (req, res, next) => {
   }
 }
 
-/*
-const isValidInput = async (property, val) {
+const parseSeekerPatchInput = async (req, res, next) => {
   try {
     const property = req.params.property.toLowerCase()
-
-    if (!['name', 'age', 'gender'].includes(req.params.property)) {
-      return res.status(404).send(`No seeker with the id of '${id}' found`)
-    }
-
-    if()
-
-    req.params.property = property
-
-    next()
-  } catch (error) {
-    return res.status(500).send('Unable to check validity of seeker data, please try again')
-  }
-}
-*/
-
-const parsePatchInput = async (req, res, next) => { // NOT DONE!
-  try {
-    const property = req.params.property.toLowerCase()
+    const val = sanitize(req.body)
 
     if (!['name', 'age', 'gender'].includes(property)) {
-      return res.status(404).send(`No seeker property of '${property}' found`)
+      return res.status(404).send(`No seeker property of "${property}" found`)
+    }
+
+    if (property === 'age' && !parseInt(val)) return res.status(400).send('Seeker age must be an integer')
+
+    if (property === 'gender' && !['female', 'male', 'other'].includes(val)) {
+      return res.status(400).send('Allowed seeker genders are: "female", "male", and "other"')
     }
 
     req.params.property = property
 
     next()
   } catch (error) {
-    return res.status(500).send('Unable to retrieve seeker by id, please try again')
+    return res.status(500).send('Unable to parse seeker patch input, please try again')
   }
 }
 
 module.exports = {
-  checkSeekersRoute, checkSeekerExists, checkRequiredSeekerFields, parsePatchInput
+  checkRequiredSeekerFields, parseSeekerPatchInput
 }

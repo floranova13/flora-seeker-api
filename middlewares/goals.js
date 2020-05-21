@@ -1,6 +1,7 @@
 const models = require('../models')
-const { getAllGoals } = require('../controllers/goals')
+// const { getAllGoals } = require('../controllers/goals')
 
+/*
 const checkGoalsRoute = (req, res, next) => {
   try {
     if (!req.params.code) return getAllGoals(req, res)
@@ -9,7 +10,9 @@ const checkGoalsRoute = (req, res, next) => {
     return res.status(500).send('Unable to retrieve param, please try again')
   }
 }
+*/
 
+/*
 const checkGoalExists = async (req, res, next) => {
   try {
     const { code } = req.params
@@ -23,6 +26,7 @@ const checkGoalExists = async (req, res, next) => {
     return res.status(500).send('Unable to retrieve location by slug, please try again')
   }
 }
+*/
 
 const checkRequiredGoalFields = (req, res, next) => {
   try {
@@ -48,13 +52,17 @@ const checkGoalCodeUnique = async (req, res, next) => {
 
     next()
   } catch (error) {
-    return res.status(500).send('Unable to retrieve fields, please try again')
+    return res.status(500).send('Unable to retrieve goal code, please try again')
   }
 }
 
-const parseGoalCode = (req, res, next) => {
+const parseGoalCode = (req, res, next) => { // SANITIZE?
   try {
-    req.params.code = req.params.code.toUpperCase()
+    let code = req.body.code || req.body
+
+    if (!code || code.length !== 4) res.status(400).send('Invalid goal code')
+
+    req.body.code = code.toUpperCase()
 
     next()
   } catch (error) {
@@ -63,5 +71,5 @@ const parseGoalCode = (req, res, next) => {
 }
 
 module.exports = {
-  checkGoalsRoute, checkGoalExists, checkRequiredGoalFields, checkGoalCodeUnique, parseGoalCode
+  checkRequiredGoalFields, checkGoalCodeUnique, parseGoalCode
 }

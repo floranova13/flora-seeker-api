@@ -17,7 +17,7 @@ const getGoalByCode = async (req, res) => {
 
     return goal
       ? res.send(goal)
-      : res.status(404).send(`no goal with the code of '${code}' found`)
+      : res.status(404).send(`No goal found with a code of "${code}"`)
   } catch (error) {
     return res.status(500).send('Unable to retrieve goal, please try again')
   }
@@ -28,11 +28,9 @@ const saveNewGoal = async (req, res) => {
     const {
       name, description
     } = req.body
-    const code = req.body.code.toUpperCase()
+    const code = req.body.code.toUpperCase() // ????
 
-    await models.Goals.create({
-      name, description, code
-    })
+    await models.Goals.create({ name, description, code })
 
     return res.status(201).send({ name, description, code })
   } catch (error) {
@@ -42,18 +40,14 @@ const saveNewGoal = async (req, res) => {
 
 const replaceGoal = async (req, res) => {
   try {
-    const {
-      name, description
-    } = req.body
-    const code = req.body.code.toUpperCase()
-
+    const { name, description, code } = req.body
     const goal = await models.Goals.findOne({ where: { code } })
 
-    const success = await goal.upsert({ name, description, code })
+    if (!goal) return res.status(404).send(`No goal found with a code of "${code}"`)
 
-    return success
-      ? res.send(goal)
-      : res.status(404).send(`no goal with the code of '${code}' found`)
+    await goal.upsert({ name, description, code })
+
+    return res.send(goal)
   } catch (error) {
     return res.status(500).send('Unable to replace goal, please try again')
   }
@@ -61,16 +55,16 @@ const replaceGoal = async (req, res) => {
 
 const patchGoalCode = async (req, res) => {
   try {
-    const existingCode = req.params.code.toUpperCase()
-    const newCode = req.body.code.toUpperCase() // MAKE SURE TO SANITIZE THIS
+    const { code } = req.params
+    const newCode = req.body.code
 
-    const goal = await models.Goals.findOne({ where: { existingCode } })
+    const goal = await models.Goals.findOne({ where: { code } })
 
-    const success = await goal.upsert({ id: goal.id, code: newCode })
+    if (!goal) return res.status(404).send(`No goal found with a code of "${code}"`)
 
-    return success
-      ? res.sendStatus(204)
-      : res.status(404).send(`no goal with the code of '${existingCode}' found`)
+    await goal.upsert({ code: newCode })
+
+    return res.sendStatus(204)
   } catch (error) {
     return res.status(500).send('Unable to patch goal code, please try again')
   }
@@ -78,9 +72,13 @@ const patchGoalCode = async (req, res) => {
 
 const deleteGoal = async (req, res) => {
   try {
-    const code = req.params.code.toUpperCase()
+    const { code } = req.params
 
-    await models.Goals.destroy({ where: { code } })
+    const goal = await models.Goals.findOne({ where: { code } })
+
+    if (!goal) return res.status(404).send(`No goal found with a code of "${code}"`)
+
+    await models.Goals.destroy()
 
     return res.sendStatus(204)
   } catch (error) {
