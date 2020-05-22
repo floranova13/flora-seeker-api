@@ -6,7 +6,7 @@ const territories = (connection, Sequelize, Locations) => {
     locationId: { type: Sequelize.INTEGER, references: { model: Locations, key: 'id' } },
   }, {
     defaultScope: {
-      attributes: ['name']
+      attributes: { exclude: ['deletedAt'] }
     }
   }, { paranoid: true })
 }

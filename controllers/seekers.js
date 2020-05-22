@@ -2,7 +2,7 @@ const models = require('../models')
 
 const getAllSeekersWithTitles = async (req, res) => {
   try {
-    const seekers = await models.Seekers.findAll()
+    const seekers = await models.Seekers.findAll({ include: { model: models.Titles } })
 
     return res.send(seekers)
   } catch (error) {
@@ -33,7 +33,7 @@ const getSeekerByIdWithTitles = async (req, res) => {
   try {
     const { id } = req.params
 
-    const seeker = await models.Seekers.findOne({ where: { id } })
+    const seeker = await models.Seekers.findOne({ include: { model: models.Titles } }, { where: { id } })
 
     return seeker
       ? res.send(seeker)

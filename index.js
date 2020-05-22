@@ -34,8 +34,6 @@ app.set('view engine', 'pug')
 
 app.get('/documentation/:section/:family?', setLocals, checkRoute, getDocView)
 
-// '/' route needs to go to a main page
-
 app.get('/general') // GO SOMEWHERE! ???
 
 app.get('/general/goals', getAllGoals) // Checked
@@ -44,9 +42,9 @@ app.get('/general/goals/:code', getGoalByCode) // Checked
 
 app.post('/general/goals', express.json(), checkRequiredGoalFields, checkGoalCodeUnique, saveNewGoal) // Checked
 
-app.put('/general/goals/:code', parseGoalCode, checkGoalCodeUnique, replaceGoal) // Checked
+app.put('/general/goals/:code', parseGoalCode, checkGoalCodeUnique, replaceGoal) // !!!!!!!!!!!!!!!!!!
 
-app.patch('/general/goals/:code', parseGoalCode, checkGoalCodeUnique, patchGoalCode) // Checked
+app.patch('/general/goals/:code', parseGoalCode, checkGoalCodeUnique, patchGoalCode) // !!!!!!!!!!!!!!!
 
 app.delete('/general/goals/:code', deleteGoal) // Checked
 
@@ -54,40 +52,40 @@ app.get('/general/guidelines', getAllGuidelines) // Checked
 
 app.get('/seekers', getAllSeekersWithTitles) // Checked
 
-app.get('/seekers/title/:id', getSeekersByTitleId)
+app.get('/seekers/title/:id', getSeekersByTitleId) // !!!!!!!!!!!!!!!!!!!!!!!!
 
-app.get('/seekers/:id', getSeekerByIdWithTitles) // Checked
+app.get('/seekers/:id', getSeekerByIdWithTitles) // !!!!!!!!!!!!!!!!!!
 
-app.post('/seekers', express.json(), checkRequiredSeekerFields, saveNewSeeker) // Checked
+app.post('/seekers', express.json(), checkRequiredSeekerFields, saveNewSeeker)
 
-app.post('/seekers/:id', assignSeekerTitle) // Checked
+app.post('/seekers/:id', assignSeekerTitle)
 
 app.patch('/seekers', parseSeekerPatchInput, patchSeeker)
 
-app.delete('/seekers', deleteSeeker) // Checked
+app.delete('/seekers', deleteSeeker)
 
-app.delete('/seekers/:id', deleteSeekerTitle) // Checked
+app.delete('/seekers/:id/:titleId', deleteSeekerTitle)
 
-app.get('/collection', checkSampleRoute, getAllSamples) // Checked
+app.get('/collection', checkSampleRoute, getAllSamples)
 
-app.get('/collection/:family/:slug?', checkSampleRoute, getSampleBySlug) // Checked
+app.get('/collection/:family/:slug?', checkSampleRoute, getSampleBySlug)
 
 app.post('/collection', express.json(), validateSaveInput, saveNewSample) // !!!!!!!!!!!!!!!!!!!!!!
 
-app.patch('/collection', checkSampleStatus, validatePatchInput, patchSample) // Checked
+app.patch('/collection', checkSampleStatus, validatePatchInput, patchSample)
 
-app.delete('/collection', checkSampleStatus, deleteSample) // Checked
+app.delete('/collection', checkSampleStatus, deleteSample)
 
-app.get('/map/locations', getAllLocations) // Checked
+app.get('/map/locations', getAllLocations)
 
-app.get('/map/locations/:slug', getLocationBySlug) // Checked
+app.get('/map/locations/:slug', getLocationBySlug)
 
 app.post('/map/location/:slug',
-  express.json(), setTerritoryValues, checkTerritoryUnique, saveNewTerritoryToLocation) // Checked
+  express.json(), setTerritoryValues, checkTerritoryUnique, saveNewTerritoryToLocation)
 
-app.patch('/map/locations/:slug', parseNewLocationThreat, patchLocationThreat) // Checked
+app.patch('/map/locations/:slug', parseNewLocationThreat, patchLocationThreat)
 
-app.delete('/map/locations/:slug/:territorySlug', deleteTerritory) // Checked
+app.delete('/map/locations/:slug/:territorySlug', deleteTerritory)
 
 app.get(/\/(documentation)?/, (req, res) => { res.redirect('/documentation/root') })
 

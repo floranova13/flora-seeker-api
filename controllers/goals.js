@@ -78,7 +78,7 @@ const deleteGoal = async (req, res) => {
 
     if (!goal) return res.status(404).send(`No goal found with a code of "${code}"`)
 
-    await models.Goals.destroy()
+    await goal.destroy()
 
     return res.sendStatus(204)
   } catch (error) {

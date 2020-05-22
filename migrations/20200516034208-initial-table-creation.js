@@ -3,7 +3,7 @@ module.exports = {
     await queryInterface.createTable('goals', {
       id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
       name: { type: Sequelize.STRING },
-      description: { type: Sequelize.STRING },
+      description: { type: Sequelize.TEXT },
       code: { type: Sequelize.STRING },
       createdAt: { type: Sequelize.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') },
       updatedAt: {
@@ -63,7 +63,7 @@ module.exports = {
     await queryInterface.createTable('samples', {
       id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
       name: { type: Sequelize.STRING },
-      description: { type: Sequelize.STRING },
+      description: { type: Sequelize.TEXT },
       rarity: { type: Sequelize.ENUM('common', 'uncommon', 'rare', 'legendary', 'unique') },
       slug: { type: Sequelize.STRING },
       createdAt: { type: Sequelize.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') },
@@ -149,7 +149,7 @@ module.exports = {
     await queryInterface.createTable('locations', {
       id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
       name: { type: Sequelize.STRING },
-      description: { type: Sequelize.STRING },
+      description: { type: Sequelize.TEXT },
       slug: { type: Sequelize.STRING },
       createdAt: { type: Sequelize.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') },
       updatedAt: {

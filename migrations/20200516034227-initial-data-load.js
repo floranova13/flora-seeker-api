@@ -9,7 +9,7 @@ module.exports = {
       },
       {
         name: 'Submit Earnings Report',
-        description: '',
+        description: '1',
         code: 'A300'
       },
       {
@@ -19,12 +19,12 @@ module.exports = {
       },
       {
         name: 'Reinforce Arboretum',
-        description: '',
+        description: '1',
         code: 'E250'
       },
       {
         name: 'Network With Research Division',
-        description: '',
+        description: '1',
         code: 'R150'
       },
     ])
@@ -32,7 +32,7 @@ module.exports = {
     await queryInterface.bulkInsert('guidelines', [
       { description: 'Follow all settlement laws at all times. Remember: we are a Seeker Branch in service to the Seras dream.' },
       { description: 'Obey Guardian Commander Chell. It doesn\'t matter if she leads a seperate Division. If she gives you an order, it is a matter of safety, not Division pride.' },
-      { description: '' },
+      { description: '1' },
     ])
 
     await queryInterface.bulkInsert('seekers', [
@@ -54,7 +54,7 @@ module.exports = {
         id: 3,
         name: 'Adrian',
         age: 29,
-        gender: '',
+        gender: 'male',
         lodestar: false
       },
     ])
@@ -94,10 +94,10 @@ module.exports = {
         slug: 'reeker-whitecap'
       },
       {
-        name: '',
-        description: '',
-        rarity: '',
-        slug: ''
+        name: 'Breybarb',
+        description: 'Breybarbs are mushrooms with rough, brownish caps. They aren\'t comfortable to sleep on in the wild, but once dried, they develop a springy texture perfect for luxury bedding. Processing Breybarbs in this way is expensive, however.',
+        rarity: 'common',
+        slug: 'breybarb'
       },
       {
         name: 'Glarevia',
@@ -106,10 +106,16 @@ module.exports = {
         slug: 'glarevia'
       },
       {
-        name: '',
-        description: '',
-        rarity: '',
-        slug: ''
+        name: 'Grallvine',
+        description: 'A carnivorous fungus that waits for prey to brush against its vines, which are coated with an adhesive. It digests live prey over the course of about a day, depending on the age and size of the fungus.',
+        rarity: 'uncommon',
+        slug: 'grallvine'
+      },
+      {
+        name: 'Raveweed',
+        description: 'An extremely rare carnivorous fungus, about which little is known.',
+        rarity: 'legendary',
+        slug: 'raveweed'
       },
       {
         name: 'Mellowend',
@@ -118,16 +124,16 @@ module.exports = {
         slug: 'mellowend'
       },
       {
-        name: '',
-        description: '',
-        rarity: '',
-        slug: ''
+        name: 'Echor Blossom',
+        description: 'This flourishflora uses acoustic chambers along uniformly-developed stems to guide growth pattern and scale. This allows the organism to find locations that are less crowded by other plants and animals.',
+        rarity: 'common',
+        slug: 'echor-blossom'
       },
       {
-        name: '',
-        description: '',
-        rarity: '',
-        slug: ''
+        name: 'Bogbind',
+        description: 'Often mislabelled by inexperienced Seekers as a creeping plant or even an aquatic tangle, Bogbind grow in bogs and swamps.',
+        rarity: 'common',
+        slug: 'bogbind'
       },
       {
         name: 'Frutebane',
@@ -166,22 +172,22 @@ module.exports = {
         slug: 'arvorloc-evergreen'
       },
       {
-        name: '',
-        description: '',
-        rarity: '',
-        slug: ''
+        name: 'Beamstrand',
+        description: 'The most common variety of freshwater waveskell in the greater region.',
+        rarity: 'common',
+        slug: 'beamstrand'
       },
       {
-        name: '',
-        description: '',
-        rarity: '',
-        slug: ''
+        name: 'Stinging Gripweed',
+        description: 'This waveskell Ddisguises itself as the harmless beamstrand.',
+        rarity: 'uncommon',
+        slug: 'stinging-gripweed'
       },
       {
-        name: '',
-        description: '',
-        rarity: '',
-        slug: ''
+        name: 'Radiant Murkweed',
+        description: 'A bioluminescent waveskell that pulses to gently illuminate the dark depths where it grows.',
+        rarity: 'rare',
+        slug: 'radiant-murkweed'
       },
     ])
 
@@ -263,15 +269,15 @@ module.exports = {
     await queryInterface.bulkInsert('waveskellen', [
       {
         sampleId: 16,
-        cascade: 'Clarion'
+        cascades: 'clarion'
       },
       {
         sampleId: 17,
-        cascade: 'Clarion'
+        cascades: 'clarion'
       },
       {
         sampleId: 18,
-        cascade: 'Clarion'
+        cascades: 'clarion'
       },
     ])
 

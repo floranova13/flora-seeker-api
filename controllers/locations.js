@@ -13,7 +13,7 @@ const getAllLocations = async (req, res) => {
 const getLocationBySlug = async (req, res) => {
   try {
     const { slug } = req.params
-    const location = await models.Locations.findOne({ where: { slug } }, { include: { model: models.Territories } })
+    const location = await models.Locations.findOne({ include: { model: models.Territories } }, { where: { slug } })
 
     return location
       ? res.send(location)
