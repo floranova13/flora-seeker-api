@@ -26,9 +26,8 @@ const getGoalByCode = async (req, res) => {
 const saveNewGoal = async (req, res) => {
   try {
     const {
-      name, description
+      name, description, code
     } = req.body
-    const code = req.body.code.toUpperCase() // ????
 
     await models.Goals.create({ name, description, code })
 
@@ -45,7 +44,7 @@ const replaceGoal = async (req, res) => {
 
     if (!goal) return res.status(404).send(`No goal found with a code of "${code}"`)
 
-    await goal.upsert({ name, description, code })
+    await goal.update({ name, description, code })
 
     return res.send(goal)
   } catch (error) {
@@ -62,9 +61,9 @@ const patchGoalCode = async (req, res) => {
 
     if (!goal) return res.status(404).send(`No goal found with a code of "${code}"`)
 
-    await goal.upsert({ code: newCode })
+    await goal.update({ code: newCode })
 
-    return res.sendStatus(204)
+    return res.sendStatus(goal)
   } catch (error) {
     return res.status(500).send('Unable to patch goal code, please try again')
   }

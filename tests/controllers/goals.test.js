@@ -6,8 +6,10 @@ const models = require('../../models')
 const {
   after, afterEach, before, beforeEach, describe, it
 } = require('mocha')
-// const { x } = require('../mocks/general/goals')
-// const { x } = require('../../../controllers/general/goals')
+const { goalList, singleGoal, postedGoal, patchedGoal } = require('../mocks/goals')
+const {
+  getAllGoals, getGoalByCode, saveNewGoal, replaceGoal, patchGoalCode, deleteGoal
+} = require('../../controllers/goals')
 
 chai.use(sinonChai)
 
@@ -19,6 +21,8 @@ describe('Controllers - Goals', () => {
   let stubbedCreate
   let stubbedFindOne
   let stubbedFindAll
+  let stubbedUpdate
+  let stubbedDestroy
   let stubbedSend
   let stubbedSendStatus
   let stubbedStatus
@@ -30,6 +34,8 @@ describe('Controllers - Goals', () => {
     stubbedFindAll = sandbox.stub(models.Goals, 'findAll')
     stubbedFindOne = sandbox.stub(models.Goals, 'findOne')
     stubbedCreate = sandbox.stub(models.Goals, 'create')
+    stubbedUpdate = sandbox.stub(models.Goals, 'update')
+    stubbedDestroy = sandbox.stub(models.Goals, 'destroy')
 
     stubbedSend = sandbox.stub()
     stubbedSendStatus = sandbox.stub()
@@ -55,94 +61,213 @@ describe('Controllers - Goals', () => {
     sandbox.restore()
   })
 
-
-  describe('getAllVillains', () => {
+  describe('getAllGoals', () => {
     it('retrieves a list of goals from the database and calls response.send() with the list', async () => {
-      stubbedFindAll.returns(guidelinesList)
+      stubbedFindAll.returns(goalList)
 
-      await getAllGuidelines({}, response)
+      await getAllGoals({}, response)
 
       expect(stubbedFindAll).to.have.callCount(1)
-      expect(stubbedSend).to.have.been.calledWith(guidelinesList)
+      expect(stubbedSend).to.have.been.calledWith(goalList)
     })
 
-    it('returns a 500 status when an error occurs retrieving the villains', async () => {
+    it('returns a 500 status when an error occurs retrieving the goals', async () => {
       stubbedFindAll.throws('ERROR!')
 
-      await getAllGuidelines({}, response)
+      await getAllGoals({}, response)
 
       expect(stubbedFindAll).to.have.callCount(1)
       expect(stubbedStatus).to.have.been.calledWith(500)
-      expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to retrieve villain list, please try again')
+      expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to retrieve goal list, please try again')
     })
   })
 
-  describe('getVillainBySlug', () => {
-    it('retrieves the villain associated with the provided slug from the database and calls response.send() with it', async () => {
-      const request = { params: { slug: 'captain-hook' } }
+  describe('getGoalByCode', () => {
+    it('retrieves the goal associated with the provided code from the database and calls response.send() with it', async () => {
+      const code = 'A100'
+      const request = { params: { code } }
 
-      stubbedFindOne.returns(singleVillain)
+      stubbedFindOne.returns(singleGoal)
 
-      await getVillainBySlug(request, response)
+      await getGoalByCode(request, response)
 
-      expect(stubbedFindOne).to.have.been.calledWith({
-        attributes: ['name', 'movie', 'slug'], where: { slug: 'captain-hook' }
-      })
-      expect(stubbedSend).to.have.been.calledWith(singleVillain)
+      expect(stubbedFindOne).to.have.been.calledWith({ where: { code } })
+      expect(stubbedSend).to.have.been.calledWith(singleGoal)
     })
 
-    it('returns a 404 status when no villain is found', async () => {
-      const request = { params: { slug: 'doctor-horrible' } }
+    it('returns a 404 status when no goal is found', async () => {
+      const code = 'Z999'
+      const request = { params: { code } }
 
       stubbedFindOne.returns(null)
 
-      await getVillainBySlug(request, response)
+      await getGoalByCode(request, response)
 
-      expect(stubbedFindOne).to.have.been.calledWith({
-        attributes: ['name', 'movie', 'slug'], where: { slug: 'doctor-horrible' }
-      })
+      expect(stubbedFindOne).to.have.been.calledWith({ where: { code } })
       expect(stubbedStatus).to.have.been.calledWith(404)
-      expect(stubbedStatusDotSend).to.have.been.calledWith('no villain with the slug of \'doctor-horrible\' found')
+      expect(stubbedStatusDotSend).to.have.been.calledWith(`No goal found with a code of "${code}"`)
     })
 
-    it('returns a 500 status when an error occurs retrieving the villain by id', async () => {
-      const request = { params: { slug: 'doctor-horrible' } }
+    it('returns a 500 status when an error occurs retrieving the goal by code', async () => {
+      const request = { params: { code: 'A100' } }
 
       stubbedFindOne.throws('ERROR!')
 
-      await getVillainBySlug(request, response)
+      await getGoalByCode(request, response)
 
-      expect(stubbedFindOne).to.have.been.calledWith({
-        attributes: ['name', 'movie', 'slug'], where: { slug: 'doctor-horrible' }
-      })
+      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'A100' } })
       expect(stubbedStatus).to.have.been.calledWith(500)
-      expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to retrieve villain, please try again')
+      expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to retrieve goal, please try again')
     })
   })
 
-  describe('saveNewVillain', () => {
-    it('accepts new villain details and saves them as a new villain in the database, returning the saved record with a 201 status', async () => {
-      const request = { body: postedVillain }
+  describe('saveNewGoal', () => {
+    it('accepts new goal details and saves them as a new goal in the database, returning the saved record with a 201 status', async () => {
+      const request = { body: postedGoal }
 
-      stubbedCreate.returns(singleVillain)
+      stubbedCreate.returns(postedGoal)
 
-      await saveNewVillain(request, response)
+      await saveNewGoal(request, response)
 
-      expect(stubbedCreate).to.have.been.calledWith(postedVillain)
+      expect(stubbedCreate).to.have.been.calledWith(postedGoal)
       expect(stubbedStatus).to.have.been.calledWith(201)
-      expect(stubbedStatusDotSend).to.have.been.calledWith(singleVillain)
+      expect(stubbedStatusDotSend).to.have.been.calledWith(postedGoal)
     })
 
-    it('returns a 500 status when an error occurs saving the new villain', async () => {
-      const request = { body: postedVillain }
+    it('returns a 500 status when an error occurs saving the new goal', async () => {
+      const request = { body: postedGoal }
 
       stubbedCreate.throws('ERROR!')
 
-      await saveNewVillain(request, response)
+      await saveNewGoal(request, response)
 
-      expect(stubbedCreate).to.have.been.calledWith(postedVillain)
+      expect(stubbedCreate).to.have.been.calledWith(postedGoal)
       expect(stubbedStatus).to.have.been.calledWith(500)
-      expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to save villain, please try again')
+      expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to save goal, please try again')
+    })
+  })
+
+  describe('replaceGoal', () => {
+    it('accepts new goal details and replaces the goal referenced by code in the route with the new one in the database, returning the new goal', async () => {
+      const request = { params: { code: 'A100' }, body: postedGoal }
+
+      stubbedFindOne.returns(singleGoal)
+      stubbedUpdate.returns(postedGoal)
+
+      await replaceGoal(request, response)
+
+      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'A100' } })
+      expect(stubbedUpdate).to.have.been.calledWith(postedGoal)
+      expect(stubbedSend).to.have.been.calledWith(postedGoal)
+    })
+
+    it('returns a 404 status when no goal is found with the code in the route', async () => {
+      const request = { params: { code: 'Z999' }, body: postedGoal }
+
+      stubbedFindOne.returns(null)
+
+      await replaceGoal(request, response)
+
+      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'Z999' } })
+      expect(stubbedUpdate).to.have.callCount(0)
+      expect(stubbedStatus).to.have.been.calledWith(404)
+      expect(stubbedStatusDotSend).to.have.been.calledWith('No goal found with a code of "Z999"')
+    })
+
+    it('returns a 500 status when an error occurs replacing the referenced goal', async () => {
+      const request = { params: { code: 'Z999' }, body: singleGoal }
+
+      stubbedFindOne.throws('ERROR!')
+
+      await replaceGoal(request, response)
+
+      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'Z999' } })
+      expect(stubbedUpdate).to.have.callCount(0)
+      expect(stubbedStatus).to.have.been.calledWith(500)
+      expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to replace goal, please try again')
+    })
+  })
+
+  describe('patchGoalCode', () => {
+    it('accepts a new goal code and assigns it to the goal referenced by code in the route, returning the patched goal', async () => {
+      const request = { params: { code: 'E999' }, body: { code: 'D999' } }
+
+      stubbedFindOne.returns(singleGoal)
+      stubbedUpdate.returns(patchedGoal)
+
+      await patchGoalCode(request, response)
+
+      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'E999' } })
+      expect(stubbedUpdate).to.have.been.calledWith({ code: 'D999' })
+      expect(stubbedSend).to.have.been.calledWith(patchedGoal)
+    })
+
+    it('returns a 404 status when no goal is found with the code in the route', async () => {
+      const request = { params: { code: 'E999' }, body: { code: 'D999' } }
+
+      stubbedFindOne.returns(null)
+
+      await patchGoalCode(request, response)
+
+      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'E999' } })
+      expect(stubbedUpdate).to.have.callCount(0)
+      expect(stubbedStatus).to.have.been.calledWith(404)
+      expect(stubbedStatusDotSend).to.have.been.calledWith('No goal found with a code of "E999"')
+    })
+
+    it('returns a 500 status when an error occurs patching the goal', async () => {
+      const request = { params: { code: 'E999' }, body: { code: 'D999' } }
+
+      stubbedFindOne.throws('ERROR!')
+
+      await patchGoalCode(request, response)
+
+      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'E999' } })
+      expect(stubbedUpdate).to.have.callCount(0)
+      expect(stubbedStatus).to.have.been.calledWith(500)
+      expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to patch goal code, please try again')
+    })
+  })
+
+  describe('deleteGoal', () => {
+    it('Deletes a goal referenced by code in the route from the database', async () => {
+      const request = { params: { code: 'A100' } }
+
+      stubbedFindOne.returns(singleGoal)
+
+      await deleteGoal(request, response)
+
+      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'A100' } })
+      expect(stubbedDestroy).to.have.callCount(1)
+      expect(stubbedSendStatus).to.have.been.calledWith(204)
+      expect(stubbedStatusDotSend).to.have.been.calledWith(singleGoal)
+    })
+
+
+    it('returns a 404 status when no goal is found with the code in the route', async () => {
+      const request = { params: { code: 'Z999' } }
+
+      stubbedFindOne.returns(null)
+
+      await deleteGoal(request, response)
+
+      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'A100' } })
+      expect(stubbedDestroy).to.have.callCount(0)
+      expect(stubbedStatus).to.have.been.calledWith(404)
+      expect(stubbedStatusDotSend).to.have.been.calledWith('No goal found with a code of "Z999"')
+    })
+
+    it('returns a 500 status when an error occurs deleting the goal', async () => {
+      const request = { params: { code: 'Z999' } }
+
+      stubbedFindOne.throws('ERROR!')
+
+      await deleteGoal(request, response)
+
+      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'Z999' } })
+      expect(stubbedDestroy).to.have.callCount(0)
+      expect(stubbedStatus).to.have.been.calledWith(500)
+      expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to delete goal, please try again')
     })
   })
 })

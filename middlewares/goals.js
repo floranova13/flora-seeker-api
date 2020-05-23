@@ -1,32 +1,4 @@
 const models = require('../models')
-// const { getAllGoals } = require('../controllers/goals')
-
-/*
-const checkGoalsRoute = (req, res, next) => {
-  try {
-    if (!req.params.code) return getAllGoals(req, res)
-    next()
-  } catch (error) {
-    return res.status(500).send('Unable to retrieve param, please try again')
-  }
-}
-*/
-
-/*
-const checkGoalExists = async (req, res, next) => {
-  try {
-    const { code } = req.params
-
-    const goal = await models.Goals.findOne({ where: { code } })
-
-    if (!goal) return res.status(404).send(`no goal with the code of '${code}' found`)
-
-    next()
-  } catch (error) {
-    return res.status(500).send('Unable to retrieve location by slug, please try again')
-  }
-}
-*/
 
 const checkRequiredGoalFields = (req, res, next) => {
   try {
@@ -48,7 +20,7 @@ const checkGoalCodeUnique = async (req, res, next) => {
 
     const goal = await models.Goals.findOne({ where: { code } })
 
-    if (goal) return res.status(400).send(`The goal code '${code}' already exists`)
+    if (goal && code !== goal.code) return res.status(400).send(`The goal code "${code}" already exists`)
 
     next()
   } catch (error) {
