@@ -1,9 +1,8 @@
 const express = require('express')
 const Path = require('path')
-const { setLocals, checkRoute } = require('./middlewares/documentation')
+const { setLocals } = require('./middlewares/documentation')
 const { checkRequiredGoalFields, checkGoalCodeUnique, parseGoalCode } = require('./middlewares/goals')
 const { checkRequiredSeekerFields, parseSeekerPatchInput } = require('./middlewares/seekers')
-// ADD TITLES??????
 const { checkSampleRoute, checkSampleStatus, validateSaveInput, validatePatchInput } = require('./middlewares/samples')
 const { parseNewLocationThreat } = require('./middlewares/locations')
 const { setTerritoryValues, checkTerritoryUnique } = require('./middlewares/territories')
@@ -15,10 +14,7 @@ const {
   getAllSeekersWithTitles, getSeekersByTitleId, getSeekerByIdWithTitles,
   saveNewSeeker, assignSeekerTitle, patchSeeker, deleteSeeker, deleteSeekerTitle
 } = require('./controllers/seekers')
-// ADD TITLES??????
-const {
-  getAllSamples, getSampleBySlug, saveNewSample, patchSample, deleteSample
-} = require('./controllers/samples')
+const { getSampleBySlug, saveNewSample, patchSample, deleteSample } = require('./controllers/samples')
 const {
   getAllLocations, getLocationBySlug, saveNewTerritoryToLocation,
   patchLocationThreat, deleteTerritory
@@ -26,15 +22,14 @@ const {
 const { getDocView } = require('./controllers/documentation')
 
 const app = express()
-// const router = express.Router()
 
 app.use('/public', express.static(Path.join(__dirname, 'public')))
 
 app.set('view engine', 'pug')
 
-app.get('/documentation/:section/:family?', setLocals, checkRoute, getDocView)
+app.get('/documentation/:section/:family?', setLocals, getDocView)
 
-app.get('/general') // GO SOMEWHERE! ???
+// app.get('/general') // GO SOMEWHERE! ???
 
 app.get('/general/goals', getAllGoals) // Checked
 
@@ -66,8 +61,6 @@ app.delete('/seekers', deleteSeeker)
 
 app.delete('/seekers/:id/:titleId', deleteSeekerTitle)
 
-app.get('/collection', checkSampleRoute, getAllSamples)
-
 app.get('/collection/:family/:slug?', checkSampleRoute, getSampleBySlug)
 
 app.post('/collection', express.json(), validateSaveInput, saveNewSample) // !!!!!!!!!!!!!!!!!!!!!!
@@ -89,7 +82,7 @@ app.delete('/map/locations/:slug/:territorySlug', deleteTerritory)
 
 app.get(/\/(documentation)?/, (req, res) => { res.redirect('/documentation/root') })
 
-app.all('*', (req, res) => { res.sendStatus('404') })
+app.all('*', (req, res) => { res.sendStatus(404) })
 
 app.listen(16361, () => {
   console.log('Listening on port 16361...') // eslint-disable-line no-console

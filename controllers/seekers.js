@@ -18,11 +18,10 @@ const getSeekersByTitleId = async (req, res) => {
 
     if (!title) return res.status(404).send(`No title with the id of "${id}" found`)
 
-    const seeker = await models.Seekers.findAll({ include: { model: models.Titles } },
-      { where: { '$titles.id$': id } })
+    const seekers = await models.Seekers.findAll({ include: { model: models.Titles, where: { id } } })
 
-    return seeker
-      ? res.send(seeker)
+    return seekers
+      ? res.send(seekers)
       : res.status(404).send(`No seekers with the title of id "${id}" found`)
   } catch (error) {
     return res.status(500).send('Unable to retrieve seekers by title id, please try again')
@@ -33,7 +32,7 @@ const getSeekerByIdWithTitles = async (req, res) => {
   try {
     const { id } = req.params
 
-    const seeker = await models.Seekers.findOne({ include: { model: models.Titles } }, { where: { id } })
+    const seeker = await models.Seekers.findOne({ include: { model: models.Titles }, where: { id } })
 
     return seeker
       ? res.send(seeker)
@@ -65,7 +64,7 @@ const assignSeekerTitle = async (req, res) => {
 
     const title = await models.Titles.findOrCreate({ where: { name } })
 
-    await models.SeekersTitles.findOrCreate({ where: { id, titleId: title.id } })
+    await models.SeekersTitles.findOrCreate({ where: { seekerId: id, titleId: title.id } })
 
     return res.status(201).send(seeker)
   } catch (error) {
@@ -75,15 +74,18 @@ const assignSeekerTitle = async (req, res) => {
 
 const patchSeeker = async (req, res) => {
   try {
-    const { id, property, val } = req.locals
+    const { id, property } = req.params
+    const val = req.body
 
-    const success = await models.Seekers.update({ id, [property]: val })
+    const seeker = await models.Seekers.findOne({ where: { id } })
 
-    return success
-      ? res.sendStatus(204)
-      : res.status(404).send(`no seeker with the code of '${val}' found`)
+    if (!seeker) return res.status(404).send(`No seeker with the id of "${id}" found`)
+
+    await seeker.update({ [property]: val })
+
+    return res.send(seeker)
   } catch (error) {
-    return res.status(500).send('Unable to patch goal code, please try again')
+    return res.status(500).send('Unable to patch seeker, please try again')
   }
 }
 
@@ -92,6 +94,8 @@ const deleteSeeker = async (req, res) => {
     const id = req.params.id
 
     const seeker = await models.Seekers.findOne({ where: { id } })
+
+    if (!seeker) return res.status(404).send(`No seeker with the id of "${id}" found`)
 
     await seeker.destroy()
 

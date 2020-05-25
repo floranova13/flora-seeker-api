@@ -1,4 +1,4 @@
-const sanitize = str => str.replace(/[^0-9a-z]/gi, '')
+const sanitize = str => str.replace(/[^\w\s]/g, '')
 
 const makeSlug = arr => arr.toLowerCase().join('-')
 

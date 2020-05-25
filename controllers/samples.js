@@ -2,30 +2,14 @@ const models = require('../models')
 
 const getAllSamples = async (req, res) => {
   try {
-    const falshrooms = await models.Falshrooms.findAll()
-    const flesherfungi = await models.Falshrooms.findAll()
-    const flourishflora = await models.Falshrooms.findAll()
-    const maremolds = await models.Falshrooms.findAll()
-    const trees = await models.Falshrooms.findAll()
-    const waveskellen = await models.Falshrooms.findAll()
+    const { family } = req.params
+    const search = family ? { where: { family } } : {}
 
-    const samples = [...falshrooms, ...flesherfungi, ...flourishflora, ...maremolds, ...trees, ...waveskellen]
+    const samples = await models.Samples.findAll(search)
 
     return res.send(samples)
   } catch (error) {
     return res.status(500).send('Unable to retrieve sample list, please try again')
-  }
-}
-
-const getAllSamplesByFamily = async (req, res) => {
-  try {
-    const { familyModel } = req.locals
-
-    const samples = await familyModel.findAll()
-
-    return res.send(samples)
-  } catch (error) {
-    return res.status(500).send(`Unable to retrieve ${req.params.family} list, please try again`)
   }
 }
 
@@ -100,5 +84,5 @@ const deleteSample = async (req, res) => {
 }
 
 module.exports = {
-  getAllSamples, getAllSamplesByFamily, getSampleBySlug, saveNewSample, patchSample, deleteSample
+  getAllSamples, getSampleBySlug, saveNewSample, patchSample, deleteSample
 }

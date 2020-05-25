@@ -44,7 +44,7 @@ const patchLocationThreat = async (req, res) => {
 
     if (!location) return res.status(404).send(`No location with the slug of "${slug}" found`)
 
-    await location.update({ threat }, { where: { slug } })
+    await location.update({ threat })
 
     return res.status.send(location)
   } catch (error) {
@@ -59,9 +59,11 @@ const deleteTerritory = async (req, res) => {
 
     if (!location) return res.status(404).send(`No location with the slug of "${slug}" found`)
 
-    const territory = await models.Territories({ where: { slug: territorySlug, locationId: location.locationId } })
+    const territory = await models.Territories.findOne({
+      where: { slug: territorySlug, locationId: location.locationId }
+    })
 
-    if (!location) {
+    if (!territory) {
       return res.status(404).send(`No territory with the slug of "${territorySlug}" found in ${location.name}`)
     }
 

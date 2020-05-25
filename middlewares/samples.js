@@ -1,31 +1,16 @@
 const models = require('../models')
-const { getAllFalshrooms } = require('../controllers/falshrooms')
-const { getAllFlesherfungi } = require('../controllers/flesherfungi')
-const { getAllFlourishflora } = require('../controllers/flourishflora')
-const { getAllMaremolds } = require('../controllers/maremolds')
-const { getAllTrees } = require('../controllers/trees')
-const { getAllWaveskellen } = require('../controllers/waveskellen')
-const { makeSlug } = require('./helpers')
-
-const familyGetAllControllers = {
-  falshrooms: getAllFalshrooms,
-  flesherfungi: getAllFlesherfungi,
-  flourishflora: getAllFlourishflora,
-  maremolds: getAllMaremolds,
-  trees: getAllTrees,
-  waveskellen: getAllWaveskellen
-}
+const { getAllSamples } = require('../controllers/samples')
+const { sanitize, makeSlug } = require('./helpers')
+const { propertyValid, familyProperty } = require('./helpers/samples')
 
 const checkSampleRoute = (req, res, next) => {
   try {
     const { family, slug } = req.params
 
-    if (!models.families.includes(family)) {
-      return res.status(400).send('invalid family')
+    if (!models.families.includes(family) && slug) {
+      return res.status(400).send('Invalid family')
     }
-    if (!slug) return familyGetAllControllers[family](req, res)
-
-    req.locals.familyModel = models[(family.charAt(0).toUpperCase() + family.slice(1))]
+    if (!slug) return getAllSamples(req, res)
 
     next()
   } catch (error) {
@@ -36,16 +21,9 @@ const checkSampleRoute = (req, res, next) => {
 const checkSampleStatus = async (req, res, next) => {
   try {
     const { family, slug } = req.params
-    const { familyModel } = req.locals
+    const sample = await models.Samples.findOne({ where: { slug, family } })
 
-    const sample = await models.Samples.findOne({ where: { slug } })
-    const familyInstance = await familyModel.findOne({
-      where: { sampleId: (sample ? sample.id : -1) }
-    })
-
-    if (!sample || !familyInstance) {
-      return res.status(400).send(`The ${family} collection does not have a sample with a slug of ${slug}`)
-    }
+    if (!sample) return res.status(400).send(`The ${family} collection does not have a sample with a slug of ${slug}`)
     if (sample.rarity == 'unique') return res.status(400).send('Cannot patch or delete a "unique" sample')
 
     next()
@@ -54,38 +32,18 @@ const checkSampleStatus = async (req, res, next) => {
   }
 }
 
-const propertyValid = {
-  description: () => true,
-  rarity: val => ['common', 'uncommon', 'rare', 'legendary', 'unique'].includes(val),
-  viraburstAbsorption: val => Number.isInteger(val),
-  threat: val => Number.isInteger(val),
-  producerCoefficient: val => !isNaN(val),
-  mutationRate: val => Number.isInteger(val),
-  height: val => !isNaN(val),
-  cascade: val => ['clarion', 'umbra', 'nihil', 'anomalous'].includes(val)
-}
-
-const familyProperty = {
-  falshrooms: 'viraburstAbsorption',
-  flesherfungi: 'threat',
-  flourishflora: 'producerCoefficient',
-  maremolds: 'mutationRate',
-  trees: 'height',
-  waveskellen: 'cascade'
-}
-
 const validateSaveInput = async (req, res, next) => {
   try {
     const { family } = req.params
     const { name, description, rarity } = req.body
 
     if (!propertyValid(description) || !propertyValid(rarity) || !propertyValid(req.body[familyProperty[family]])) {
-      return res.status(400).send('Invalid "description", "rarity", and/or variant-specific property')
+      return res.status(400).send('Invalid "description", "rarity", and/or family-specific property')
     }
 
     const sample = await models.Samples.findOne({ where: { name } })
 
-    if (sample) return res.status(400).send(`Name "${name}" already exists`)
+    if (sample) return res.status(400).send(`Sample name "${name}" already exists`)
 
     req.body.slug = makeSlug(name.split(' '))
 
@@ -97,26 +55,14 @@ const validateSaveInput = async (req, res, next) => {
 
 const validatePatchInput = async (req, res, next) => {
   try {
-    const { property } = req.params
-    let val = req.body
-    const properties = [
-      'name',
-      'description',
-      'rarity',
-      'slug',
-      'viraburstAbsorption',
-      'threat',
-      'producerCoefficient',
-      'mutationRate',
-      'height',
-      'cascade'
-    ] // sanitize val
+    const { family, property } = req.params
+    const val = sanitize(req.body)
 
-    if (!properties.includes(property)) {
-      return res.status(400).send(`No sample with the property "${property}" exists`)
+    if (!['description', 'rarity', familyProperty[family]].includes(property)) {
+      return res.status(400).send('Invalid sample property')
     }
     if (!propertyValid(val)) {
-      return res.status(400).send(`Invalid property value for "${property}"`)
+      return res.status(400).send('Invalid property value')
     }
     if (['viraburstAbsorption', 'threat', 'producerCoefficient', 'mutationRate', 'height'].includes(property)) {
       req.body = Number(val)
@@ -124,7 +70,7 @@ const validatePatchInput = async (req, res, next) => {
 
     next()
   } catch (error) {
-    return res.status(500).send('Unable to retrieve sample by slug, please try again')
+    return res.status(500).send('Unable to validate sample patch property and/or value, please try again')
   }
 }
 

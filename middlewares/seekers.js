@@ -23,7 +23,7 @@ const checkRequiredSeekerFields = (req, res, next) => {
   }
 }
 
-const parseSeekerPatchInput = async (req, res, next) => {
+const parseSeekerPatchInput = (req, res, next) => {
   try {
     const property = req.params.property.toLowerCase()
     const val = sanitize(req.body)

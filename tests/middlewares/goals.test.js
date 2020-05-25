@@ -6,10 +6,8 @@ const models = require('../../models')
 const {
   after, afterEach, before, beforeEach, describe, it
 } = require('mocha')
-const { goalList, singleGoal, postedGoal, patchedGoal } = require('../mocks/goals')
-const {
-  checkRequiredGoalFields, checkGoalCodeUnique, parseGoalCode
-} = require('../../middlewares/goals')
+const { singleGoal } = require('../mocks/goals')
+const { checkRequiredGoalFields, checkGoalCodeUnique, parseGoalCode } = require('../../middlewares/goals')
 
 chai.use(sinonChai)
 

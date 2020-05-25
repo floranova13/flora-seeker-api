@@ -65,79 +65,9 @@ module.exports = {
       name: { type: Sequelize.STRING },
       description: { type: Sequelize.TEXT },
       rarity: { type: Sequelize.ENUM('common', 'uncommon', 'rare', 'legendary', 'unique') },
+      family: { type: Sequelize.STRING },
+      familyValues: { type: Sequelize.JSONTYPE },
       slug: { type: Sequelize.STRING },
-      createdAt: { type: Sequelize.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') },
-      updatedAt: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
-      },
-      deletedAt: { type: Sequelize.DATE },
-    })
-
-    await queryInterface.createTable('falshrooms', {
-      id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-      sampleId: { type: Sequelize.INTEGER, references: { model: 'samples', key: 'id' } },
-      viraburstAbsorption: { type: Sequelize.INTEGER },
-      createdAt: { type: Sequelize.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') },
-      updatedAt: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
-      },
-      deletedAt: { type: Sequelize.DATE },
-    })
-
-    await queryInterface.createTable('flesherfungi', {
-      id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-      sampleId: { type: Sequelize.INTEGER, references: { model: 'samples', key: 'id' } },
-      threat: { type: Sequelize.INTEGER },
-      createdAt: { type: Sequelize.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') },
-      updatedAt: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
-      },
-      deletedAt: { type: Sequelize.DATE },
-    })
-
-    await queryInterface.createTable('flourishflora', {
-      id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-      sampleId: { type: Sequelize.INTEGER, references: { model: 'samples', key: 'id' } },
-      producerCoefficient: { type: Sequelize.DECIMAL },
-      createdAt: { type: Sequelize.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') },
-      updatedAt: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
-      },
-      deletedAt: { type: Sequelize.DATE },
-    })
-
-    await queryInterface.createTable('maremolds', {
-      id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-      sampleId: { type: Sequelize.INTEGER, references: { model: 'samples', key: 'id' } },
-      mutationRate: { type: Sequelize.INTEGER },
-      createdAt: { type: Sequelize.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') },
-      updatedAt: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
-      },
-      deletedAt: { type: Sequelize.DATE },
-    })
-
-    await queryInterface.createTable('trees', {
-      id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-      sampleId: { type: Sequelize.INTEGER, references: { model: 'samples', key: 'id' } },
-      height: { type: Sequelize.INTEGER },
-      createdAt: { type: Sequelize.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') },
-      updatedAt: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
-      },
-      deletedAt: { type: Sequelize.DATE },
-    })
-
-    await queryInterface.createTable('waveskellen', {
-      id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-      sampleId: { type: Sequelize.INTEGER, references: { model: 'samples', key: 'id' } },
-      cascades: { type: Sequelize.ENUM('clarion', 'umbra', 'nihil', 'anomalous') },
       createdAt: { type: Sequelize.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') },
       updatedAt: {
         type: Sequelize.DATE,
@@ -150,6 +80,7 @@ module.exports = {
       id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
       name: { type: Sequelize.STRING },
       description: { type: Sequelize.TEXT },
+      threat: { type: Sequelize.INTEGER },
       slug: { type: Sequelize.STRING },
       createdAt: { type: Sequelize.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') },
       updatedAt: {
