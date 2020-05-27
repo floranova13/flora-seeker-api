@@ -5,7 +5,7 @@ const samples = (connection, Sequelize) => {
     description: { type: Sequelize.TEXT },
     rarity: { type: Sequelize.ENUM('common', 'uncommon', 'rare', 'legendary', 'unique') },
     family: { type: Sequelize.STRING },
-    familyValues: { type: Sequelize.JSONTYPE },
+    familyValues: { type: Sequelize.JSON },
     slug: { type: Sequelize.STRING }
   }, {
     defaultScope: {

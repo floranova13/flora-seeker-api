@@ -66,7 +66,7 @@ module.exports = {
       description: { type: Sequelize.TEXT },
       rarity: { type: Sequelize.ENUM('common', 'uncommon', 'rare', 'legendary', 'unique') },
       family: { type: Sequelize.STRING },
-      familyValues: { type: Sequelize.JSONTYPE },
+      familyValues: { type: Sequelize.JSON },
       slug: { type: Sequelize.STRING },
       createdAt: { type: Sequelize.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') },
       updatedAt: {
@@ -107,18 +107,6 @@ module.exports = {
     await queryInterface.dropTable('territories')
 
     await queryInterface.dropTable('locations')
-
-    await queryInterface.dropTable('waveskellen')
-
-    await queryInterface.dropTable('trees')
-
-    await queryInterface.dropTable('maremolds')
-
-    await queryInterface.dropTable('flourishflora')
-
-    await queryInterface.dropTable('flesherfungi')
-
-    await queryInterface.dropTable('falshrooms')
 
     await queryInterface.dropTable('samples')
 

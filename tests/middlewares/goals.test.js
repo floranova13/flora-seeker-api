@@ -54,7 +54,7 @@ describe('Middlewares - Goals', () => {
     it('Checks the object parsed from the body for the required "name", "description", and "code" fields, making sure they are all there', async () => {
       const request = { body: singleGoal }
 
-      await checkRequiredGoalFields(request, response)
+      await checkRequiredGoalFields(request, response, stubbedNext)
 
       expect(stubbedNext).to.have.callCount(1)
     })
@@ -62,7 +62,7 @@ describe('Middlewares - Goals', () => {
     it('returns a 400 status when at least one field is missing', async () => {
       const request = { body: { code: 'A111' } }
 
-      await checkRequiredGoalFields(request, response)
+      await checkRequiredGoalFields(request, response, stubbedNext)
 
       expect(stubbedStatus).to.have.been.calledWith(400)
       expect(stubbedStatusDotSend).to.have.been.calledWith('The following fields are required: name, description, code')
@@ -70,15 +70,14 @@ describe('Middlewares - Goals', () => {
     })
 
     it('returns a 500 status when an error occurs retrieving the fields', async () => {
-      const request = { body: { singleGoal } }
+      const request = { body: singleGoal }
 
       stubbedNext.throws('ERROR')
 
-      await checkRequiredGoalFields(request, response)
+      await checkRequiredGoalFields(request, response, stubbedNext)
 
       expect(stubbedStatus).to.have.been.calledWith(500)
       expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to retrieve fields, please try again')
-      expect(stubbedNext).to.have.callCount(1)
     })
   })
 
@@ -86,9 +85,9 @@ describe('Middlewares - Goals', () => {
     it('checks a goal code in the body to see if it is unique', async () => {
       const request = { body: { code: 'A100' } }
 
-      stubbedFindOne.returns(singleGoal)
+      stubbedFindOne.returns(null)
 
-      await checkGoalCodeUnique(request, response)
+      await checkGoalCodeUnique(request, response, stubbedNext)
 
       expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'A100' } })
       expect(stubbedNext).to.have.callCount(1)
@@ -97,9 +96,9 @@ describe('Middlewares - Goals', () => {
     it('returns a 400 status when the goal code in the body already exists', async () => {
       const request = { body: { code: 'A100' } }
 
-      stubbedFindOne.returns(null)
+      stubbedFindOne.returns(singleGoal)
 
-      await checkGoalCodeUnique(request, response)
+      await checkGoalCodeUnique(request, response, stubbedNext)
 
       expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'A100' } })
       expect(stubbedStatus).to.have.been.calledWith(400)
@@ -112,7 +111,7 @@ describe('Middlewares - Goals', () => {
 
       stubbedFindOne.throws('ERROR!')
 
-      await checkGoalCodeUnique(request, response)
+      await checkGoalCodeUnique(request, response, stubbedNext)
 
       expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'A100' } })
       expect(stubbedStatus).to.have.been.calledWith(500)
@@ -122,19 +121,26 @@ describe('Middlewares - Goals', () => {
   })
 
   describe('parseGoalCode', () => {
-    it('checks a goal code in the body', async () => {
-      const request = { params: { code: 'Z999' }, body: 'Z999' }
+    it('checks a goal code in a code property of the body to make sure it exists and is of length 4, calling next()', async () => {
+      const request = { body: { code: 'Z999' } }
 
-      // CHECK THAT IT WAS PARSED
-      await parseGoalCode(request, response)
+      await parseGoalCode(request, response, stubbedNext)
 
       expect(stubbedNext).to.have.callCount(1)
     })
 
-    it('returns a 404 status when the body contains an invalid goal code', async () => {
-      const request = { params: { code: 'Z999' }, body: 'Z999' }
+    it('if there is no "code" property in the body, checks that the body is a string of length 4 and calls next()', async () => {
+      const request = { body: 'Z999' }
 
-      await parseGoalCode(request, response)
+      await parseGoalCode(request, response, stubbedNext)
+
+      expect(stubbedNext).to.have.callCount(1)
+    })
+
+    it('returns a 400 status when the body contains an invalid goal code', async () => {
+      const request = { body: { code: 'Z9999' } }
+
+      await parseGoalCode(request, response, stubbedNext)
 
       expect(stubbedStatus).to.have.been.calledWith(400)
       expect(stubbedStatusDotSend).to.have.been.calledWith('Invalid goal code')
@@ -142,11 +148,11 @@ describe('Middlewares - Goals', () => {
     })
 
     it('returns a 500 status when parsing the goal code', async () => {
-      const request = { params: { code: 'Z999' }, body: 'Z999' }
+      const request = { body: 'Z999' }
 
       stubbedNext.throws('ERROR!')
 
-      await parseGoalCode(request, response)
+      await parseGoalCode(request, response, stubbedNext)
 
       expect(stubbedStatus).to.have.been.calledWith(500)
       expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to parse goal code, please try again')

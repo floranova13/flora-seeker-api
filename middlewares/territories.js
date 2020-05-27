@@ -3,16 +3,18 @@ const { sanitize, toTitleCase, makeSlug } = require('./helpers')
 
 const setTerritoryValues = async (req, res, next) => {
   try {
-    let input = req.body.split(' ').map(str => sanitize(str))
+    let input = sanitize(req.body).split(' ')
     const { slug } = req.params
 
     const location = await models.Locations.findOne({ where: { slug } })
 
     if (!location) return res.status(404).send(`No location with the slug of "${slug}" found`)
 
-    req.locals.name = toTitleCase(input).join(' ')
-    req.locals.slug = makeSlug(input)
-    req.locals.locationId = location.id
+    req.locals = {
+      name: toTitleCase(input),
+      slug: makeSlug(input),
+      locationId: location.id
+    }
 
     next()
   } catch (error) {
@@ -26,7 +28,7 @@ const checkTerritoryUnique = async (req, res, next) => {
 
     const territory = await models.Territories.findOne({ where: { slug, locationId } })
 
-    if (territory) res.status(400).send(`Territory "${slug}" already exists`)
+    if (territory) return res.status(400).send(`Territory "${slug}" already exists`)
 
     next()
   } catch (error) {

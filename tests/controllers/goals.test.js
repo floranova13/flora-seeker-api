@@ -156,7 +156,7 @@ describe('Controllers - Goals', () => {
 
       expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'A100' } })
       expect(stubbedUpdate).to.have.been.calledWith(postedGoal)
-      expect(stubbedSend).to.have.been.calledWith(postedGoal)
+      expect(stubbedSend).to.have.been.calledWith(singleGoal)
     })
 
     it('returns a 404 status when no goal is found with the code in the route', async () => {
@@ -196,8 +196,8 @@ describe('Controllers - Goals', () => {
       await patchGoalCode(request, response)
 
       expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'E999' } })
-      expect(stubbedUpdate).to.have.been.calledWith({ code: 'D999' })
-      expect(stubbedSend).to.have.been.calledWith(patchedGoal)
+      expect(stubbedUpdate).to.have.been.calledWith({ code: 'D999' }, { where: { code: 'E999' } })
+      expect(stubbedSend).to.have.been.calledWith(singleGoal)
     })
 
     it('returns a 404 status when no goal is found with the code in the route', async () => {
@@ -236,7 +236,7 @@ describe('Controllers - Goals', () => {
       await deleteGoal(request, response)
 
       expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'A100' } })
-      expect(stubbedDestroy).to.have.callCount(1)
+      expect(stubbedDestroy).to.have.been.calledWith({ where: { code: 'A100' } })
       expect(stubbedSendStatus).to.have.been.calledWith(204)
     })
 
@@ -248,7 +248,7 @@ describe('Controllers - Goals', () => {
 
       await deleteGoal(request, response)
 
-      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'A100' } })
+      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'Z999' } })
       expect(stubbedDestroy).to.have.callCount(0)
       expect(stubbedStatus).to.have.been.calledWith(404)
       expect(stubbedStatusDotSend).to.have.been.calledWith('No goal found with a code of "Z999"')

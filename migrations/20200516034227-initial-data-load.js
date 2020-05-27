@@ -86,7 +86,7 @@ module.exports = {
         description: 'Reeker falshrooms are common to many areas of the wilderness and even human-settled areas. Evolutionary development of the Redcap and Whitecap varieties of Reeker shroom appear to have been linked. Redcaps are harmless.',
         rarity: 'common',
         family: 'falshrooms',
-        familyValues: '{ viraburstAbsorption: 0 }',
+        familyValues: '{ "viraburstAbsorption": "0" }',
         slug: 'reeker-redcap'
       },
       {
@@ -94,7 +94,7 @@ module.exports = {
         description: 'Reeker falshrooms are common to many areas of the wilderness and even human-settled areas. Evolutionary development of the Redcap and Whitecap varieties of Reeker shroom appear to have been linked. Whitecaps are toxic to most mammals, including humans.',
         rarity: 'common',
         family: 'falshrooms',
-        familyValues: '{ viraburstAbsorption: 0 }',
+        familyValues: '{ "viraburstAbsorption": "0" }',
         slug: 'reeker-whitecap'
       },
       {
@@ -102,7 +102,7 @@ module.exports = {
         description: 'Breybarbs are mushrooms with rough, brownish caps. They aren\'t comfortable to sleep on in the wild, but once dried, they develop a springy texture perfect for luxury bedding. Processing Breybarbs in this way is expensive, however.',
         rarity: 'common',
         family: 'falshrooms',
-        familyValues: '{ viraburstAbsorption: 0 }',
+        familyValues: '{ "viraburstAbsorption": "0" }',
         slug: 'breybarb'
       },
       {
@@ -110,7 +110,7 @@ module.exports = {
         description: 'This flesherfungus has a deep purple, appearance, with flesh like knotted wood.',
         rarity: 'uncommon',
         family: 'flesherfungi',
-        familyValues: '{ threat: 0 }',
+        familyValues: '{ "threat": "0" }',
         slug: 'glarevia'
       },
       {
@@ -118,7 +118,7 @@ module.exports = {
         description: 'A carnivorous fungus that waits for prey to brush against its vines, which are coated with an adhesive. It digests live prey over the course of about a day, depending on the age and size of the fungus.',
         rarity: 'uncommon',
         family: 'flesherfungi',
-        familyValues: '{ threat: 0 }',
+        familyValues: '{ "threat": "0" }',
         slug: 'grallvine'
       },
       {
@@ -126,7 +126,7 @@ module.exports = {
         description: 'An extremely rare carnivorous fungus, about which little is known.',
         rarity: 'legendary',
         family: 'flesherfungi',
-        familyValues: '{ threat: 0 }',
+        familyValues: '{ "threat": "0" }',
         slug: 'raveweed'
       },
       {
@@ -134,7 +134,7 @@ module.exports = {
         description: 'Also called the "Sanctuary Flourishflora", they have gained special recognition for being the first Flourishflora ever grown in human-settled, artificial conditions. It is otherwise a humble plant with no special properties, harvested only for its Vira worth.',
         rarity: 'common',
         family: 'flourishflora',
-        familyValues: '{ producerCoefficient: 0 }',
+        familyValues: '{ "producerCoefficient": "0" }',
         slug: 'mellowend'
       },
       {
@@ -142,7 +142,7 @@ module.exports = {
         description: 'This flourishflora uses acoustic chambers along uniformly-developed stems to guide growth pattern and scale. This allows the organism to find locations that are less crowded by other plants and animals.',
         rarity: 'common',
         family: 'flourishflora',
-        familyValues: '{ producerCoefficient: 0 }',
+        familyValues: '{ "producerCoefficient": "0" }',
         slug: 'echor-blossom'
       },
       {
@@ -150,7 +150,7 @@ module.exports = {
         description: 'Often mislabelled by inexperienced Seekers as a creeping plant or even an aquatic tangle, Bogbind grow in bogs and swamps.',
         rarity: 'common',
         family: 'flourishflora',
-        familyValues: '{ producerCoefficient: 0 }',
+        familyValues: '{ "producerCoefficient": "0" }',
         slug: 'bogbind'
       },
       {
@@ -158,7 +158,7 @@ module.exports = {
         description: 'Despite the name, Frutebane favors many varieties of fruits and vegtables, as well as other organic matter.',
         rarity: 'common',
         family: 'maremolds',
-        familyValues: '{ mutationRate: 0 }',
+        familyValues: '{ "mutationRate": "0" }',
         slug: 'frutebane'
       },
       {
@@ -166,7 +166,7 @@ module.exports = {
         description: 'Mux Mold thrives in damp climates, devouring organic and inorganic matter alike.',
         rarity: 'uncommon',
         family: 'maremolds',
-        familyValues: '{ mutationRate: 0 }',
+        familyValues: '{ "mutationRate": "0" }',
         slug: 'mux-mold'
       },
       {
@@ -174,7 +174,7 @@ module.exports = {
         description: 'Set apart from its genetic relatives by a high rate of mutation, Moreph is more of an overwhelming nuisance than it is a catastrophe in and of itself. However, experts in the field have voiced concerns that this may not always be the case. Left alone, it may be the Moreph that contributes to this century\'s colonization disaster.',
         rarity: 'uncommon',
         family: 'maremolds',
-        familyValues: '{ mutationRate: 0 }',
+        familyValues: '{ "mutationRate": "0" }',
         slug: 'moreph'
       },
       {
@@ -182,7 +182,7 @@ module.exports = {
         description: 'Tower trees with thick trunks covered in jagged blue bark. The oldest discovered trees are members of the Vitanark genus.',
         rarity: 'legendary',
         family: 'trees',
-        familyValues: '{ height: 0 }',
+        familyValues: '{ "height": "0" }',
         slug: 'vitanark-veilas'
       },
       {
@@ -190,7 +190,7 @@ module.exports = {
         description: 'Towering trees with thick trunks encased in reddish bark. The oldest discovered trees are members of the Vitanark genus.',
         rarity: 'rare',
         family: 'trees',
-        familyValues: '{ height: 0 }',
+        familyValues: '{ "height": "0" }',
         slug: 'vitanark-rushe'
       },
       {
@@ -198,7 +198,7 @@ module.exports = {
         description: 'A tree with voluminous purple branches and with cascading green stems.',
         rarity: 'uncommon',
         family: 'trees',
-        familyValues: '{ height: 0 }',
+        familyValues: '{ "height": "0" }',
         slug: 'arvorloc-evergreen'
       },
       {
@@ -206,7 +206,7 @@ module.exports = {
         description: 'The most common variety of freshwater waveskell in the greater region.',
         rarity: 'common',
         family: 'waveskellen',
-        familyValues: '{ cascade: clarion }',
+        familyValues: '{ "cascade": "clarion" }',
         slug: 'beamstrand'
       },
       {
@@ -214,7 +214,7 @@ module.exports = {
         description: 'This waveskell Ddisguises itself as the harmless beamstrand.',
         rarity: 'uncommon',
         family: 'waveskellen',
-        familyValues: '{ cascade: clarion }',
+        familyValues: '{ "cascade": "clarion" }',
         slug: 'stinging-gripweed'
       },
       {
@@ -222,7 +222,7 @@ module.exports = {
         description: 'A bioluminescent waveskell that pulses to gently illuminate the dark depths where it grows.',
         rarity: 'rare',
         family: 'waveskellen',
-        familyValues: '{ cascade: clarion }',
+        familyValues: '{ "cascade": "clarion" }',
         slug: 'radiant-murkweed'
       },
     ])
@@ -404,18 +404,6 @@ module.exports = {
     await queryInterface.bulkDelete('territories')
 
     await queryInterface.bulkDelete('locations')
-
-    await queryInterface.bulkDelete('waveskellen')
-
-    await queryInterface.bulkDelete('trees')
-
-    await queryInterface.bulkDelete('maremolds')
-
-    await queryInterface.bulkDelete('flourishflora')
-
-    await queryInterface.bulkDelete('flesherfungi')
-
-    await queryInterface.bulkDelete('falshrooms')
 
     await queryInterface.bulkDelete('samples')
 

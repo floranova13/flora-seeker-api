@@ -81,7 +81,7 @@ const patchSeeker = async (req, res) => {
 
     if (!seeker) return res.status(404).send(`No seeker with the id of "${id}" found`)
 
-    await seeker.update({ [property]: val })
+    await models.Seekers.update({ [property]: val }, { where: { id } })
 
     return res.send(seeker)
   } catch (error) {
@@ -91,13 +91,13 @@ const patchSeeker = async (req, res) => {
 
 const deleteSeeker = async (req, res) => {
   try {
-    const id = req.params.id
+    const { id } = req.params
 
     const seeker = await models.Seekers.findOne({ where: { id } })
 
     if (!seeker) return res.status(404).send(`No seeker with the id of "${id}" found`)
 
-    await seeker.destroy()
+    await models.Seekers.destroy({ where: { id } })
 
     return res.sendStatus(204)
   } catch (error) {
@@ -107,7 +107,7 @@ const deleteSeeker = async (req, res) => {
 
 const deleteSeekerTitle = async (req, res) => {
   try {
-    const { id, titleId } = req.params.id
+    const { id, titleId } = req.params
 
     const seeker = await models.Seekers.findOne({ where: { id } })
 

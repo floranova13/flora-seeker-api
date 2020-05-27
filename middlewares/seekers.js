@@ -29,7 +29,7 @@ const parseSeekerPatchInput = (req, res, next) => {
     const val = sanitize(req.body)
 
     if (!['name', 'age', 'gender'].includes(property)) {
-      return res.status(404).send(`No seeker property of "${property}" found`)
+      return res.status(400).send(`No seeker property of "${property}"`)
     }
 
     if (property === 'age' && !parseInt(val)) return res.status(400).send('Seeker age must be an integer')

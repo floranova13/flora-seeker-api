@@ -39,12 +39,13 @@ const saveNewGoal = async (req, res) => {
 
 const replaceGoal = async (req, res) => {
   try {
+    const existingCode = req.params.code
     const { name, description, code } = req.body
-    const goal = await models.Goals.findOne({ where: { code } })
+    const goal = await models.Goals.findOne({ where: { code: existingCode } })
 
-    if (!goal) return res.status(404).send(`No goal found with a code of "${code}"`)
+    if (!goal) return res.status(404).send(`No goal found with a code of "${existingCode}"`)
 
-    await goal.update({ name, description, code })
+    await models.Goals.update({ name, description, code })
 
     return res.send(goal)
   } catch (error) {
@@ -61,9 +62,9 @@ const patchGoalCode = async (req, res) => {
 
     if (!goal) return res.status(404).send(`No goal found with a code of "${code}"`)
 
-    await goal.update({ code: newCode })
+    await models.Goals.update({ code: newCode }, { where: { code } })
 
-    return res.sendStatus(goal)
+    return res.send(goal)
   } catch (error) {
     return res.status(500).send('Unable to patch goal code, please try again')
   }
@@ -77,7 +78,7 @@ const deleteGoal = async (req, res) => {
 
     if (!goal) return res.status(404).send(`No goal found with a code of "${code}"`)
 
-    await goal.destroy()
+    await models.Goals.destroy({ where: { code } })
 
     return res.sendStatus(204)
   } catch (error) {

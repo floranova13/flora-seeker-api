@@ -37,16 +37,14 @@ const saveNewTerritoryToLocation = async (req, res) => {
 
 const patchLocationThreat = async (req, res) => {
   try {
-    const threat = req.locals
     const { slug } = req.params
-
     const location = await models.Locations.findOne({ where: { slug } })
 
     if (!location) return res.status(404).send(`No location with the slug of "${slug}" found`)
 
-    await location.update({ threat })
+    await models.Locations.update({ threat: req.body }, { where: { slug } })
 
-    return res.status.send(location)
+    return res.send(location)
   } catch (error) {
     return res.status(500).send('Unable to patch location threat, please try again')
   }
@@ -60,16 +58,18 @@ const deleteTerritory = async (req, res) => {
     if (!location) return res.status(404).send(`No location with the slug of "${slug}" found`)
 
     const territory = await models.Territories.findOne({
-      where: { slug: territorySlug, locationId: location.locationId }
+      where: { slug: territorySlug, locationId: location.id }
     })
 
     if (!territory) {
       return res.status(404).send(`No territory with the slug of "${territorySlug}" found in ${location.name}`)
     }
 
-    await territory.destroy()
+    await models.Territories.destroy({
+      where: { slug: territorySlug, locationId: location.id }
+    })
 
-    return res.statusSend(204)
+    return res.sendStatus(204)
   } catch (error) {
     return res.status(500).send('Unable to delete location territory, please try again')
   }

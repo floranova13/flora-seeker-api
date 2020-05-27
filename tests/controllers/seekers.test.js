@@ -78,7 +78,7 @@ describe('Controllers - Seekers', () => {
 
       await getAllSeekersWithTitles({}, response)
 
-      expect(stubbedFindAll).to.have.been.called.with({ include: { model: models.Titles } })
+      expect(stubbedFindAll).to.have.been.calledWith({ include: { model: models.Titles } })
       expect(stubbedSend).to.have.been.calledWith(seekerList)
     })
 
@@ -87,7 +87,7 @@ describe('Controllers - Seekers', () => {
 
       await getAllSeekersWithTitles({}, response)
 
-      expect(stubbedFindAll).to.have.been.called.with({ include: { model: models.Titles } })
+      expect(stubbedFindAll).to.have.been.calledWith({ include: { model: models.Titles } })
       expect(stubbedStatus).to.have.been.calledWith(500)
       expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to retrieve seeker list, please try again')
     })
@@ -114,7 +114,7 @@ describe('Controllers - Seekers', () => {
 
       await getSeekersByTitleId(request, response)
 
-      expect(stubbedFindOneTitle).to.have.been.calledWith({ where: { id: 9 } })
+      expect(stubbedFindOneTitle).to.have.been.calledWith({ where: { id: '9' } })
       expect(stubbedFindAll).to.have.callCount(0)
       expect(stubbedStatus).to.have.been.calledWith(404)
       expect(stubbedStatusDotSend).to.have.been.calledWith('No title with the id of "9" found')
@@ -124,7 +124,7 @@ describe('Controllers - Seekers', () => {
       const request = { params: { id: '1' } }
 
       stubbedFindOneTitle.returns(singleTitle)
-      stubbedFindAll.returns([])
+      stubbedFindAll.returns(null)
 
       await getSeekersByTitleId(request, response)
 
@@ -213,7 +213,7 @@ describe('Controllers - Seekers', () => {
 
   describe('assignSeekerTitle', () => {
     it('accepts a seeker title name and assigns it to the seeker referenced by the id in the route ,returning the seeker', async () => {
-      const request = { params: { id: '1' }, body: { name: 'Flight' } }
+      const request = { params: { id: '1' }, body: 'Flight' }
 
       stubbedFindOneSeeker.returns(singleSeeker)
       stubbedFindOrCreateTitle.returns(assignedTitle)
@@ -223,28 +223,27 @@ describe('Controllers - Seekers', () => {
 
       expect(stubbedFindOneSeeker).to.have.been.calledWith({ where: { id: '1' } })
       expect(stubbedFindOrCreateTitle).to.have.been.calledWith({ where: { name: 'Flight' } })
-      expect(stubbedFindOrCreateSeekerTitle).to.have.been.calledWith({ where: { seekerId: '1', titleId: '6' } })
+      expect(stubbedFindOrCreateSeekerTitle).to.have.been.calledWith({ where: { seekerId: '1', titleId: 6 } })
       expect(stubbedStatus).to.have.been.calledWith(201)
-      expect(stubbedSend).to.have.been.calledWith(singleSeeker)
+      expect(stubbedStatusDotSend).to.have.been.calledWith(singleSeeker)
     })
 
     it('returns a 404 status when no seeker is found with the id in the route', async () => {
-      const request = { params: { id: '1' }, body: { name: 'Flight' } }
+      const request = { params: { id: '1' }, body: 'Flight' }
 
       stubbedFindOneSeeker.returns(null)
 
       await assignSeekerTitle(request, response)
 
       expect(stubbedFindOneSeeker).to.have.been.calledWith({ where: { id: '1' } })
-      expect(stubbedFindOrCreateTitle).to.have.been.calledWith({ where: { name: 'Flight' } })
       expect(stubbedFindOrCreateTitle).to.have.callCount(0)
       expect(stubbedFindOrCreateSeekerTitle).to.have.callCount(0)
       expect(stubbedStatus).to.have.been.calledWith(404)
-      expect(stubbedSend).to.have.been.calledWith('No seeker with the id of "$1" found')
+      expect(stubbedStatusDotSend).to.have.been.calledWith('No seeker with the id of "1" found')
     })
 
     it('returns a 500 status when an error occurs replacing the referenced seeker', async () => {
-      const request = { params: { id: '1' }, body: { name: 'Flight' } }
+      const request = { params: { id: '1' }, body: 'Flight' }
 
       stubbedFindOneSeeker.throws('ERROR')
 
@@ -254,7 +253,7 @@ describe('Controllers - Seekers', () => {
       expect(stubbedFindOrCreateTitle).to.have.callCount(0)
       expect(stubbedFindOrCreateSeekerTitle).to.have.callCount(0)
       expect(stubbedStatus).to.have.been.calledWith(500)
-      expect(stubbedSend).to.have.been.calledWith('Unable to assign seeker title, please try again')
+      expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to assign seeker title, please try again')
     })
   })
 
@@ -262,13 +261,13 @@ describe('Controllers - Seekers', () => {
     it('accepts seeker property and a new value for that property and patches the seeker referenced by id in the route, returning the patched seeker', async () => {
       const request = { params: { id: '2', property: 'age' }, body: '90' }
 
-      stubbedFindOneSeeker.returns(singleSeeker)
+      stubbedFindOneSeeker.returns(patchedSeeker)
       stubbedUpdate.returns(patchedSeeker)
 
       await patchSeeker(request, response)
 
       expect(stubbedFindOneSeeker).to.have.been.calledWith({ where: { id: '2' } })
-      expect(stubbedUpdate).to.have.been.calledWith({ 'age': '90' })
+      expect(stubbedUpdate).to.have.been.calledWith({ 'age': '90' }, { where: { id: '2' } })
       expect(stubbedSend).to.have.been.calledWith(patchedSeeker)
     })
 
@@ -295,7 +294,7 @@ describe('Controllers - Seekers', () => {
       expect(stubbedFindOneSeeker).to.have.been.calledWith({ where: { id: '99' } })
       expect(stubbedUpdate).to.have.callCount(0)
       expect(stubbedStatus).to.have.been.calledWith(500)
-      expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to patch seeker code, please try again')
+      expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to patch seeker, please try again')
     })
   })
 
@@ -308,7 +307,7 @@ describe('Controllers - Seekers', () => {
       await deleteSeeker(request, response)
 
       expect(stubbedFindOneSeeker).to.have.been.calledWith({ where: { id: '2' } })
-      expect(stubbedDestroySeeker).to.have.callCount(1)
+      expect(stubbedDestroySeeker).to.have.been.calledWith({ where: { id: '2' } })
       expect(stubbedSendStatus).to.have.been.calledWith(204)
     })
 
@@ -358,20 +357,20 @@ describe('Controllers - Seekers', () => {
 
 
     it('returns a 404 status when no seeker is found with the id in the route', async () => {
-      const request = { params: { id: '2', titleId: '1' } }
+      const request = { params: { id: '99', titleId: '99' } }
 
       stubbedFindOneSeeker.returns(null)
 
       await deleteSeekerTitle(request, response)
 
-      expect(stubbedFindOneSeeker).to.have.been.calledWith({ where: { id: '2' } })
+      expect(stubbedFindOneSeeker).to.have.been.calledWith({ where: { id: '99' } })
       expect(stubbedDestroySeekerTitle).to.have.callCount(0)
       expect(stubbedStatus).to.have.been.calledWith(404)
       expect(stubbedStatusDotSend).to.have.been.calledWith('No seeker with the id of "99" found')
     })
 
     it('returns a 404 status when no title is found with the title id in the route', async () => {
-      const request = { params: { id: '2', titleId: '1' } }
+      const request = { params: { id: '2', titleId: '99' } }
 
       stubbedFindOneSeeker.returns(singleSeeker)
       stubbedFindOneTitle.returns(null)
@@ -379,13 +378,13 @@ describe('Controllers - Seekers', () => {
       await deleteSeekerTitle(request, response)
 
       expect(stubbedFindOneSeeker).to.have.been.calledWith({ where: { id: '2' } })
-      expect(stubbedFindOneTitle).to.have.been.calledWith({ where: { id: '1' } })
+      expect(stubbedFindOneTitle).to.have.been.calledWith({ where: { id: '99' } })
       expect(stubbedDestroySeekerTitle).to.have.callCount(0)
       expect(stubbedStatus).to.have.been.calledWith(404)
-      expect(stubbedStatusDotSend).to.have.been.calledWith('No seeker with the id of "99" found')
+      expect(stubbedStatusDotSend).to.have.been.calledWith('No title with the id of "99" found')
     })
 
-    it('returns a 500 status when an error occurs deleting the seeker', async () => {
+    it('returns a 500 status when an error occurs deleting the seekerTitle', async () => {
       const request = { params: { id: '2', titleId: '1' } }
 
       stubbedFindOneSeeker.throws('ERROR!')
@@ -393,7 +392,7 @@ describe('Controllers - Seekers', () => {
       await deleteSeekerTitle(request, response)
 
       expect(stubbedFindOneSeeker).to.have.been.calledWith({ where: { id: '2' } })
-      expect(stubbedDestroySeeker).to.have.callCount(0)
+      expect(stubbedDestroySeekerTitle).to.have.callCount(0)
       expect(stubbedStatus).to.have.been.calledWith(500)
       expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to delete seeker title, please try again')
     })

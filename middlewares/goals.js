@@ -16,23 +16,25 @@ const checkRequiredGoalFields = (req, res, next) => {
 
 const checkGoalCodeUnique = async (req, res, next) => {
   try {
-    const code = req.body.code = req.body.code.toUpperCase()
+    const code = req.body.code.toUpperCase()
 
     const goal = await models.Goals.findOne({ where: { code } })
 
-    if (goal && code !== goal.code) return res.status(400).send(`The goal code "${code}" already exists`)
+    if (goal) return res.status(400).send(`The goal code "${code}" already exists`)
+
+    req.body.code = code
 
     next()
   } catch (error) {
-    return res.status(500).send('Unable to retrieve goal code, please try again')
+    return res.status(500).send('Unable to retrieve goal, please try again')
   }
 }
 
 const parseGoalCode = (req, res, next) => { // SANITIZE?
   try {
-    let code = req.body.code || req.body
+    const code = req.body.code || req.body
 
-    if (!code || code.length !== 4) res.status(400).send('Invalid goal code')
+    if (!code || code.length !== 4) return res.status(400).send('Invalid goal code')
 
     req.body.code = code.toUpperCase()
 

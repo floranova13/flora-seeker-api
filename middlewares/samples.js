@@ -1,15 +1,13 @@
 const models = require('../models')
 const { getAllSamples } = require('../controllers/samples')
-const { sanitize, makeSlug } = require('./helpers')
+const { sanitize, toTitleCase, makeSlug } = require('./helpers')
 const { propertyValid, familyProperty } = require('./helpers/samples')
 
 const checkSampleRoute = (req, res, next) => {
   try {
     const { family, slug } = req.params
 
-    if (!models.families.includes(family) && slug) {
-      return res.status(400).send('Invalid family')
-    }
+    if (!models.families.includes(family) && slug) return res.status(400).send('Invalid family')
     if (!slug) return getAllSamples(req, res)
 
     next()
@@ -35,15 +33,16 @@ const checkSampleStatus = async (req, res, next) => {
 const validateSaveInput = async (req, res, next) => {
   try {
     const { family } = req.params
-    const { name, description, rarity } = req.body
+    const { name, description, rarity, familyValues } = req.body
+    const familyProp = JSON.parse(familyValues)
 
-    if (!propertyValid(description) || !propertyValid(rarity) || !propertyValid(req.body[familyProperty[family]])) {
+    if (!propertyValid(description) || !propertyValid(rarity) || !familyProp || !propertyValid(familyProp)) {
       return res.status(400).send('Invalid "description", "rarity", and/or family-specific property')
     }
 
-    const sample = await models.Samples.findOne({ where: { name } })
+    const sample = await models.Samples.findOne({ where: { name, family } })
 
-    if (sample) return res.status(400).send(`Sample name "${name}" already exists`)
+    if (sample) return res.status(400).send(`${toTitleCase(family)} sample "${name}" already exists`)
 
     req.body.slug = makeSlug(name.split(' '))
 

@@ -61,7 +61,7 @@ app.delete('/seekers', deleteSeeker)
 
 app.delete('/seekers/:id/:titleId', deleteSeekerTitle)
 
-app.get('/collection/:family/:slug?', checkSampleRoute, getSampleBySlug)
+app.get('/collection/:family?/:slug?', checkSampleRoute, getSampleBySlug)
 
 app.post('/collection', express.json(), validateSaveInput, saveNewSample) // !!!!!!!!!!!!!!!!!!!!!!
 

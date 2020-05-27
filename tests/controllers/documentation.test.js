@@ -21,7 +21,8 @@ describe('Controllers - Documentation', () => {
     stubbedRender = sandbox.stub()
 
     response = {
-      render: stubbedRender
+      render: stubbedRender,
+      locals: { section: 'seekers' }
     }
   })
 
@@ -37,13 +38,11 @@ describe('Controllers - Documentation', () => {
     sandbox.restore()
   })
 
-  describe('getAllGoals', () => {
+  describe('getDocView', () => {
     it('retrieves the description text for the documentation page referenced by section in the route and stored in locals.section, returning response.render() with the index pug file name and an object with the description in it', async () => {
-      const request = { locals: { section: 'seekers' } }
+      await getDocView({}, response)
 
-      await getDocView(request, response)
-
-      expect(stubbedRender).to.have.been.calledWith('index', { description: seekerData['seekers'].description })
+      expect(stubbedRender).to.have.been.calledWith('index', { description: seekerData.seekers.description })
     })
   })
 })

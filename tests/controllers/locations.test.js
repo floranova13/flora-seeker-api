@@ -70,7 +70,7 @@ describe('Controllers - Locations', () => {
 
       await getAllLocations({}, response)
 
-      expect(stubbedFindAll).to.have.been.called.with({ include: { model: models.Territories } })
+      expect(stubbedFindAll).to.have.been.calledWith({ include: { model: models.Territories } })
       expect(stubbedSend).to.have.been.calledWith(locationList)
     })
 
@@ -79,7 +79,7 @@ describe('Controllers - Locations', () => {
 
       await getAllLocations({}, response)
 
-      expect(stubbedFindAll).to.have.been.called.with({ include: { model: models.Territories } })
+      expect(stubbedFindAll).to.have.been.calledWith({ include: { model: models.Territories } })
       expect(stubbedStatus).to.have.been.calledWith(500)
       expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to retrieve location list, please try again')
     })
@@ -127,7 +127,7 @@ describe('Controllers - Locations', () => {
 
   describe('saveNewTerritoryToLocation', () => {
     it('accepts new location details and saves them as a new location in the database, returning the saved record with a 201 status', async () => {
-      const request = { body: singleTerritory }
+      const request = { locals: singleTerritory }
 
       stubbedCreate.returns(singleTerritory)
 
@@ -138,8 +138,8 @@ describe('Controllers - Locations', () => {
       expect(stubbedStatusDotSend).to.have.been.calledWith(singleTerritory)
     })
 
-    it('returns a 500 status when an error occurs saving the new location', async () => {
-      const request = { body: singleTerritory }
+    it('returns a 500 status when an error occurs saving the new territory', async () => {
+      const request = { locals: singleTerritory }
 
       stubbedCreate.throws('ERROR!')
 
@@ -147,26 +147,25 @@ describe('Controllers - Locations', () => {
 
       expect(stubbedCreate).to.have.been.calledWith(singleTerritory)
       expect(stubbedStatus).to.have.been.calledWith(500)
-      expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to save location, please try again')
+      expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to save territory, please try again')
     })
   })
 
   describe('patchLocationThreat', () => {
     it('Takes the "threat" integer in locals and assigns it to the location referenced by slug in the route, returning the patched location', async () => {
-      const request = { params: { slug: 'seras' }, locals: { threat: 90 } }
+      const request = { params: { slug: 'seras' }, body: 90 }
 
       stubbedFindOne.returns(singleLocation)
-      stubbedUpdate.returns(patchedLocation)
 
       await patchLocationThreat(request, response)
 
       expect(stubbedFindOne).to.have.been.calledWith({ where: { slug: 'seras' } })
-      expect(stubbedUpdate).to.have.been.calledWith({ threat: 90 })
-      expect(stubbedSend).to.have.been.calledWith(patchedLocation)
+      expect(stubbedUpdate).to.have.been.calledWith({ threat: 90 }, { where: { slug: 'seras' } })
+      expect(stubbedSend).to.have.been.calledWith(singleLocation)
     })
 
     it('returns a 404 status when no location is found with the slug in the route', async () => {
-      const request = { params: { slug: 'the-trench' }, locals: { threat: 90 } }
+      const request = { params: { slug: 'the-trench' }, body: 90 }
 
       stubbedFindOne.returns(null)
 
@@ -179,7 +178,7 @@ describe('Controllers - Locations', () => {
     })
 
     it('returns a 500 status when an error occurs patching the location', async () => {
-      const request = { params: { slug: 'ashlocus' }, locals: { threat: 90 } }
+      const request = { params: { slug: 'ashlocus' }, body: 90 }
 
       stubbedFindOne.throws('ERROR!')
 
@@ -205,7 +204,9 @@ describe('Controllers - Locations', () => {
       expect(stubbedFindOneTerritory).to.have.been.calledWith({
         where: { slug: 'eastern-border', locationId: 1 }
       })
-      expect(stubbedDestroy).to.have.callCount(1)
+      expect(stubbedDestroy).to.have.been.calledWith({
+        where: { slug: 'eastern-border', locationId: 1 }
+      })
       expect(stubbedSendStatus).to.have.been.calledWith(204)
     })
 
@@ -237,7 +238,7 @@ describe('Controllers - Locations', () => {
       })
       expect(stubbedDestroy).to.have.callCount(0)
       expect(stubbedStatus).to.have.been.calledWith(404)
-      expect(stubbedStatusDotSend).to.have.been.calledWith('No territory with the slug of "talus" found in seras')
+      expect(stubbedStatusDotSend).to.have.been.calledWith('No territory with the slug of "talus" found in Seras')
     })
 
     it('returns a 500 status when an error occurs deleting the location', async () => {
