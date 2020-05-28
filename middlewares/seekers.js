@@ -25,8 +25,8 @@ const checkRequiredSeekerFields = (req, res, next) => {
 
 const parseSeekerPatchInput = (req, res, next) => {
   try {
-    const property = req.params.property.toLowerCase()
-    const val = sanitize(req.body)
+    const property = req.params.property ? req.params.property.toLowerCase() : undefined
+    const val = req.body.val ? sanitize(req.body.val) : undefined
 
     if (!['name', 'age', 'gender'].includes(property)) {
       return res.status(400).send(`No seeker property of "${property}"`)

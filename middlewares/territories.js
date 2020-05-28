@@ -3,7 +3,7 @@ const { sanitize, toTitleCase, makeSlug } = require('./helpers')
 
 const setTerritoryValues = async (req, res, next) => {
   try {
-    let input = sanitize(req.body).split(' ')
+    let input = sanitize(req.body.name).split(' ')
     const { slug } = req.params
 
     const location = await models.Locations.findOne({ where: { slug } })

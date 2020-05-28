@@ -34,12 +34,10 @@ const validateSaveInput = async (req, res, next) => {
   try {
     const { family } = req.params
     const { name, description, rarity, familyValues } = req.body
-    const familyProp = familyValues && family
-      ? JSON.parse(familyValues) : undefined
     const familyValue = familyProperty[family]
 
     if (!propertyValid['description'](description) || !propertyValid['rarity'](rarity) ||
-    familyProp === undefined || !propertyValid[familyValue](familyProp[familyValue])) {
+    familyValues === undefined || !propertyValid[familyValue](familyValues[familyValue])) {
       return res.status(400).send('Invalid "description", "rarity", and/or family-specific property')
     }
 
@@ -58,7 +56,7 @@ const validateSaveInput = async (req, res, next) => {
 const validatePatchInput = (req, res, next) => {
   try {
     const { family, property } = req.params
-    const val = sanitize(req.body)
+    const val = req.body.val ? sanitize(req.body.val) : undefined
 
     if (!['description', 'rarity', familyProperty[family]].includes(property)) {
       return res.status(400).send('Invalid sample property')

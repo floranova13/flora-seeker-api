@@ -47,7 +47,7 @@ describe('Middlewares - Locations', () => {
 
   describe('parseNewLocationThreat', () => {
     it('Checks the body to make sure it can be parsed into an integer for the new location threat value, converting it to an absolute value', async () => {
-      const request = { body: '11' }
+      const request = { body: { threat: '11' } }
 
       await parseNewLocationThreat(request, response, stubbedNext)
 
@@ -55,7 +55,7 @@ describe('Middlewares - Locations', () => {
     })
 
     it('returns a 400 status when the body cannot be parsed into an integer', async () => {
-      const request = { body: 'A' }
+      const request = { body: { threat: 'A' } }
 
       await parseNewLocationThreat(request, response, stubbedNext)
 
@@ -65,7 +65,7 @@ describe('Middlewares - Locations', () => {
     })
 
     it('returns a 500 status when an error occurs retrieving the threat value from the body', async () => {
-      const request = { body: '11' }
+      const request = { body: { threat: '11' } }
 
       stubbedNext.throws('ERROR')
 

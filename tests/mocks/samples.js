@@ -102,7 +102,7 @@ const postedSample =
   description: 'Reeker falshrooms are common to many areas of the wilderness and even human-settled areas. Evolutionary development of the Redcap and Whitecap varieties of Reeker shroom appear to have been linked. Redcaps are harmless.',
   rarity: 'common',
   family: 'falshrooms',
-  familyValues: '{ "viraburstAbsorption": "0" }',
+  familyValues: { viraburstAbsorption: '0' },
 }
 
 module.exports = {

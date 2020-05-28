@@ -1,5 +1,6 @@
 const express = require('express')
 const Path = require('path')
+const { seekerData } = require('./seekerData')
 const { setLocals } = require('./middlewares/documentation')
 const { checkRequiredGoalFields, checkGoalCodeUnique, parseGoalCode } = require('./middlewares/goals')
 const { checkRequiredSeekerFields, parseSeekerPatchInput } = require('./middlewares/seekers')
@@ -35,9 +36,9 @@ app.get('/general/goals/:code', getGoalByCode)
 
 app.post('/general/goals', express.json(), checkRequiredGoalFields, checkGoalCodeUnique, saveNewGoal)
 
-app.put('/general/goals/:code', parseGoalCode, checkGoalCodeUnique, replaceGoal)
+app.put('/general/goals/:code', express.json(), parseGoalCode, checkGoalCodeUnique, replaceGoal)
 
-app.patch('/general/goals/:code', parseGoalCode, checkGoalCodeUnique, patchGoalCode)
+app.patch('/general/goals/:code', express.json(), parseGoalCode, checkGoalCodeUnique, patchGoalCode)
 
 app.delete('/general/goals/:code', deleteGoal)
 
@@ -53,30 +54,31 @@ app.get('/seekers/:id', getSeekerByIdWithTitles)
 
 app.post('/seekers', express.json(), checkRequiredSeekerFields, saveNewSeeker)
 
-app.post('/seekers/:id', assignSeekerTitle)
+app.post('/seekers/:id', express.json(), assignSeekerTitle)
 
-app.patch('/seekers', parseSeekerPatchInput, patchSeeker)
+app.patch('/seekers/:id/:property', express.json(), parseSeekerPatchInput, patchSeeker)
 
-app.delete('/seekers', deleteSeeker)
+app.delete('/seekers/:id', deleteSeeker)
 
 app.delete('/seekers/:id/:titleId', deleteSeekerTitle)
 
 app.get('/collection/:family?/:slug?', checkSampleRoute, getSampleBySlug)
 
-app.post('/collection', express.json(), validateSaveInput, saveNewSample)
+app.post('/collection/:family', express.json(), validateSaveInput, saveNewSample)
 
-app.patch('/collection', checkSampleStatus, validatePatchInput, patchSample)
+app.patch('/collection/:family/:slug/:property', express.json(), checkSampleStatus, validatePatchInput, patchSample)
 
-app.delete('/collection', checkSampleStatus, deleteSample)
+app.delete('/collection/:family/:slug', checkSampleStatus, deleteSample)
+
+app.get('/map/info', (req, res) => res.send(seekerData.map.description))
 
 app.get('/map/locations', getAllLocations)
 
 app.get('/map/locations/:slug', getLocationBySlug)
 
-app.post('/map/location/:slug',
-  express.json(), setTerritoryValues, checkTerritoryUnique, saveNewTerritoryToLocation)
+app.post('/map/locations/:slug', express.json(), setTerritoryValues, checkTerritoryUnique, saveNewTerritoryToLocation)
 
-app.patch('/map/locations/:slug', parseNewLocationThreat, patchLocationThreat)
+app.patch('/map/locations/:slug', express.json(), parseNewLocationThreat, patchLocationThreat)
 
 app.delete('/map/locations/:slug/:territorySlug', deleteTerritory)
 

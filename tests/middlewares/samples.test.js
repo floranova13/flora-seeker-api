@@ -216,7 +216,7 @@ describe('Middlewares - Samples', () => {
 
   describe('validatePatchInput', () => {
     it('checks family and slug parameters in the route to determine if the family is "falshrooms", "flesherfungi", "flourishflora", "maremolds", "trees", or "waveskellen" and if the property is "description", "rarity", or belongs to the family values category, which is, depending on the family, "viraburstAbsorption", "threat", "producerCoefficient", "mutationRate", "height", or "cascade". Finally, confirms that the, after sanitizing the body, it is a valid value for the property and calls next()', async () => {
-      const request = { params: { family: 'flourishflora', property: 'rarity' }, body: 'common' }
+      const request = { params: { family: 'flourishflora', property: 'rarity' }, body: { val: 'common' } }
 
       await validatePatchInput(request, response, stubbedNext)
 
@@ -229,7 +229,7 @@ describe('Middlewares - Samples', () => {
     })
 
     it('converts a family-specific property to the proper JSON format when storing "property" and "val" in locals', async () => {
-      const request = { params: { family: 'trees', property: 'height' }, body: '1' }
+      const request = { params: { family: 'trees', property: 'height' }, body: { val: '1' } }
 
       await validatePatchInput(request, response, stubbedNext)
 
@@ -241,8 +241,8 @@ describe('Middlewares - Samples', () => {
       expect(stubbedNext).to.have.callCount(1)
     })
 
-    it('returns a 400 status with an error message when there is no property parameter in the route', async () => {
-      const request = { params: { family: 'flourishflora', property: 'INVALID' }, body: '' }
+    it('returns a 400 status with an error message when there is no valid property parameter in the route', async () => {
+      const request = { params: { family: 'flourishflora', property: 'INVALID' }, body: { val: '' } }
 
       await validatePatchInput(request, response, stubbedNext)
 
@@ -252,7 +252,7 @@ describe('Middlewares - Samples', () => {
     })
 
     it('returns a 400 status with an error message when there is no property parameter in the route', async () => {
-      const request = { params: { family: 'flourishflora' }, body: '' }
+      const request = { params: { family: 'flourishflora' }, body: { val: 'common' } }
 
       await validatePatchInput(request, response, stubbedNext)
 
@@ -262,7 +262,7 @@ describe('Middlewares - Samples', () => {
     })
 
     it('returns a 400 status with an error message when the body contains an invalid value', async () => {
-      const request = { params: { family: 'trees', property: 'height' }, body: 'AAA' }
+      const request = { params: { family: 'trees', property: 'height' }, body: { val: 'AAA' } }
 
       await validatePatchInput(request, response, stubbedNext)
 
@@ -282,7 +282,7 @@ describe('Middlewares - Samples', () => {
     })
 
     it('returns a 500 status with an error message when an error occurs validating the sample patch data', async () => {
-      const request = { params: { family: 'flourishflora', property: 'rarity' }, body: 'common' }
+      const request = { params: { family: 'flourishflora', property: 'rarity' }, body: { val: 'common' } }
 
       stubbedNext.throws('ERROR!')
 

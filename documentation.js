@@ -47,8 +47,8 @@ const documentation = {
       {
         method: 'PATCH',
         route: '/general/goals/{code}',
-        headers: 'Content-Type: text/plain',
-        body: '"val"',
+        headers: 'Content-Type: application/json',
+        body: '{ "code": "NEW CODE" }',
         description: 'Updates the description of the goal with the code provided in the route with the new description provided in the body.'
       },
       {
@@ -70,10 +70,10 @@ const documentation = {
       },
       {
         method: 'GET',
-        route: '/seekers/lodestars',
+        route: '/seekers/lodestars/{lodestar}',
         headers: '',
         body: '',
-        description: 'Returns a list of all "lodestar" seekers.'
+        description: 'Returns a list of all "lodestar" seekers if the parameter is true, non-lodestar seekers if it is false.'
       },
       {
         method: 'GET',
@@ -84,7 +84,7 @@ const documentation = {
       },
       {
         method: 'GET',
-        route: '/seekers/title/{titleId}',
+        route: '/seekers/title/{id}',
         headers: '',
         body: '',
         description: 'Returns a list of all seekers with the  numeric title id provided in the route.'
@@ -99,14 +99,14 @@ const documentation = {
       {
         method: 'POST',
         route: '/seekers/{id}',
-        headers: 'Content-Type: text/plain',
+        headers: 'Content-Type: application/json',
         body: 'Explorer',
         description: 'Assigns a new title to the seeker references by id in the route with the data provided in the body.'
       },
       {
         method: 'PATCH',
         route: '/seekers/{id}/{property}',
-        headers: 'Content-Type: text/plain',
+        headers: 'Content-Type: application/json',
         body: '"val"',
         description: 'Alters the requested property of the seeker with the provided numeric id in the route unless it is a "lodestar" seeker. The only properties that can be altered are: "name", "age", and "gender".'
       },
@@ -152,8 +152,8 @@ const documentation = {
         {
           method: 'PATCH',
           route: '/collection/falshrooms/{slug}/{property}',
-          headers: 'Content-Type: text/plain',
-          body: '"val"',
+          headers: 'Content-Type: application/json',
+          body: '{ "val": "SOME VAL" }',
           description: 'Alters the requested property of the falshroom with the slug provided in the route unless it has a listed rarity of "unique". Name and slug cannot be altered.'
         },
         {
@@ -189,8 +189,8 @@ const documentation = {
         {
           method: 'PATCH',
           route: '/collection/flesherfungi/{slug}/{property}',
-          headers: 'Content-Type: text/plain',
-          body: '"val"',
+          headers: 'Content-Type: application/json',
+          body: '{ "val": "SOME VAL" }',
           description: 'Alters the requested property of the flesherfungus with the slug provided in the route unless it has a listed rarity of "unique". Name and slug cannot be altered.'
         },
         {
@@ -226,8 +226,8 @@ const documentation = {
         {
           method: 'PATCH',
           route: '/collection/flourishflora/{slug}/{property}',
-          headers: 'Content-Type: text/plain',
-          body: '"val"',
+          headers: 'Content-Type: application/json',
+          body: '{ "val": "SOME VAL" }',
           description: 'Alters the requested property of the flourishflora with the slug provided in the route unless it has a listed rarity of "unique". Name and slug cannot be altered.'
         },
         {
@@ -263,8 +263,8 @@ const documentation = {
         {
           method: 'PATCH',
           route: '/collection/maremolds/{slug}/{property}',
-          headers: 'Content-Type: text/plain',
-          body: '"val"',
+          headers: 'Content-Type: application/json',
+          body: '{ "val": "SOME VAL" }',
           description: 'Alters the requested property of the maremold with the slug provided in the route unless it has a listed rarity of "unique". Name and slug cannot be altered.'
         },
         {
@@ -300,8 +300,8 @@ const documentation = {
         {
           method: 'PATCH',
           route: '/collection/trees/{slug}/{property}',
-          headers: 'Content-Type: text/plain',
-          body: '"val"',
+          headers: 'Content-Type: application/json',
+          body: '{ "val": "SOME VAL" }',
           description: 'Alters the requested property of the tree with the slug provided in the route unless it has a listed rarity of "unique". Name and slug cannot be altered.'
         },
         {
@@ -337,8 +337,8 @@ const documentation = {
         {
           method: 'PATCH',
           route: '/collection/waveskellen/{slug}/{property}',
-          headers: 'Content-Type: text/plain',
-          body: '"val"',
+          headers: 'Content-Type: application/json',
+          body: '{ "val": "SOME VAL" }',
           description: 'Alters the requested property of the waveskell with the slug provided in the route unless it has a listed rarity of "unique". Name and slug cannot be altered.'
         },
         {
@@ -376,15 +376,15 @@ const documentation = {
       {
         method: 'POST',
         route: '/map/locations/{slug}',
-        headers: 'Content-Type: text/plain',
-        body: '"val"',
+        headers: 'Content-Type: application/json',
+        body: '{ "name": "SOME NAME" }',
         description: 'Adds a territory provided in the body to the location referenced by slug in the route unless it already exists.'
       },
       {
         method: 'PATCH',
         route: '/map/locations/{slug}',
-        headers: 'Content-Type: text/plain',
-        body: '"val"',
+        headers: 'Content-Type: application/json',
+        body: '{ "threat": "SOME VAL" }',
         description: 'Alters the threat property of the requested location referenced by slug in the route. This must be done periodically according to the master schedule. It is for the safety of all seekers that the threat property reflect accurate field analysis.'
       },
       {

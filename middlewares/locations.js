@@ -1,6 +1,6 @@
 const parseNewLocationThreat = (req, res, next) => {
   try {
-    const threat = parseInt(req.body)
+    const threat = req.body.threat ? parseInt(req.body.threat) : undefined
 
     if (!threat) return res.status(400).send('A location\'s new threat value must be an integer')
 

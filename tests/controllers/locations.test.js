@@ -70,7 +70,7 @@ describe('Controllers - Locations', () => {
 
       await getAllLocations({}, response)
 
-      expect(stubbedFindAll).to.have.been.calledWith({ include: { model: models.Territories } })
+      expect(stubbedFindAll).to.have.been.calledWith({ include: [{ model: models.Territories }] })
       expect(stubbedSend).to.have.been.calledWith(locationList)
     })
 
@@ -79,7 +79,7 @@ describe('Controllers - Locations', () => {
 
       await getAllLocations({}, response)
 
-      expect(stubbedFindAll).to.have.been.calledWith({ include: { model: models.Territories } })
+      expect(stubbedFindAll).to.have.been.calledWith({ include: [{ model: models.Territories }] })
       expect(stubbedStatus).to.have.been.calledWith(500)
       expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to retrieve location list, please try again')
     })

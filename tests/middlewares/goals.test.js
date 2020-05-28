@@ -130,7 +130,7 @@ describe('Middlewares - Goals', () => {
     })
 
     it('if there is no "code" property in the body, checks that the body is a string of length 4 and calls next()', async () => {
-      const request = { body: 'Z999' }
+      const request = { body: { code: 'Z999' } }
 
       await parseGoalCode(request, response, stubbedNext)
 
@@ -148,7 +148,7 @@ describe('Middlewares - Goals', () => {
     })
 
     it('returns a 500 status when parsing the goal code', async () => {
-      const request = { body: 'Z999' }
+      const request = { body: { code: 'Z999' } }
 
       stubbedNext.throws('ERROR!')
 

@@ -2,7 +2,7 @@ const models = require('../models')
 
 const getAllLocations = async (req, res) => {
   try {
-    const locations = await models.Locations.findAll({ include: { model: models.Territories } })
+    const locations = await models.Locations.findAll({ include: [{ model: models.Territories }] })
 
     return res.send(locations)
   } catch (error) {

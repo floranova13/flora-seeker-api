@@ -55,7 +55,7 @@ describe('Middlewares - Territories', () => {
 
   describe('setTerritoryValues', () => {
     it('Prepares the values to be used to save a territory to a location. Sanitizes the body and creates a slug and name from it. Uses the location id from the route as the locationId. Saves all of these variables to locals.', async () => {
-      const request = { params: { slug: 'seras' }, body: 'The Trench', locals: {} }
+      const request = { params: { slug: 'seras' }, body: { name: 'The Trench' }, locals: {} }
 
       stubbedFindOneLocation.returns(singleLocation)
 
@@ -69,7 +69,7 @@ describe('Middlewares - Territories', () => {
     })
 
     it('returns a 404 status when no location is found from the slug provided in the route', async () => {
-      const request = { params: { slug: 'the-trench' }, body: 'something', locals: {} }
+      const request = { params: { slug: 'the-trench' }, body: { name: 'something' }, locals: {} }
 
       stubbedFindOneLocation.returns(null)
 
@@ -82,7 +82,7 @@ describe('Middlewares - Territories', () => {
     })
 
     it('returns a 500 status when an error occurs retrieving the fields', async () => {
-      const request = { params: { slug: 'the-trench' }, body: 'something' }
+      const request = { params: { slug: 'the-trench' }, body: { name: 'something' } }
 
       stubbedFindOneLocation.throws('ERROR')
 

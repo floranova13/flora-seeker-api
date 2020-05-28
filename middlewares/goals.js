@@ -32,7 +32,7 @@ const checkGoalCodeUnique = async (req, res, next) => {
 
 const parseGoalCode = (req, res, next) => { // SANITIZE?
   try {
-    const code = req.body.code || req.body
+    const { code } = req.body
 
     if (!code || code.length !== 4) return res.status(400).send('Invalid goal code')
 

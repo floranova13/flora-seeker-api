@@ -30,7 +30,7 @@ const postedGoal =
    code: 'A100'
  }
 
- const patchedGoal =
+const patchedGoal =
  {
    name: 'Do Something',
    description: 'The Seeker Division has been established, but many citizens working here have yet to recieve their official duties. We can\'t keep operating in such a disorganized manner.',
