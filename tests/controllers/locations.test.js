@@ -6,7 +6,7 @@ const models = require('../../models')
 const {
   after, afterEach, before, beforeEach, describe, it
 } = require('mocha')
-const { locationList, singleLocation, patchedLocation } = require('../mocks/locations')
+const { locationList, singleLocation } = require('../mocks/locations')
 const { singleTerritory } = require('../mocks/territories')
 const {
   getAllLocations, getLocationBySlug, saveNewTerritoryToLocation, patchLocationThreat, deleteTerritory

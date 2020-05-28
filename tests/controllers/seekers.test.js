@@ -82,6 +82,28 @@ describe('Controllers - Seekers', () => {
       expect(stubbedSend).to.have.been.calledWith(seekerList)
     })
 
+    it('returns a list of lodestar seekers when the lodestars parameter is passed in and it is true', async () => {
+      const request = { params: { lodestar: 'true' } }
+
+      stubbedFindAll.returns(seekerList)
+
+      await getAllSeekersWithTitles(request, response)
+
+      expect(stubbedFindAll).to.have.been.calledWith({ include: { model: models.Titles }, where: { lodestar: 1 } })
+      expect(stubbedSend).to.have.been.calledWith(seekerList)
+    })
+
+    it('returns a list of non-lodestar seekers when the lodestars parameter is passed in and it is false', async () => {
+      const request = { params: { lodestar: 'false' } }
+
+      stubbedFindAll.returns(seekerList)
+
+      await getAllSeekersWithTitles(request, response)
+
+      expect(stubbedFindAll).to.have.been.calledWith({ include: { model: models.Titles }, where: { lodestar: 0 } })
+      expect(stubbedSend).to.have.been.calledWith(seekerList)
+    })
+
     it('returns a 500 status when an error occurs retrieving the seekers', async () => {
       stubbedFindAll.throws('ERROR!')
 

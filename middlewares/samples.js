@@ -34,15 +34,18 @@ const validateSaveInput = async (req, res, next) => {
   try {
     const { family } = req.params
     const { name, description, rarity, familyValues } = req.body
-    const familyProp = JSON.parse(familyValues)
+    const familyProp = familyValues && family
+      ? JSON.parse(familyValues) : undefined
+    const familyValue = familyProperty[family]
 
-    if (!propertyValid(description) || !propertyValid(rarity) || !familyProp || !propertyValid(familyProp)) {
+    if (!propertyValid['description'](description) || !propertyValid['rarity'](rarity) ||
+    familyProp === undefined || !propertyValid[familyValue](familyProp[familyValue])) {
       return res.status(400).send('Invalid "description", "rarity", and/or family-specific property')
     }
 
     const sample = await models.Samples.findOne({ where: { name, family } })
 
-    if (sample) return res.status(400).send(`${toTitleCase(family)} sample "${name}" already exists`)
+    if (sample) return res.status(400).send(`${toTitleCase([family])} sample "${name}" already exists`)
 
     req.body.slug = makeSlug(name.split(' '))
 
@@ -52,7 +55,7 @@ const validateSaveInput = async (req, res, next) => {
   }
 }
 
-const validatePatchInput = async (req, res, next) => {
+const validatePatchInput = (req, res, next) => {
   try {
     const { family, property } = req.params
     const val = sanitize(req.body)
@@ -60,11 +63,18 @@ const validatePatchInput = async (req, res, next) => {
     if (!['description', 'rarity', familyProperty[family]].includes(property)) {
       return res.status(400).send('Invalid sample property')
     }
-    if (!propertyValid(val)) {
-      return res.status(400).send('Invalid property value')
+    if (val === '' || !propertyValid[property](val)) {
+      return res.status(400).send('Invalid sample value')
     }
     if (['viraburstAbsorption', 'threat', 'producerCoefficient', 'mutationRate', 'height'].includes(property)) {
       req.body = Number(val)
+    }
+
+    req.locals = { property, val }
+
+    if (property === familyProperty[family]) {
+      req.locals.property = 'familyValues'
+      req.locals.val = `{ "${familyProperty[family]}": "${val}" }`
     }
 
     next()

@@ -2,7 +2,18 @@ const models = require('../models')
 
 const getAllSeekersWithTitles = async (req, res) => {
   try {
-    const seekers = await models.Seekers.findAll({ include: { model: models.Titles } })
+    let seekers
+    let lodestar = req.params ? req.params.lodestar : undefined
+
+    if (lodestar !== undefined) {
+      lodestar = lodestar === 'true' ? 1 : 0
+      seekers = await models.Seekers.findAll({
+        include: { model: models.Titles },
+        where: { lodestar }
+      })
+    } else {
+      seekers = await models.Seekers.findAll({ include: { model: models.Titles } })
+    }
 
     return res.send(seekers)
   } catch (error) {

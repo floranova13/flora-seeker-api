@@ -15,50 +15,41 @@ const getAllSamples = async (req, res) => {
 
 const getSampleBySlug = async (req, res) => {
   try {
-    const { familyModel } = req.locals
-    const { slug } = req.params
+    const { slug, family } = req.params
 
-    const sample = await familyModel.findOne({ where: { '$sample.slug$': slug } })
+    const sample = await models.Samples.findOne({ where: { slug, family } })
 
     return sample
       ? res.send(sample)
-      : res.status(404).send(`no sample with the slug of '${slug}' found`)
+      : res.status(404).send(`No sample with the slug of "${slug}" found`)
   } catch (error) {
     return res.status(500).send('Unable to retrieve sample, please try again')
   }
 }
 
-// different of each IMPLEMENT!!!!! vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 const saveNewSample = async (req, res) => {
   try {
+    const { family } = req.params
     const {
-      name, description, rarity, slug, viraburstAbsorption
+      name, description, rarity, familyValues, slug
     } = req.body
 
-    const sample = await models.Samples.create({ name, description, rarity, slug })
+    const sample = await models.Samples.create({
+      name, description, rarity, family, familyValues, slug
+    })
 
-    await models.Samples.create({ sampleId: sample.id, viraburstAbsorption })
-
-    return res.status(201).send({ sample: { name, description, rarity, slug }, viraburstAbsorption })
+    return res.status(201).send(sample)
   } catch (error) {
     return res.status(500).send('Unable to save sample, please try again')
   }
 }
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 const patchSample = async (req, res) => {
   try {
-    const { property, val, familyModel } = req.locals
-    const { slug } = req.params
+    const { property, val } = req.locals
+    const { slug, family } = req.params
 
-    const sample = await models.Samples.findOne({ where: { slug } })
-
-    if (property === 'description' || property === 'rarity') {
-      await sample.update({ [property]: val })
-    }
-    else {
-      await familyModel.update({ [property]: val }, { where: { sampleId: sample.id } })
-    }
+    await models.Samples.update({ [property]: val }, { where: { slug, family } })
 
     return res.sendStatus(204)
   } catch (error) {
@@ -68,14 +59,9 @@ const patchSample = async (req, res) => {
 
 const deleteSample = async (req, res) => {
   try {
-    const { familyModel } = req.locals
-    const { slug } = req.params
+    const { slug, family } = req.params
 
-    const sample = await models.Samples({ where: { slug } })
-    const familyInstance = await familyModel.findOne({ where: { sampleId: sample.id } })
-
-    await familyInstance.destroy()
-    await sample.destroy()
+    await models.Samples.destroy({ where: { slug, family } })
 
     return res.sendStatus(204)
   } catch (error) {

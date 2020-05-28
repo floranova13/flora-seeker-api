@@ -1,4 +1,14 @@
 /* eslint-disable max-len */
+const uniqueSample =
+{
+  name: 'Legendari',
+  description: '.',
+  rarity: 'unique',
+  family: 'falshrooms',
+  familyValues: '{ "viraburstAbsorption": "0" }',
+  slug: 'reeker-redcap'
+}
+
 const singleFalshroom =
 {
   name: 'Reeker Redcap',
@@ -86,12 +96,23 @@ const sampleList = [
   }
 ]
 
+const postedSample =
+{
+  name: 'Reeker Redcap',
+  description: 'Reeker falshrooms are common to many areas of the wilderness and even human-settled areas. Evolutionary development of the Redcap and Whitecap varieties of Reeker shroom appear to have been linked. Redcaps are harmless.',
+  rarity: 'common',
+  family: 'falshrooms',
+  familyValues: '{ "viraburstAbsorption": "0" }',
+}
+
 module.exports = {
+  uniqueSample,
   singleFalshroom,
   singleFlesherfungus,
   singleFlourishflora,
   singleMaremold,
   singleTree,
   singleWaveskell,
-  sampleList
+  sampleList,
+  postedSample
 }

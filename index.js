@@ -29,27 +29,27 @@ app.set('view engine', 'pug')
 
 app.get('/documentation/:section/:family?', setLocals, getDocView)
 
-// app.get('/general') // GO SOMEWHERE! ???
+app.get('/general/goals', getAllGoals)
 
-app.get('/general/goals', getAllGoals) // Checked
+app.get('/general/goals/:code', getGoalByCode)
 
-app.get('/general/goals/:code', getGoalByCode) // Checked
+app.post('/general/goals', express.json(), checkRequiredGoalFields, checkGoalCodeUnique, saveNewGoal)
 
-app.post('/general/goals', express.json(), checkRequiredGoalFields, checkGoalCodeUnique, saveNewGoal) // Checked
+app.put('/general/goals/:code', parseGoalCode, checkGoalCodeUnique, replaceGoal)
 
-app.put('/general/goals/:code', parseGoalCode, checkGoalCodeUnique, replaceGoal) // !!!!!!!!!!!!!!!!!!
+app.patch('/general/goals/:code', parseGoalCode, checkGoalCodeUnique, patchGoalCode)
 
-app.patch('/general/goals/:code', parseGoalCode, checkGoalCodeUnique, patchGoalCode) // !!!!!!!!!!!!!!!
+app.delete('/general/goals/:code', deleteGoal)
 
-app.delete('/general/goals/:code', deleteGoal) // Checked
+app.get('/general/guidelines', getAllGuidelines)
 
-app.get('/general/guidelines', getAllGuidelines) // Checked
+app.get('/seekers', getAllSeekersWithTitles)
 
-app.get('/seekers', getAllSeekersWithTitles) // Checked
+app.get('/seekers/lodestars/:lodestar', getAllSeekersWithTitles)
 
-app.get('/seekers/title/:id', getSeekersByTitleId) // !!!!!!!!!!!!!!!!!!!!!!!!
+app.get('/seekers/title/:id', getSeekersByTitleId)
 
-app.get('/seekers/:id', getSeekerByIdWithTitles) // !!!!!!!!!!!!!!!!!!
+app.get('/seekers/:id', getSeekerByIdWithTitles)
 
 app.post('/seekers', express.json(), checkRequiredSeekerFields, saveNewSeeker)
 
@@ -63,7 +63,7 @@ app.delete('/seekers/:id/:titleId', deleteSeekerTitle)
 
 app.get('/collection/:family?/:slug?', checkSampleRoute, getSampleBySlug)
 
-app.post('/collection', express.json(), validateSaveInput, saveNewSample) // !!!!!!!!!!!!!!!!!!!!!!
+app.post('/collection', express.json(), validateSaveInput, saveNewSample)
 
 app.patch('/collection', checkSampleStatus, validatePatchInput, patchSample)
 
@@ -85,5 +85,5 @@ app.get(/\/(documentation)?/, (req, res) => { res.redirect('/documentation/root'
 app.all('*', (req, res) => { res.sendStatus(404) })
 
 app.listen(16361, () => {
-  console.log('Listening on port 16361...') // eslint-disable-line no-console
+  console.log('Listening on port 16361...')
 })

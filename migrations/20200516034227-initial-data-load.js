@@ -41,21 +41,21 @@ module.exports = {
         name: 'Lillium',
         age: 19,
         gender: 'other',
-        lodestar: true
+        lodestar: 1
       },
       {
         id: 2,
         name: 'Nina',
         age: 32,
         gender: 'female',
-        lodestar: false
+        lodestar: 0
       },
       {
         id: 3,
         name: 'Adrian',
         age: 29,
         gender: 'male',
-        lodestar: false
+        lodestar: 0
       },
     ])
 

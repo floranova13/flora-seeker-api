@@ -146,7 +146,7 @@ const documentation = {
           method: 'POST',
           route: '/collection/falshrooms',
           headers: 'Content-Type: application/json',
-          body: '{ “name”: “Ilunite Glowcap”, “description”: “A small grey fungus that absorbs what little light it can from its surroundings. It generates its own illumination, like many organisms in the Ilunite Forest\'s unique ecosystem. It does this to broadcast it\'s location to wilderness creatures that will feed on the mushroom cap, releasing contained spores.”, “rarity”: “legendary”, viraburstAbsorption: “72” }',
+          body: '{ "name": "Ilunite Glowcap", "description": “A small grey fungus that absorbs what little light it can from its surroundings. It generates its own illumination, like many organisms in the Ilunite Forest\'s unique ecosystem. It does this to broadcast it\'s location to wilderness creatures that will feed on the mushroom cap, releasing contained spores.”, "rarity": “legendary”, "family": "falshrooms", "familyValues": "{ "viraburstAbsorption": “72” }" }',
           description: 'Creates a new falshroom from the data provided in the body.'
         },
         {
@@ -183,7 +183,7 @@ const documentation = {
           method: 'POST',
           route: '/collection/flesherfungi',
           headers: 'Content-Type: application/json',
-          body: '{ “name”: “Acumben\'s Curse”, "description": “Lures victims in with a sweet scent, immobilizing them with a powerful adhesive coating the area where it grows. Prey who have fallen for its snare don\'t even know they\'ve they\'re in danger, distracted by the fruit grown from the corpses of the last victims. The fungus invades the new host through that fruit, weakening them and slowing feeding on them from within until they finally expire and the cycle repeats.”, “rarity”: “legendary”, threat: “12” }',
+          body: '{ "name": "Acumben\'s Curse", "description": "Lures victims in with a sweet scent, immobilizing them with a powerful adhesive coating the area where it grows. Prey who have fallen for its snare don\'t even know they\'ve they\'re in danger, distracted by the fruit grown from the corpses of the last victims. The fungus invades the new host through that fruit, weakening them and slowing feeding on them from within until they finally expire and the cycle repeats.", "rarity": "legendary", "family": "flesherfungi", "familyValues": "{ "threat": “12” }" }',
           description: 'Creates a new flesherfungus from the data provided in the body.'
         },
         {
@@ -220,7 +220,7 @@ const documentation = {
           method: 'POST',
           route: '/collection/flourishflora',
           headers: 'Content-Type: application/json',
-          body: '{ “name”: “Feverfane”, “description”: “A mildly toxic plant to those that attempt to consume it, but otherwise harmless. The Feverfane flower will arrange its pink petals in one of three configurations. The thriving configuration is often one of two, whichever is more distinguishable from the flowering plants sharing a habitat.”, “rarity”: “common”, producerCoefficient: “1” }',
+          body: '{ "name": "Feverfane", "description": "A mildly toxic plant to those that attempt to consume it, but otherwise harmless. The Feverfane flower will arrange its pink petals in one of three configurations. The thriving configuration is often one of two, whichever is more distinguishable from the flowering plants sharing a habitat.", "rarity": "common", "family": "flourishflora", "familyValues": "{ "producerCoefficient": "1" }" }',
           description: 'Creates a new flourishflora from the data provided in the body.'
         },
         {
@@ -257,7 +257,7 @@ const documentation = {
           method: 'POST',
           route: '/collection/maremolds',
           headers: 'Content-Type: application/json',
-          body: '{ “name”: “Moreph”, “description”: “Set apart from its genetic relatives by a high rate of mutation, Moreph is more of an overwhelming nuisance than it is a catastrophe in and of itself. However, experts in the field have voiced concerns that this may not always be the case. Left alone, it may be the Moreph that contributes to this century\'s colonization disaster.”, “rarity”: “uncommon”, mutationRate: “330” }',
+          body: '{ "name": "Moreph", "description": "Set apart from its relatives by an unusually-high rate of mutation, Moreph is more of an overwhelming nuisance than it is a catastrophe in and of itself. However, experts in the field have voiced concerns that this may not always be the case. Left alone, it may be the Moreph that contributes to this century\'s colonization disaster.", "rarity": "uncommon", "family": "maremolds", "familyValues": "{ "mutationRate": "330" }" }',
           description: 'Creates a new maremold from the data provided in the body.'
         },
         {
@@ -294,7 +294,7 @@ const documentation = {
           method: 'POST',
           route: '/collection/trees',
           headers: 'Content-Type: application/json',
-          body: '{ “name”: “Vitanark Rush”, “description”: “Towering trees with thick trunks encased in reddish bark. The oldest discovered trees are members of the Vitanark genus.”, “rarity”: “rare”, height: “126.5” }',
+          body: '{ "name": "Vitanark Rush", "description": "Towering trees with thick trunks encased in reddish bark. The oldest discovered trees are members of the Vitanark genus.", "rarity": "rare", "family": "trees", "familyValues": "{ "height": "126.5" }" }',
           description: 'Creates a new tree from the data provided in the body.'
         },
         {
@@ -331,7 +331,7 @@ const documentation = {
           method: 'POST',
           route: '/collection/waveskellen',
           headers: 'Content-Type: application/json',
-          body: '{ “name”: “Gharescole”, “description”: “Travellers who\'ve had the opportunity (or misfortune) to encounter the ocean in the last colonization wave tell tales thick webs green covering large swaths of the ocean surface. These aquatic plants only grow in saltwater environments. They aren\'t poisonous or dangerous themselves, but they conceal organisms and environmental hazards that are.”, “rarity”: “common”, "cascade": "clarion" }',
+          body: '{ "name": "Gharescole", "description": "Travellers who\'ve had the opportunity (or misfortune) to encounter the ocean in the last colonization wave tell tales thick webs green covering large swaths of the ocean surface. These aquatic plants only grow in saltwater environments. They aren\'t poisonous or dangerous themselves, but they conceal organisms and environmental hazards that are.", "rarity": "common", "family": "waveskellen", "familyValues": "{ "cascade": "clarion" }" }',
           description: 'Creates a new waveskell from the data provided in the body.'
         },
         {

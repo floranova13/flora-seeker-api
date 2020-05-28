@@ -6,9 +6,9 @@ const models = require('../../models')
 const {
   after, afterEach, before, beforeEach, describe, it
 } = require('mocha')
-const { sampleList, singleSample, postedSample, patchedSample } = require('../mocks/samples')
+const { singleFalshroom, sampleList, postedSample } = require('../mocks/samples')
 const {
-  getAllSamples, getSampleByCode, saveNewSample, replaceSample, patchSampleCode, deleteSample
+  getAllSamples, getSampleBySlug, saveNewSample, patchSample, deleteSample
 } = require('../../controllers/samples')
 
 chai.use(sinonChai)
@@ -63,18 +63,33 @@ describe('Controllers - Samples', () => {
 
   describe('getAllSamples', () => {
     it('retrieves a list of samples from the database and calls response.send() with the list', async () => {
+      const request = { params: { } }
+
       stubbedFindAll.returns(sampleList)
 
-      await getAllSamples({}, response)
+      await getAllSamples(request, response)
 
-      expect(stubbedFindAll).to.have.callCount(1)
+      expect(stubbedFindAll).to.have.been.calledWith({})
+      expect(stubbedSend).to.have.been.calledWith(sampleList)
+    })
+
+    it('retrieves a list of samples from a designated family if the family parameter in the route is assigned and calls response.send() with the list', async () => {
+      const request = { params: { family: 'flourishflora' } }
+
+      stubbedFindAll.returns(sampleList)
+
+      await getAllSamples(request, response)
+
+      expect(stubbedFindAll).to.have.been.calledWith({ where: { family: 'flourishflora' } })
       expect(stubbedSend).to.have.been.calledWith(sampleList)
     })
 
     it('returns a 500 status when an error occurs retrieving the samples', async () => {
+      const request = { params: { family: 'flourishflora' } }
+
       stubbedFindAll.throws('ERROR!')
 
-      await getAllSamples({}, response)
+      await getAllSamples(request, response)
 
       expect(stubbedFindAll).to.have.callCount(1)
       expect(stubbedStatus).to.have.been.calledWith(500)
@@ -82,38 +97,38 @@ describe('Controllers - Samples', () => {
     })
   })
 
-  describe('getSampleByCode', () => {
-    it('retrieves the sample associated with the provided code from the database and calls response.send() with it', async () => {
-      const request = { params: { code: 'A100' } }
+  describe('getSampleBySlug', () => {
+    it('retrieves the sample associated with the provided slug and family from the database and calls response.send() with it', async () => {
+      const request = { params: { slug: 'reeker-redcap', family: 'falshrooms' } }
 
-      stubbedFindOne.returns(singleSample)
+      stubbedFindOne.returns(singleFalshroom)
 
-      await getSampleByCode(request, response)
+      await getSampleBySlug(request, response)
 
-      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'A100' } })
-      expect(stubbedSend).to.have.been.calledWith(singleSample)
+      expect(stubbedFindOne).to.have.been.calledWith({ where: { slug: 'reeker-redcap', family: 'falshrooms' } })
+      expect(stubbedSend).to.have.been.calledWith(singleFalshroom)
     })
 
     it('returns a 404 status when no sample is found', async () => {
-      const request = { params: { code: 'Z999' } }
+      const request = { params: { slug: 'nothing', family: 'falshrooms' } }
 
       stubbedFindOne.returns(null)
 
-      await getSampleByCode(request, response)
+      await getSampleBySlug(request, response)
 
-      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'Z999' } })
+      expect(stubbedFindOne).to.have.been.calledWith({ where: { slug: 'nothing', family: 'falshrooms' } })
       expect(stubbedStatus).to.have.been.calledWith(404)
-      expect(stubbedStatusDotSend).to.have.been.calledWith('No sample found with a code of "Z999"')
+      expect(stubbedStatusDotSend).to.have.been.calledWith('No sample with the slug of "nothing" found')
     })
 
-    it('returns a 500 status when an error occurs retrieving the sample by code', async () => {
-      const request = { params: { code: 'A100' } }
+    it('returns a 500 status when an error occurs retrieving the sample by slug and family', async () => {
+      const request = { params: { slug: 'reeker-redcap', family: 'falshrooms' } }
 
       stubbedFindOne.throws('ERROR!')
 
-      await getSampleByCode(request, response)
+      await getSampleBySlug(request, response)
 
-      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'A100' } })
+      expect(stubbedFindOne).to.have.been.calledWith({ where: { slug: 'reeker-redcap', family: 'falshrooms' } })
       expect(stubbedStatus).to.have.been.calledWith(500)
       expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to retrieve sample, please try again')
     })
@@ -121,148 +136,73 @@ describe('Controllers - Samples', () => {
 
   describe('saveNewSample', () => {
     it('accepts new sample details and saves them as a new sample in the database, returning the saved record with a 201 status', async () => {
-      const request = { body: postedSample }
+      const request = { params: { family: 'falshrooms' }, body: { ...postedSample, slug: 'reeker-redcap' } }
 
       stubbedCreate.returns(postedSample)
 
       await saveNewSample(request, response)
 
-      expect(stubbedCreate).to.have.been.calledWith(postedSample)
+      expect(stubbedCreate).to.have.been.calledWith({ ...postedSample, slug: 'reeker-redcap' })
       expect(stubbedStatus).to.have.been.calledWith(201)
       expect(stubbedStatusDotSend).to.have.been.calledWith(postedSample)
     })
 
     it('returns a 500 status when an error occurs saving the new sample', async () => {
-      const request = { body: postedSample }
+      const request = { params: { family: 'falshrooms' }, body: { ...postedSample, slug: 'reeker-redcap' } }
 
       stubbedCreate.throws('ERROR!')
 
       await saveNewSample(request, response)
 
-      expect(stubbedCreate).to.have.been.calledWith(postedSample)
+      expect(stubbedCreate).to.have.been.calledWith({ ...postedSample, slug: 'reeker-redcap' })
       expect(stubbedStatus).to.have.been.calledWith(500)
       expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to save sample, please try again')
     })
   })
 
-  describe('replaceSample', () => {
-    it('accepts new sample details and replaces the sample referenced by code in the route with the new one in the database, returning the new sample', async () => {
-      const request = { params: { code: 'A100' }, body: postedSample }
+  describe('patchSample', () => {
+    it('accepts a sample property name and a new value, assigning that value to the sample referenced by slug in the route, returning a 204 status', async () => {
+      const request = { params: { slug: 'mellowend', family: 'flourishflora' }, locals: { property: 'rarity', val: 'common' } }
 
-      stubbedFindOne.returns(singleSample)
-      stubbedUpdate.returns(postedSample)
+      await patchSample(request, response)
 
-      await replaceSample(request, response)
-
-      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'A100' } })
-      expect(stubbedUpdate).to.have.been.calledWith(postedSample)
-      expect(stubbedSend).to.have.been.calledWith(singleSample)
-    })
-
-    it('returns a 404 status when no sample is found with the code in the route', async () => {
-      const request = { params: { code: 'Z999' }, body: postedSample }
-
-      stubbedFindOne.returns(null)
-
-      await replaceSample(request, response)
-
-      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'Z999' } })
-      expect(stubbedUpdate).to.have.callCount(0)
-      expect(stubbedStatus).to.have.been.calledWith(404)
-      expect(stubbedStatusDotSend).to.have.been.calledWith('No sample found with a code of "Z999"')
-    })
-
-    it('returns a 500 status when an error occurs replacing the referenced sample', async () => {
-      const request = { params: { code: 'Z999' }, body: singleSample }
-
-      stubbedFindOne.throws('ERROR!')
-
-      await replaceSample(request, response)
-
-      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'Z999' } })
-      expect(stubbedUpdate).to.have.callCount(0)
-      expect(stubbedStatus).to.have.been.calledWith(500)
-      expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to replace sample, please try again')
-    })
-  })
-
-  describe('patchSampleCode', () => {
-    it('accepts a new sample code and assigns it to the sample referenced by code in the route, returning the patched sample', async () => {
-      const request = { params: { code: 'E999' }, body: { code: 'D999' } }
-
-      stubbedFindOne.returns(singleSample)
-      stubbedUpdate.returns(patchedSample)
-
-      await patchSampleCode(request, response)
-
-      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'E999' } })
-      expect(stubbedUpdate).to.have.been.calledWith({ code: 'D999' }, { where: { code: 'E999' } })
-      expect(stubbedSend).to.have.been.calledWith(singleSample)
-    })
-
-    it('returns a 404 status when no sample is found with the code in the route', async () => {
-      const request = { params: { code: 'E999' }, body: { code: 'D999' } }
-
-      stubbedFindOne.returns(null)
-
-      await patchSampleCode(request, response)
-
-      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'E999' } })
-      expect(stubbedUpdate).to.have.callCount(0)
-      expect(stubbedStatus).to.have.been.calledWith(404)
-      expect(stubbedStatusDotSend).to.have.been.calledWith('No sample found with a code of "E999"')
+      expect(stubbedUpdate).to.have.been.calledWith({ rarity: 'common' }, {
+        where: { slug: 'mellowend', family: 'flourishflora' }
+      })
+      expect(stubbedSendStatus).to.have.been.calledWith(204)
     })
 
     it('returns a 500 status when an error occurs patching the sample', async () => {
-      const request = { params: { code: 'E999' }, body: { code: 'D999' } }
+      const request = { params: { slug: '', family: '' }, locals: { property: 'description', val: 'must feed the tests directory... my life for the tests directory' } }
 
-      stubbedFindOne.throws('ERROR!')
+      stubbedUpdate.throws('ERROR!')
 
-      await patchSampleCode(request, response)
+      await patchSample(request, response)
 
-      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'E999' } })
-      expect(stubbedUpdate).to.have.callCount(0)
+      expect(stubbedUpdate).to.have.been.calledWith({ description: 'must feed the tests directory... my life for the tests directory' }, { where: { slug: '', family: '' } })
       expect(stubbedStatus).to.have.been.calledWith(500)
-      expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to patch sample code, please try again')
+      expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to patch sample, please try again')
     })
   })
 
   describe('deleteSample', () => {
-    it('Deletes a sample referenced by code in the route from the database', async () => {
-      const request = { params: { code: 'A100' } }
-
-      stubbedFindOne.returns(singleSample)
+    it('Deletes a sample referenced by slug in the route from the database', async () => {
+      const request = { params: { slug: 'mellowend', family: 'flourishflora' } }
 
       await deleteSample(request, response)
 
-      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'A100' } })
-      expect(stubbedDestroy).to.have.been.calledWith({ where: { code: 'A100' } })
+      expect(stubbedDestroy).to.have.been.calledWith({ where: { slug: 'mellowend', family: 'flourishflora' } })
       expect(stubbedSendStatus).to.have.been.calledWith(204)
     })
 
-
-    it('returns a 404 status when no sample is found with the code in the route', async () => {
-      const request = { params: { code: 'Z999' } }
-
-      stubbedFindOne.returns(null)
-
-      await deleteSample(request, response)
-
-      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'Z999' } })
-      expect(stubbedDestroy).to.have.callCount(0)
-      expect(stubbedStatus).to.have.been.calledWith(404)
-      expect(stubbedStatusDotSend).to.have.been.calledWith('No sample found with a code of "Z999"')
-    })
-
     it('returns a 500 status when an error occurs deleting the sample', async () => {
-      const request = { params: { code: 'Z999' } }
+      const request = { params: { slug: 'mellowend', family: 'flourishflora' } }
 
-      stubbedFindOne.throws('ERROR!')
+      stubbedDestroy.throws('ERROR!')
 
       await deleteSample(request, response)
 
-      expect(stubbedFindOne).to.have.been.calledWith({ where: { code: 'Z999' } })
-      expect(stubbedDestroy).to.have.callCount(0)
+      expect(stubbedDestroy).to.have.been.calledWith({ where: { slug: 'mellowend', family: 'flourishflora' } })
       expect(stubbedStatus).to.have.been.calledWith(500)
       expect(stubbedStatusDotSend).to.have.been.calledWith('Unable to delete sample, please try again')
     })
