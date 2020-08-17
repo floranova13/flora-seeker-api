@@ -1,0 +1,18 @@
+div(id="info")
+  table(id="info-table")
+    tr
+      td(class="label") Method:
+      td(id="method")= (familyVal ? familyVal[0].method : sectionVal[0].method)
+    tr
+      td(class="label") Route:
+      td(id="route")= (familyVal ? familyVal[0].route : sectionVal[0].route)
+    tr(id="headers-row" class="hidden")
+      td(class="label") Headers:
+      td(id="headers")
+    tr(id="body-row" class="hidden")
+      td(class="label") Body:
+      td(id="body")
+    tr
+      td(class="label" id="description-label" colspan=2) Description:
+    tr
+      td(id="description" colspan=2)= (family ? familyVal[0].description : sectionVal[0].description)

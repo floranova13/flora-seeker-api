@@ -1,0 +1,29 @@
+html
+  include partials/head.pug
+  body
+
+    div(id="title-flex")
+      img(id="division-symbol-left" src="/public/img/divisionSymbol.png", alt="pink blossoms")
+      h1(id="main-title") Flora Seeker API
+      img(id="division-symbol-right" src="/public/img/divisionSymbol.png", alt="pink blossoms")
+
+    div(id="nav-bar")
+      for item in ["Root", "Seekers", "Collection", "Map"]
+        div(class="nav-item"
+          data-inactive=item.toLowerCase() === section ? "true" : ""
+          data-value=`${pathDir} ${item.toLowerCase()}${item === "Collection" ? "/falshrooms" : ""}`)= item
+
+    include partials/section.pug
+
+    if(familyVal)
+      div(id="family-bar")
+        for item in ["Falshrooms", "Flesherfungi", "Flourishflora", "Maremolds", "Trees", "Waveskellen"]
+          div(class="family-item"
+          data-inactive=item.toLowerCase() === family ? "true" : "" data-value=`${pathDir} ${item.toLowerCase()}`)= item
+
+    div(id="description-container")
+      h3(id="section-description")= description
+
+    div(id="request-descriptions")
+      include partials/requests.pug
+      include partials/info.pug

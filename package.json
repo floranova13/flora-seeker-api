@@ -1,0 +1,40 @@
+{
+  "name": "flora-seeker-api",
+  "version": "1.0.0",
+  "description": "An API to manage the Seeker Division's database while they operate out of the wilderness settlement Seras.",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "test": "./node_modules/.bin/env-cmd ./node_modules/.bin/mocha tests/**/*.test.js",
+    "dev": "./node_modules/.bin/env-cmd ./node_modules/.bin/nodemon --delay 5 index.js",
+    "dev:migrate": "./node_modules/.bin/env-cmd ./node_modules/.bin/sequelize db:migrate --env development --config ./configs/sequelize.js",
+    "eslint": "./node_modules/.bin/eslint --format codeframe .",
+    "lint": "npm run puglint && npm run eslint",
+    "lint:fix": "./node_modules/.bin/eslint --fix --format codeframe .",
+    "puglint": "./node_modules/.bin/pug-lint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stackeducation/flora-seeker-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mysql2": "^2.1.0",
+    "pug": "^2.0.4",
+    "sequelize": "^5.21.7",
+    "sequelize-cli": "^5.5.1"
+  },
+  "devDependencies": {
+    "acorn": "^7.2.0",
+    "chai": "^4.2.0",
+    "env-cmd": "^10.1.0",
+    "eslint": "^6.8.0",
+    "mocha": "^7.1.2",
+    "nodemon": "^2.0.3",
+    "pug-lint": "^2.6.0",
+    "sinon": "^9.0.2",
+    "sinon-chai": "^3.5.0"
+  }
+}

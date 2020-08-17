@@ -1,0 +1,245 @@
+:root {
+  --main-bg-color: #001301;
+  --accent-dark-color: #053f08;
+  --accent-light-color: #248a29;
+  --highlight-main-color: #053f35;
+  --highlight-secondary-color: #1e7264;
+  --highlight-accent-dark-color: #1d3f53;
+  --highlight-accent-light-color: #40b8a4;
+}
+
+body {
+  background-color: var(--main-bg-color);
+  color: white;
+  font-family: Garamond, Helvetica, sans-serif;
+  font-weight: 600;
+  text-align: center;
+}
+
+#title-flex {
+  align-items: center;
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  margin: auto;
+  margin-top: 40px;
+}
+
+#division-symbol-left {
+  margin-right: 15px;
+}
+#division-symbol-right {
+  margin-left: 15px;
+}
+
+#main-title {
+  font: 900 4em Verdana, Arial, Helvetica
+}
+
+#description-container {
+  border: 6px solid var(--accent-dark-color);
+  border-radius: 6px;
+  background-color: var(--highlight-secondary-color);
+  margin: 30px auto;
+  width: 1288px;
+}
+
+#section-description {
+  font-size: 1.5em;
+  text-align: left;
+  padding: 15px;
+}
+
+#section-title {
+  font-size: 3em;
+  font-weight: 900;
+}
+
+#section-symbol-left {
+  margin-right: 15px;
+}
+#section-symbol-right {
+  margin-left: 15px;
+}
+
+#nav-bar {
+  display: inline-flex;
+  flex-direction: row;
+  height: 75px;
+  justify-content: space-between;
+  margin: auto;
+  width: 1300px;
+}
+
+.nav-item {
+  background-color: var(--highlight-main-color);
+  border: 3px solid var(--accent-dark-color);
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 27px;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+  text-decoration: none;
+  transition: transform, border-width, border-color .3s;
+  width: 210px;
+}
+.nav-item:hover {
+  border-color: white;
+  border-width: 5px;
+  transform: scale(1.2)
+}
+
+#family-bar {
+  display: flex;
+  flex-direction: row;
+  height: 75px;
+  justify-content: space-between;
+  margin: auto;
+  padding-top: 25px;
+  width: 1300px;
+}
+
+.family-item {
+  background-color: var(--highlight-secondary-color);
+  border: 3px solid var(--accent-dark-color);
+  border-radius: 3px;
+  cursor: pointer;
+  height: 35px;
+  font-size: 18px;
+  line-height: 35px;
+  text-decoration: none;
+  text-align: center;
+  transition: transform, border-width, border-color .3s;
+  width: 180px;
+}
+.family-item:hover {
+  border-color: white;
+  border-width: 5x;
+  transform: scale(1.1);
+}
+
+#request-descriptions {
+  display: flex;
+  flex-direction: row;
+  height: 600px;
+  justify-content: space-between;
+  margin: auto;
+  width: 1300px;
+}
+
+#requests {
+  background-color: var(--highlight-main-color);
+  border: thick solid var(--accent-dark-color);
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+  width: 580px;
+}
+
+#requests-labels {
+  display: inline-flex;
+  flex-direction: row;
+  height: 40px;
+  text-align: center;
+}
+
+#method-label {
+  display: inline-block;
+  flex-basis: 30%;
+  flex-shrink: 0;
+  height: 40px;
+  line-height: 40px;
+}
+
+#route-label {
+  display: inline-block;
+  flex-basis: 70%;
+  flex-shrink: 0;
+  height: 40px;
+  line-height: 40px;
+}
+
+.request-entry {
+  align-content: space-around;
+  border: 3px solid var(--highlight-accent-light-color);
+  border-radius: 3px;
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  font-weight: 900;
+  height: 40px;
+  line-height: 40px;
+  justify-content: stretch;
+  padding: 3px;
+  text-align: center;
+}
+.request-entry:hover {
+  border-color: white;
+  border-width: 4px;
+}
+
+.method {
+  background-color: var(--highlight-secondary-color);
+  flex-basis: 30%;
+  font-size: 1.5em;
+  height: 40px;
+}
+
+.partial-route {
+  background-color: var(--accent-dark-color);
+  flex-basis: 70%;
+  height: 40px;
+}
+
+.request-entry:hover > .method {
+  font-size: 1.8em;
+}
+
+#info {
+  background-color: var(--highlight-secondary-color);
+  border: thick solid var(--accent-dark-color);
+  border-radius: 3px;
+  height: 600px;
+  width: 700px;
+}
+
+table {
+  border-collapse: collapse;
+  margin: 30px auto;
+  table-layout: fixed;
+  width: 90%;
+}
+
+.label {
+  border: 1px solid #dddddd;
+  font-size: 1.8em;
+  font-weight: bolder;
+  text-align: center;
+  padding: 10px;
+  width: 120px;
+}
+
+#description-label {
+  text-align: center;
+}
+
+td {
+  border: 1px solid #dddddd;
+  font-size: 1.5em;
+  padding: 10px;
+  text-align: left;
+  width: 5fr;
+}
+
+.inactive {
+  cursor: not-allowed;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.hidden {
+  display: none
+}

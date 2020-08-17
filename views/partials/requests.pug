@@ -1,0 +1,16 @@
+div(id="requests")
+  div(id="requests-labels")
+    div(id="method-label") Method
+    div(id="route-label") Route
+
+  for request, i in familyVal ? familyVal : sectionVal
+    div(class="request-entry"
+      data-inactive= (i === 0 ? "true" : "")
+      data-method= request.method
+      data-route= request.route
+      data-headers= request.headers ? request.headers : ""
+      data-body= request.body ? request.body : ""
+      data-description= request.description)
+
+      div(class="method")= request.method
+      div(class="partial-route")= request.route
